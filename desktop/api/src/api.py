@@ -1,14 +1,8 @@
-def makeAplicationLibrariesAvaliable() :
-    baseApiPath = 'api/src/'
-    from pathlib import Path
-    userPath = str(Path.home())
-    import sys
-    sys.path.append(userPath+'/Morgs/')
-    sys.path.append(userPath+'/Courses/course/'+baseApiPath)
-
-makeAplicationLibrariesAvaliable()
+from function import importMannanger
+userPath = importMannanger.makeAplicationLibrariesAvaliable()
 from model import Game
 from model.course import Course
+from model import Plataform
 import os
 import pygame as pg
 import time as now
@@ -24,12 +18,12 @@ colors =    {
             }
 fps = 30
 aps = 30
-game = Game.Game(plataformName,fps,aps,colors)
+plataform = Plataform.Plataform(plataformName,fps,aps,colors)
 
 objectName = '1'
 objectFolder = ''
 objectPosition = [0,0]
-objectSize = game.size
+objectSize = plataform.app.size
 objectScale = 1000
 objectVelocity = .0001
 Object.Object(
@@ -39,17 +33,17 @@ Object.Object(
     objectSize,
     objectScale,
     objectVelocity,
-    game
+    plataform.app
 )
 
 arrow = ArrowKey.ArrowKey()
-mouse = Mouse.Mouse(game)
+mouse = Mouse.Mouse(plataform.app)
 move = [np.random.randint(3)-1,np.random.randint(3)-1]
 
-game.createFrame(now.time())
-while game.playing :
+plataform.app.createFrame(now.time())
+while plataform.app.playing :
 
-    if game.frame.apfNew :
+    if plataform.app.frame.apfNew :
         for event in pg.event.get() :
             if event.type == pg.QUIT :
                 game.playing = False
@@ -66,9 +60,9 @@ while game.playing :
                 gl.playSound(leftSound)
             #"""
 
-        game.updateSpaceCostRectList()
+        plataform.app.updateSpaceCostRectList()
 
-    game.update(now.time())
+    plataform.app.update(now.time())
 
 pg.quit()
 #sys.exit()
