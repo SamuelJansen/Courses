@@ -1,12 +1,14 @@
 def makeAplicationLibrariesAvaliable() :
+    baseApiPath = 'api/src/'
     from pathlib import Path
     userPath = str(Path.home())
     import sys
     sys.path.append(userPath+'/Morgs/')
-    sys.path.append(userPath+'/Morgs/')
+    sys.path.append(userPath+'/Courses/course/'+baseApiPath)
 
 makeAplicationLibrariesAvaliable()
 from model import Game
+from model.course import Course
 import os
 import pygame as pg
 import time as now
@@ -23,6 +25,22 @@ colors =    {
 fps = 30
 aps = 30
 game = Game.Game(plataformName,fps,aps,colors)
+
+objectName = '1'
+objectFolder = ''
+objectPosition = [0,0]
+objectSize = game.size
+objectScale = 1000
+objectVelocity = .0001
+Object.Object(
+    objectName,
+    objectFolder,
+    objectPosition,
+    objectSize,
+    objectScale,
+    objectVelocity,
+    game
+)
 
 arrow = ArrowKey.ArrowKey()
 mouse = Mouse.Mouse(game)
