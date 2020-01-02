@@ -1,4 +1,4 @@
-class Module:
+class Lesson:
     def __init__(self,name,pages):
         self.name = name
         self.pages = pages

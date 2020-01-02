@@ -3,6 +3,7 @@ def makeAplicationLibrariesAvaliable() :
     userPath = str(Path.home())
     import sys
     sys.path.append(userPath+'/Morgs/')
+    sys.path.append(userPath+'/Morgs/')
 
 makeAplicationLibrariesAvaliable()
 from model import Game
