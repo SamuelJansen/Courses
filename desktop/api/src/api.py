@@ -1,13 +1,14 @@
 from function import importMannanger
-userPath = importMannanger.makeAplicationLibrariesAvaliable()
-from model import Game
+pathMannanger = importMannanger.makeAplicationLibrariesAvaliable()
 from model.course import Course
 from model import Plataform
 import os
 import pygame as pg
 import time as now
 import numpy as np
-from model import Game, Object, Cenario, ArrowKey, Screen, Mouse, Frame
+from model import ArrowKey,Mouse,Object
+from function import imageFunction
+from function.performance_measurement import makePagesFunction,makeScriptFunction
 
 plataformName = 'courses_plataform'
 colors =    {
@@ -36,6 +37,13 @@ Object.Object(
     plataform.app
 )
 
+courseName = 'macro_2020_03'
+moduleName = 'assistente_administrativo'
+lessonName = 'aula_01'
+amountOfPagesToMake = 4
+makePagesFunction.makeSoManyPages(courseName,moduleName,lessonName,amountOfPagesToMake,plataform)
+makeScriptFunction.makeAScript(courseName,moduleName,lessonName,amountOfPagesToMake,plataform)
+
 arrow = ArrowKey.ArrowKey()
 mouse = Mouse.Mouse(plataform.app)
 move = [np.random.randint(3)-1,np.random.randint(3)-1]
@@ -46,7 +54,7 @@ while plataform.app.playing :
     if plataform.app.frame.apfNew :
         for event in pg.event.get() :
             if event.type == pg.QUIT :
-                game.playing = False
+                plataform.app.playing = False
             arrow.events(event)
             mouse.events(event)
             """

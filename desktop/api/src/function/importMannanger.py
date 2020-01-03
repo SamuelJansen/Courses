@@ -1,8 +1,21 @@
+class PathMannanger:
+
+    def __init__(self,localPath,baseApiPath):
+        self.localPath = localPath
+        self.baseApiPath = baseApiPath
+
+    def getApiModulePath(self,apiModuleName):
+        return self.localPath+'Courses/'+apiModuleName+'/'+self.baseApiPath
+
 def makeAplicationLibrariesAvaliable() :
-    baseApiPath = 'api/src/'
-    from pathlib import Path
-    userPath = str(Path.home())
     import sys
-    sys.path.append(userPath+'/Morgs/')
-    sys.path.append(userPath+'/Courses/course/'+baseApiPath)
-    return userPath + '/'
+    from pathlib import Path
+
+    localPath = str(Path.home()) + '/'
+    baseApiPath = 'api/src/'
+    pathMannanger = PathMannanger(localPath,baseApiPath)
+
+    sys.path.append(pathMannanger.localPath+'Morgs/')
+    sys.path.append(pathMannanger.localPath+'Courses/course/'+pathMannanger.baseApiPath)
+
+    return pathMannanger
