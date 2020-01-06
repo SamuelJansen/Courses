@@ -1,5 +1,5 @@
 from function import importMannanger
-userPath = importMannanger.makeAplicationLibrariesAvaliable()
+pathMannanger = importMannanger.makeAplicationLibrariesAvaliable()
 from model import Object
 
 class Page(Object.Object):
@@ -17,7 +17,6 @@ class Page(Object.Object):
         scale = pageScale
         velocity = pageVelocity
         game = plataform.app
-
 
         Object.Object.__init__(
             self,

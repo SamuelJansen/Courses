@@ -7,18 +7,21 @@ def getCourses(coursesName) :
     courses = {}
     for courseName in coursesName :
         courseNameParsed = pathFunction.parseName(courseName)
-        coursePath = pathMannanger.getApiModulePath('course')+'resourse/courses/'+courseNameParsed+'.ht'
+        coursePath = pathMannanger.getApiModulePath('course')+'resourse/courses/'+courseNameParsed+'/'+courseNameParsed+'.ht'
         ###- print(f'coursePath = {coursePath}')
         try :
             with open(coursePath,"r",encoding="utf-8") as courseFile :
+                print(f'courseFile = {courseFile}')
                 modulesName = []
                 for module in courseFile :
                     modulesName.append(module.strip())
-                ###- print(f'modulesName = {modulesName}')
-                courses[courseNameParsed] = Course.Course(courseName,coursePath,getModules(modulesName))
+                print(f'modulesName = {modulesName}')
+                modules = getModules(modulesName)
+                courses[courseNameParsed] = Course.Course(courseName,coursePath,modules)
         except :
             courses[courseNameParsed] = None
             print(f'getCourses(coursesName) error --> courses[{courseNameParsed}] = {courses[courseNameParsed]}')
+            print(f'    coursePath = {coursePath}')
             print(f'    {courseName} course not found')
 
     return courses

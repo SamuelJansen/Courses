@@ -25,7 +25,7 @@ plataform = Plataform.Plataform(plataformName,fps,aps,colors)
 objectName = '1'
 objectFolder = ''
 objectPosition = [0,0]
-objectSize = plataform.app.size
+objectSize = plataform.size
 objectScale = 1000
 objectVelocity = .0001
 Object.Object(
@@ -35,7 +35,7 @@ Object.Object(
     objectSize,
     objectScale,
     objectVelocity,
-    plataform.app
+    plataform
 )
 
 courseName = 'macro_2020_03'
@@ -45,22 +45,22 @@ amountOfPagesToMake = 1
 makePagesFunction.makeSoManyPages(courseName,moduleName,lessonName,amountOfPagesToMake,plataform)
 makeScriptFunction.makeAScript(courseName,moduleName,lessonName,amountOfPagesToMake,plataform)
 
-coursesName = ['macro-2020-03']
+coursesName = [courseName]
 aplicationUserRegistration = '000000'
 aplicationUserPassword = '123'
 aplicationUser = AplicationUser.AplicationUser(aplicationUserRegistration,aplicationUserPassword,coursesName=coursesName)
 
 arrow = ArrowKey.ArrowKey()
-mouse = Mouse.Mouse(plataform.app)
+mouse = Mouse.Mouse(plataform)
 move = [np.random.randint(3)-1,np.random.randint(3)-1]
 
-plataform.app.createFrame(now.time())
-while plataform.app.playing :
+plataform.createFrame(now.time())
+while plataform.playing :
 
-    if plataform.app.frame.apfNew :
+    if plataform.frame.apfNew :
         for event in pg.event.get() :
             if event.type == pg.QUIT :
-                plataform.app.playing = False
+                plataform.playing = False
             arrow.events(event)
             mouse.events(event)
             """
@@ -74,9 +74,9 @@ while plataform.app.playing :
                 gl.playSound(leftSound)
             #"""
 
-        plataform.app.updateSpaceCostRectList()
+        plataform.updateSpaceCostRectList()
 
-    plataform.app.update(now.time())
+    plataform.update(now.time())
 
 pg.quit()
 #sys.exit()

@@ -3,6 +3,10 @@ cd C:\Users\aula35\Courses\desktop\api\src
 api.py
 
 .\courses-env\Scripts\activate
+cd C:\Users\aula35\Courses\editor\api\src
+api.py
+
+.\courses-env\Scripts\activate
 cd C:\Users\Samuel Jansen\Courses\desktop\api\src
 api.py
 

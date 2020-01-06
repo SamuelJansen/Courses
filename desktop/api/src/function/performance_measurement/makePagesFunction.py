@@ -10,11 +10,11 @@ def makeSoManyPages(courseName,moduleName,lessonName,amountOfPagesToMake,platafo
     moduleNameParsed = pathFunction.parseName(moduleName)
     lessonNameParsed = pathFunction.parseName(lessonName)
     pagesPath = pathMannanger.getApiModulePath('course')+'resourse/modules/'+moduleNameParsed+'/'+lessonNameParsed+'/image/'
-    basePageImage = imageFunction.getImage(pagesPath+'performance_measurement.png',plataform.app.size,plataform.app)
+    basePageImage = imageFunction.getImage(pagesPath+'performance_measurement.png',plataform.size,plataform)
 
     for page in range(amountOfPagesToMake) :
         newPageName = str(page)
-        for frame in range(plataform.app.fps) :
+        for frame in range(plataform.fps) :
             newImage = basePageImage.copy()
 
             pg.font.init()
