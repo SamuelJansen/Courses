@@ -1,6 +1,7 @@
 from function import importMannanger
 pathMannanger = importMannanger.makeAplicationLibrariesAvaliable()
 from model.course import Course
+from model.user import AplicationUser
 from model import Plataform
 import os
 import pygame as pg
@@ -40,9 +41,14 @@ Object.Object(
 courseName = 'macro_2020_03'
 moduleName = 'assistente_administrativo'
 lessonName = 'aula_01'
-amountOfPagesToMake = 4
+amountOfPagesToMake = 1
 makePagesFunction.makeSoManyPages(courseName,moduleName,lessonName,amountOfPagesToMake,plataform)
 makeScriptFunction.makeAScript(courseName,moduleName,lessonName,amountOfPagesToMake,plataform)
+
+coursesName = ['macro-2020-03']
+aplicationUserRegistration = '000000'
+aplicationUserPassword = '123'
+aplicationUser = AplicationUser.AplicationUser(aplicationUserRegistration,aplicationUserPassword,coursesName=coursesName)
 
 arrow = ArrowKey.ArrowKey()
 mouse = Mouse.Mouse(plataform.app)

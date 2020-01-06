@@ -2,10 +2,23 @@ from function import importMannanger
 pathMannanger = importMannanger.makeAplicationLibrariesAvaliable()
 from function import pathFunction
 
+def goNextPage(input) :
+    print(f'    function called: goNextPage({input})')
+    pass
+
+def goPreviousPage(input) :
+    print(f'    function called: goPreviousPage({input})')
+    pass
+
 class Button:
-    def __init__(self,previousPagePoints,nextPagePoints):
-        self.previousPagePoints = previousPagePoints
-        self.nextPagePoints = nextPagePoints
+    functionDictionary = {
+        'PREVIOUS_PAGE' : goNextPage,
+        'NEXT_PAGE' : goPreviousPage
+    }
+    def __init__(self,position,functionIndex):
+        self.position = position
+        self.function = Button.functionDictionary[functionIndex]
+
 
 def makeAScript(courseName,moduleName,lessonName,amountOfPagesToMake,plataform) :
     ###- Course will need some work later on
@@ -15,13 +28,15 @@ def makeAScript(courseName,moduleName,lessonName,amountOfPagesToMake,plataform) 
     lessonNameParsed = pathFunction.parseName(lessonName)
     pagesPath = pathMannanger.getApiModulePath('course')+'resourse/modules/'+moduleNameParsed+'/'+lessonNameParsed+'/'
 
-    previousPagePoints = '0x495x83x560'
-    nextPagePoints = '901x497x996x562'
+    previousPagePosition = '0x495x83x560'
+    nextPagePosition = '901x497x996x562'
     framesPerPage = '0..29'
-    button = Button(previousPagePoints,nextPagePoints)
+    previousPageButtom = Button(previousPagePosition,'PREVIOUS_PAGE')
+    nextPageButton = Button(nextPagePosition,'NEXT_PAGE')
     scriptList = []
     for pageIndex in range(amountOfPagesToMake) :
-        scriptList.append(f'page={pageIndex} frames={framesPerPage} button.previousPage={button.previousPagePoints} button.nextPage={button.nextPagePoints}')
+        scriptList.append(f'page={pageIndex} frames={framesPerPage} button={previousPageButtom.position} button={nextPageButton.position}')
 
-    with open(pagesPath+'script.ht',"w+",encoding="utf-8") as script :
-        script.write('\n'.join(scriptList))
+    scriptPath = pagesPath+'script.ht'
+    with open(scriptPath,"w+",encoding="utf-8") as scriptFile :
+        scriptFile.write('\n'.join(scriptList))
