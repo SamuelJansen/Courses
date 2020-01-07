@@ -1,28 +1,35 @@
 from function import importMannanger
 pathMannanger = importMannanger.makeAplicationLibrariesAvaliable()
 from model import Object
+from function import buttonFunction
 
-
-def goNextPage(input) :
-    print(f'    function called: goNextPage({input})')
-    pass
-
-def goPreviousPage(input) :
-    print(f'    function called: goPreviousPage({input})')
-    pass
-
-def exit():
-    print(f'    function called: exit()')
-    pass
-
+# buttonFunctions = {}
+# buttonFunction = lambda function:buttonFunctions.setdefault(function.__name__,function)
+#
+# @buttonFunction
+# def nextPage(input) :
+#     print(f'    function called: goNextPage({input})')
+#     pass
+#
+# @buttonFunction
+# def previousPage(input) :
+#     print(f'    function called: goPreviousPage({input})')
+#     pass
+#
+# @buttonFunction
+# def exit():
+#     print(f'    function called: exit()')
+#     pass
 
 class Button(Object.Object):
-    functionDictionary = {
-        'EXIT' : exit,
-        'PREVIOUS_PAGE' : goNextPage,
-        'NEXT_PAGE' : goPreviousPage
-    }
-    def __init__(self,name,position,size,scale,functionIndex,aplication,
+
+    # functionDictionary = {
+    #     'exit' : Button.exit,
+    #     'previousPage' : Button.goNextPage,
+    #     'nextPage' : Button.goPreviousPage
+    # }
+
+    def __init__(self,name,position,size,scale,functionKey,aplication,
             father=None,
             imagePath = pathMannanger.localPath+'Courses/desktop/api/src/resourse/button/image/',
             soundPath = pathMannanger.localPath+'Courses/desktop/api/src/resourse/button/sound/'
@@ -42,7 +49,10 @@ class Button(Object.Object):
           velocity,
           game,
           imagePath = imagePath,
-          soundPath = soundPath
+          soundPath = soundPath,
+          father = father
         )
-        self.function = Button.functionDictionary[functionIndex]
-        # father.addNewObject(self)
+        self.functionKey = functionKey
+
+    def function(self):
+        buttonFunction.buttonFunctions[self.functionKey]()

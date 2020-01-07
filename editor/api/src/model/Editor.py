@@ -31,10 +31,19 @@ class Editor(Game.Game):
         name = 'exit'
         position = [0,0]
         size = [10,10]
-        scale = 500
-        functionIndex = 'EXIT'
+        scale = 50
+        functionKey = 'exit'
         father = self.workstation
-        self.exitButton = Button.Button(name,position,size,scale,functionIndex,self,
-            father=self
+        self.exitButton = Button.Button(name,position,size,scale,functionKey,self,
+            father=father
         )
-        print(f'Editor.exitButton.getPosition() = {self.exitButton.getPosition()}')
+        self.exitButton.function()
+        # print(f'{self.objects[object].name} object is type {self.objects[object].type} and has {self.objects[object].blitOrder} blit order')
+        # print(f'Editor.exitButton.getPosition() = {self.exitButton.getPosition()}')
+
+        name = 'exit2'
+        position = [0,50]
+        self.anotherExitButton = Button.Button(name,position,size,scale,functionKey,self,
+            father=father
+        )
+        # print(f'{self.objects[object].name} object is type {self.objects[object].type} and has {self.objects[object].blitOrder} blit order')
