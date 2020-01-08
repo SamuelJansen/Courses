@@ -9,7 +9,7 @@ import time as now
 import numpy as np
 from model import ArrowKey,Mouse,Object
 
-editorName = 'editor_mode'
+editorName = 'editor'
 colors =    {
             'black' : (0,0,0),
             'white' : (255,255,255),
@@ -35,7 +35,7 @@ while editor.running :
             if event.type == pg.QUIT :
                 editor.running = False
             arrow.events(event)
-            mouse.events(event)
+            mouse.events(event,editor)
             """
             if a.arrows[1]==-1 :
                 gl.playSound(upSound)

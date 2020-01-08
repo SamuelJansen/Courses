@@ -31,14 +31,16 @@ class Editor(Aplication.Aplication):
             type = Object.ObjectTypes.USER_INTERFACE
         )
 
+        print(f'Editor.workstation.size = {self.workstation.size}')
+
         name = 'exit'
-        position = [0,0]
-        size = [20,20]
+        position = [1,1]
+        size = [10,10]
         scale = None
         functionKey = 'exit'
         father = self.workstation
         self.exitButton = Button.Button(name,position,size,scale,functionKey,father,self)
-        self.exitButton.callFunction()
+        self.exitButton.run(self)
 
         # print(f'{self.objects[object].name} object is type {self.objects[object].type} and has {self.objects[object].blitOrder} blit order')
         # print(f'Editor.exitButton.getPosition() = {self.exitButton.getPosition()}')

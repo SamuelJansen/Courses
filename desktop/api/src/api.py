@@ -62,7 +62,7 @@ while plataform.playing :
             if event.type == pg.QUIT :
                 plataform.playing = False
             arrow.events(event)
-            mouse.events(event)
+            mouse.events(event,plataform)
             """
             if a.arrows[1]==-1 :
                 gl.playSound(upSound)

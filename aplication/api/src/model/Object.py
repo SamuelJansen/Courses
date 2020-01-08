@@ -40,6 +40,14 @@ class ObjectHandler:
         self.collidableObjects = {}
         self.collidableObjectsPosition = []
 
+    def itColided(self,object,aplication):
+        if object.collides :
+            colisionIndexes = object.spaceCostRect.collidelistall(aplication.spaceCostObjectsPositionRectList)
+            if list(aplication.collidableObjects.keys()).index(object.name) in colisionIndexes :
+                return len(colisionIndexes)>1
+            return len(colisionIndexes)>0
+        return False
+
     def updateCollidableObjects(self):
         self.collidableObjects = {object.name:object for object in sorted(self.objects.values(),key=self.renderOrder) if object.collides}
         self.collidableObjectsPosition = [object.spaceCostRect for object in self.collidableObjects.values()]
@@ -54,7 +62,6 @@ class ObjectHandler:
         else :
             father.objectHandler.objects[object.name] = object
             father.blit(object)
-
 
 
 class Object:
@@ -131,22 +138,33 @@ class Object:
             xMovement = move[0]/module
             yMovement = move[1]/module
             self.spaceCostRect.move_ip(xMovement,yMovement)
-            if self.itColided(aplication) :
+            if self.objectHandler.itColided(self,aplication) :
                 self.spaceCostRect.move_ip(-xMovement,-yMovement)
                 self.position = self.getPosition()
             else :
                 self.rect.move_ip(xMovement,yMovement)
 
-    def itColided(self,aplication):
-        if self.collides :
-            colisionIndexes = self.spaceCostRect.collidelistall(aplication.spaceCostObjectsPositionRectList)
-            if list(aplication.collidableObjects.keys()).index(self.name) in colisionIndexes :
-                return len(colisionIndexes)>1
-            return len(colisionIndexes)>0
-        return False
-
     def getPosition(self):
         return [self.rect[0],self.rect[1]] ###- upper left corner
 
+    def setPosition(self,position):
+        if self.position[0]!=position[0] or self.position[1]!=position[1] :
+            self.position = position
+            self.rect = pg.Rect(self.position[0],self.position[1],self.size[0],self.size[1])
+            self.spaceCostRect = pg.Rect(
+                self.position[0],
+                self.position[1]+self.size[1]-self.collidableSize[1],
+                self.collidableSize[0],
+                self.collidableSize[1]
+            )
+
     def blit(self,object):
         self.imageSurface.blit(object.image,object.getPosition())
+
+    # def itColided(self,aplication):
+    #     if self.collides :
+    #         colisionIndexes = self.spaceCostRect.collidelistall(aplication.spaceCostObjectsPositionRectList)
+    #         if list(aplication.collidableObjects.keys()).index(self.name) in colisionIndexes :
+    #             return len(colisionIndexes)>1
+    #         return len(colisionIndexes)>0
+    #     return False

@@ -18,12 +18,13 @@ class Button(UserInterface.UserInterface):
         pass
 
     @function
-    def exit():
-        print(f'    function called: exit()')
+    def exit(aplication):
+        aplication.running = False
+        print(f'    function called: exit({aplication.name})')
         pass
 
     def __init__(
-        self,name,position,size,scale,functionKey,father,plataform,
+        self,name,position,size,scale,functionKey,father,aplication,
         imagePath = pathMannanger.localPath+'Courses/desktop/api/src/resourse/button/image/',
         soundPath = pathMannanger.localPath+'Courses/desktop/api/src/resourse/button/sound/'
     ):
@@ -31,10 +32,10 @@ class Button(UserInterface.UserInterface):
         velocity = 0.00001
 
         UserInterface.UserInterface.__init__(
-            self,name,position,size,scale,father,plataform,
+            self,name,position,size,scale,father,aplication,
             imagePath = imagePath,
             soundPath = soundPath
         )
 
         self.functionKey = functionKey
-        self.callFunction = Button.functions[self.functionKey]
+        self.run = Button.functions[self.functionKey]
