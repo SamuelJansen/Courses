@@ -32,8 +32,8 @@ class Editor(Aplication.Aplication):
 
         name = 'exit'
         position = [0,0]
-        size = [10,10]
-        scale = 50
+        size = [20,20]
+        scale = None
         functionKey = 'exit'
         father = self.workstation
         self.exitButton = Button.Button(name,position,size,scale,functionKey,father,self)

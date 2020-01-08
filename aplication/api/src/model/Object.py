@@ -47,8 +47,14 @@ class ObjectHandler:
     def renderOrder(self,object):
         return object.blitOrder,object.spaceCostRect.bottom
 
-    def addNewObject(self,object):
-        self.objects[object.name] = object
+    def addNewObject(self,object,father,aplication):
+        # self.objects[object.name] = object
+        if object.name == aplication.name :
+            aplication.objectHandler.objects[object.name] = object
+        else :
+            father.objectHandler.objects[object.name] = object
+            father.blit(object)
+
 
 
 class Object:
@@ -73,7 +79,10 @@ class Object:
         print(f'{self.name} object type is {self.type} and its blit order is {self.blitOrder}')
 
         self.size = size.copy()
-        self.scale = scale
+        if scale :
+            self.scale = scale
+        else :
+            self.scale = (aplication.scaleRange * self.size[1]) / aplication.size[1]
         self.scaleFactor = (self.scale * aplication.size[1]) / (aplication.scaleRange * self.size[1])
         self.size[0] = int(np.ceil(self.size[0] * self.scaleFactor))
         self.size[1] = int(np.ceil(self.size[1] * self.scaleFactor))
@@ -110,7 +119,7 @@ class Object:
         self.velocity = velocity * aplication.velocityControl
 
         self.objectHandler = ObjectHandler()
-        father.objectHandler.addNewObject(self)
+        father.objectHandler.addNewObject(self,father,aplication)
         ###- print(f'{self.name} created successfully')
 
     def updatePosition(self,move,aplication):
@@ -139,9 +148,5 @@ class Object:
     def getPosition(self):
         return [self.rect[0],self.rect[1]] ###- upper left corner
 
-    def addNewObject(self,object,aplication):
-        # self.objects[object.name] = object
-        if object.name == aplication.name :
-            aplication.objects[object.name] = object
-        else :
-            self.objects[object.name] = object
+    def blit(self,object):
+        self.imageSurface.blit(object.image,object.getPosition())
