@@ -12,8 +12,8 @@ class Aplication:
         self,name,fps,aps,colors,
         position=(0,0),
         scaleRange=1000,
-        imagePath = 'resourse/image/',
-        soundPath = 'resourse/sound/',
+        imagePath = 'resourse\\image\\',
+        soundPath = 'resourse\\sound\\',
         settingsPath = None
     ):
         '''
@@ -74,7 +74,7 @@ class Aplication:
 
         self.devScreenSize = (1000,564)
         self.devResize = [self.devScreenSize[0]/self.size[0],self.devScreenSize[1]/self.size[1]]
-        print(f'size = {self.size}, devScreenSize = {self.devScreenSize}, devResize = {self.devResize}')
+        print(f'Aplication --> size = {self.size}, devScreenSize = {self.devScreenSize}, devResize = {self.devResize}')
 
         self.longitudesImageOnScreen = 4
         self.latitudesImageOnScreen = 3

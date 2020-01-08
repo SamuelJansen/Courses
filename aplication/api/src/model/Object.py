@@ -19,7 +19,7 @@ class ObjectTypes:
     }
 
     blitsOrder = (lambda types=types : { types[key]:key for key in types.keys() })()
-    print(f'blitsOrder = {(lambda types=types : { types[key]:key for key in types.keys() })()}')
+    # print(f'blitsOrder = {(lambda types=types : { types[key]:key for key in types.keys() })()}')
 
     def getType(typeIndex):
         return ObjectTypes.types[typeIndex]

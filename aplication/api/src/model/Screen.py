@@ -20,7 +20,7 @@ class Screen():
         ]
         aplication.screenModule.blits(self.blitList)
 
-    def updateRectToBlit(self,aplication):
+    def updateBlitRect(self,aplication):
         self.blitRect = pg.Rect(
             0,
             0,
@@ -39,7 +39,7 @@ class Screen():
         '''
         It blits all objects on the screenModule'''
         aplication.screenModule.fill(aplication.color['backgroundColor'])
-        # self.blitRect(aplication) ###- precaution
+        # self.updateBlitRect(aplication) ###- precaution
         self.updateBlitList(aplication)
         aplication.screenModule.blits(self.blitList)
 
