@@ -17,8 +17,8 @@ class Editor(Aplication.Aplication):
             soundPath = soundPath
         )
 
-        # father = self
-        # aplication = self
+        father = self
+        aplication = self
 
         self.workstation = Object.Object(
             self.name,
@@ -26,21 +26,39 @@ class Editor(Aplication.Aplication):
             self.size,
             self.scaleRange,
             0.0001,
-            self,
-            self,
+            # self,
+            # self,
+            father,
+            aplication,
             type = Object.ObjectTypes.USER_INTERFACE
         )
 
         print(f'Editor.workstation.size = {self.workstation.size}')
 
-        name = 'exit'
-        position = [1,1]
-        size = [10,10]
-        scale = None
-        functionKey = 'exit'
+        previousPosition = [0,0]
+        size = [15,15]
         father = self.workstation
-        self.exitButton = Button.Button(name,position,size,scale,functionKey,father,self)
-        self.exitButton.run(self)
+        aplication = self
+        self.headerButtons = {}
+        self.headderButtonsName = ['exit','unlaunch','launch','update']
+        for buttonName in self.headderButtonsName :
+            name = buttonName + '_pressed'
+            position = [previousPosition[0]+1,1]
+            previousPosition = position.copy()
+            previousPosition[0] += size[0]
+            functionKey = name[:-8]
+
+            self.headerButtons[buttonName] = Button.Button(
+                name,
+                position,
+                functionKey,
+                father,
+                aplication,
+                size=size
+            )
+
+
+        # self.exitButton.run(self)
 
         # print(f'{self.objects[object].name} object is type {self.objects[object].type} and has {self.objects[object].blitOrder} blit order')
         # print(f'Editor.exitButton.getPosition() = {self.exitButton.getPosition()}')

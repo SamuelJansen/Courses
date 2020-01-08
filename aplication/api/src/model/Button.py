@@ -8,23 +8,40 @@ class Button(UserInterface.UserInterface):
     function = (lambda functions=functions : lambda function:functions.setdefault(function.__name__,function))()
 
     @function
-    def nextPage(inputDictionary) :
-        print(f'    function called: nextPage({inputDictionary})')
-        pass
-
-    @function
-    def previousPage(inputDictionary) :
-        print(f'    function called: previousPage({inputDictionary})')
-        pass
-
-    @function
-    def exit(aplication):
+    def exit(aplication) :
         aplication.running = False
         print(f'    function called: exit({aplication.name})')
         pass
 
+    @function
+    def nextPage(aplication) :
+        print(f'    function called: nextPage({aplication.name})')
+        pass
+
+    @function
+    def previousPage(aplication) :
+        print(f'    function called: previousPage({aplication.name})')
+        pass
+
+    @function
+    def unlaunch(aplication) :
+        print(f'    function called: unlaunch({aplication.name})')
+        pass
+
+    @function
+    def launch(aplication) :
+        print(f'    function called: launch({aplication.name})')
+        pass
+
+    @function
+    def update(aplication) :
+        print(f'    function called: update({aplication.name})')
+        pass
+
     def __init__(
-        self,name,position,size,scale,functionKey,father,aplication,
+        self,name,position,functionKey,father,aplication,
+        size=None,
+        scale=None,
         imagePath = pathMannanger.localPath+'Courses/desktop/api/src/resourse/button/image/',
         soundPath = pathMannanger.localPath+'Courses/desktop/api/src/resourse/button/sound/'
     ):
