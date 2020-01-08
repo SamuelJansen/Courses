@@ -7,8 +7,8 @@ class Page(Object.Object):
         self.name = name
         self.lessonName = lessonName
         pagePosition = [0,0]
-        pageSize = plataform.app.size
-        pageScale = plataform.app.scaleRange
+        pageSize = plataform.size
+        pageScale = plataform.scaleRange
         pageVelocity = 0.0001
 
         folder = self.lessonName
@@ -16,7 +16,6 @@ class Page(Object.Object):
         size = pageSize
         scale = pageScale
         velocity = pageVelocity
-        game = plataform.app
 
         Object.Object.__init__(
             self,
@@ -26,6 +25,6 @@ class Page(Object.Object):
             size,
             scale,
             velocity,
-            game
+            plataform
         )
         self.objects = objects

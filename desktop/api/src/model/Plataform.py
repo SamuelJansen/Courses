@@ -1,8 +1,8 @@
 from function import importMannanger
 pathMannanger = importMannanger.makeAplicationLibrariesAvaliable()
-from model import Game
+from model import Aplication
 
-class Plataform(Game.Game):
+class Plataform(Aplication.Aplication):
     def __init__(self,name,fps,aps,colors,
         position=(0,0),
         imagePath = pathMannanger.localPath+'Courses/course/api/src/resourse/image/',
@@ -11,7 +11,7 @@ class Plataform(Game.Game):
 
         self.localPath = pathMannanger.localPath
 
-        Game.Game.__init__(self,name,fps,aps,colors,
+        Aplication.Aplication.__init__(self,name,fps,aps,colors,
             position=position,
             imagePath=imagePath,
             soundPath=soundPath

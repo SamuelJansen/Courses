@@ -1,58 +1,40 @@
 from function import importMannanger
 pathMannanger = importMannanger.makeAplicationLibrariesAvaliable()
-from model import Object
-from function import buttonFunction
+from model import UserInterface
 
-# buttonFunctions = {}
-# buttonFunction = lambda function:buttonFunctions.setdefault(function.__name__,function)
-#
-# @buttonFunction
-# def nextPage(input) :
-#     print(f'    function called: goNextPage({input})')
-#     pass
-#
-# @buttonFunction
-# def previousPage(input) :
-#     print(f'    function called: goPreviousPage({input})')
-#     pass
-#
-# @buttonFunction
-# def exit():
-#     print(f'    function called: exit()')
-#     pass
+class Button(UserInterface.UserInterface):
 
-class Button(Object.Object):
+    functions = {}
+    function = (lambda functions=functions : lambda function:functions.setdefault(function.__name__,function))()
 
-    # functionDictionary = {
-    #     'exit' : Button.exit,
-    #     'previousPage' : Button.goNextPage,
-    #     'nextPage' : Button.goPreviousPage
-    # }
+    @function
+    def nextPage(inputDictionary) :
+        print(f'    function called: nextPage({inputDictionary})')
+        pass
 
-    def __init__(self,name,position,size,scale,functionKey,aplication,
-            father=None,
-            imagePath = pathMannanger.localPath+'Courses/desktop/api/src/resourse/button/image/',
-            soundPath = pathMannanger.localPath+'Courses/desktop/api/src/resourse/button/sound/'
-        ):
+    @function
+    def previousPage(inputDictionary) :
+        print(f'    function called: previousPage({inputDictionary})')
+        pass
 
-        game = aplication
-        folder = ''
+    @function
+    def exit():
+        print(f'    function called: exit()')
+        pass
+
+    def __init__(
+        self,name,position,size,scale,functionKey,father,plataform,
+        imagePath = pathMannanger.localPath+'Courses/desktop/api/src/resourse/button/image/',
+        soundPath = pathMannanger.localPath+'Courses/desktop/api/src/resourse/button/sound/'
+    ):
+
         velocity = 0.00001
 
-        Object.Object.__init__(
-          self,
-          name,
-          folder,
-          position,
-          size,
-          scale,
-          velocity,
-          game,
-          imagePath = imagePath,
-          soundPath = soundPath,
-          father = father
+        UserInterface.UserInterface.__init__(
+            self,name,position,size,scale,father,plataform,
+            imagePath = imagePath,
+            soundPath = soundPath
         )
-        self.functionKey = functionKey
 
-    def function(self):
-        buttonFunction.buttonFunctions[self.functionKey]()
+        self.functionKey = functionKey
+        self.callFunction = Button.functions[self.functionKey]

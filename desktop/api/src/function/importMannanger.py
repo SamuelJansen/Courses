@@ -15,8 +15,8 @@ def makeAplicationLibrariesAvaliable() :
     baseApiPath = 'api/src/'
     pathMannanger = PathMannanger(localPath,baseApiPath)
 
-    sys.path.append(pathMannanger.localPath+'Morgs/')
     sys.path.append(pathMannanger.localPath+'Courses/course/'+pathMannanger.baseApiPath)
+    sys.path.append(pathMannanger.localPath+'Courses/aplication/'+pathMannanger.baseApiPath)
     sys.path.append(pathMannanger.localPath+'Courses/desktop/'+pathMannanger.baseApiPath)
     sys.path.append(pathMannanger.localPath+'Courses/editor/'+pathMannanger.baseApiPath)
 

@@ -27,13 +27,13 @@ arrow = ArrowKey.ArrowKey()
 mouse = Mouse.Mouse(editor)
 move = [np.random.randint(3)-1,np.random.randint(3)-1]
 
-editor.createFrame(now.time())
-while editor.playing :
+editor.initialize(now.time())
+while editor.running :
 
     if editor.frame.apfNew :
         for event in pg.event.get() :
             if event.type == pg.QUIT :
-                editor.playing = False
+                editor.running = False
             arrow.events(event)
             mouse.events(event)
             """
@@ -47,7 +47,7 @@ while editor.playing :
                 gl.playSound(leftSound)
             #"""
 
-        editor.updateSpaceCostRectList()
+        editor.objectHandler.updateCollidableObjects()
 
     editor.update(now.time())
 
