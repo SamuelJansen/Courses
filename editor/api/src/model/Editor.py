@@ -1,7 +1,8 @@
 from function import importMannanger
 pathMannanger = importMannanger.makeAplicationLibrariesAvaliable()
-from model import Aplication,Object
+from model import Aplication, Object, UserInterface,UserInterfaceSurface
 from model import Button
+from model.course import Module
 
 class Editor(Aplication.Aplication):
 
@@ -26,8 +27,6 @@ class Editor(Aplication.Aplication):
             self.size,
             self.scaleRange,
             0.0001,
-            # self,
-            # self,
             father,
             aplication,
             type = Object.ObjectTypes.USER_INTERFACE
@@ -35,18 +34,45 @@ class Editor(Aplication.Aplication):
 
         print(f'Editor.workstation.size = {self.workstation.size}')
 
-        previousPosition = [0,0]
-        size = [15,15]
+        headderSurfaceName = 'headderSurface'
+        headderSurfacePosition  = [0,0]
+        headerSurfaceSize = ['100%',15]
+        scale = None
         father = self.workstation
         aplication = self
+        self.headerSurface = UserInterfaceSurface.UserInterfaceSurface(
+            headderSurfaceName,
+            headderSurfacePosition,
+            headerSurfaceSize,
+            scale,
+            father,
+            aplication,
+            imagePath = None,
+            soundPath = None
+        )
         self.headerButtons = {}
-        self.headderButtonsName = ['exit','unlaunch','launch','update']
-        for buttonName in self.headderButtonsName :
-            name = buttonName + '_pressed'
-            position = [previousPosition[0]+1,1]
+        self.headerButtonsName = ['exit','unlaunch','launch','update']
+
+        initialPosition = [0,0]
+        padding = [2,2]
+        self.instanciateHeaderButtons(initialPosition,padding,self.headerSurface)
+        self.instanciateCreateButtons()
+
+    def instanciateHeaderButtons(self,initialPosition,padding,father):
+
+        previousPosition = initialPosition
+        size = ['square','100%']
+        size = UserInterface.parseSize(size,father)
+        size = UserInterface.getSizePadded(size,padding)
+        aplication = self
+
+        for buttonName in self.headerButtonsName :
+            name = buttonName #+ '_pressed'
+            position = [previousPosition[0],0]
+            position = UserInterface.getPositionPadded(position,padding)#+padding[0],+padding[1]]
             previousPosition = position.copy()
             previousPosition[0] += size[0]
-            functionKey = name[:-8]
+            functionKey = name#[:-8]
 
             self.headerButtons[buttonName] = Button.Button(
                 name,
@@ -54,18 +80,18 @@ class Editor(Aplication.Aplication):
                 functionKey,
                 father,
                 aplication,
-                size=size
+                size=size,
+                padding=padding
             )
 
+    def instanciateCreateButtons(self):
+        modulesPath = pathMannanger.getApiModulePath('course') + Module.Module.MODULES_FILE
 
-        # self.exitButton.run(self)
+        modules = []
+        with open(modulesPath,"r",encoding="utf-8") as modulesFile :
+            for line in modulesFile :
+                modules.append(line.strip())
+        print(modules)
 
-        # print(f'{self.objects[object].name} object is type {self.objects[object].type} and has {self.objects[object].blitOrder} blit order')
-        # print(f'Editor.exitButton.getPosition() = {self.exitButton.getPosition()}')
-
-        # name = 'exit2'
-        # position = [0,50]
-        # self.anotherExitButton = Button.Button(name,position,size,scale,functionKey,self,
-        #     father=father
-        # )
-        # print(f'{self.objects[object].name} object is type {self.objects[object].type} and has {self.objects[object].blitOrder} blit order')
+    def instanciateSelectButtons(self):
+        pass

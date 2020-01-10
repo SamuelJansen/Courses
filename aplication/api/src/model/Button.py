@@ -41,6 +41,7 @@ class Button(UserInterface.UserInterface):
     def __init__(
         self,name,position,functionKey,father,aplication,
         size=None,
+        padding=None,
         scale=None,
         imagePath = pathMannanger.localPath+'Courses/desktop/api/src/resourse/button/image/',
         soundPath = pathMannanger.localPath+'Courses/desktop/api/src/resourse/button/sound/'

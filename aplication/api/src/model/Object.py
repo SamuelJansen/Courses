@@ -67,6 +67,10 @@ class ObjectHandler:
 class Object:
     '''
     It's a object'''
+
+    def newSurface():
+        pass
+
     def __init__(self,name,position,size,scale,velocity,father,aplication,
             type = None,
             collidableSize = None,
@@ -83,7 +87,8 @@ class Object:
 
         self.father = father
         self.blitOrder = ObjectTypes.getBlitOrder(self,father=self.father)
-        print(f'{self.name} object type is {self.type} and its blit order is {self.blitOrder}')
+        tab = '   '
+        print(f'{self.name}\n{tab}object type: {self.type}\n{tab}blit order: {self.blitOrder}\n')
 
         self.size = size.copy()
         if scale :
@@ -160,11 +165,8 @@ class Object:
 
     def blit(self,object):
         self.imageSurface.blit(object.image,object.getPosition())
+        self.updateFather(self)
 
-    # def itColided(self,aplication):
-    #     if self.collides :
-    #         colisionIndexes = self.spaceCostRect.collidelistall(aplication.spaceCostObjectsPositionRectList)
-    #         if list(aplication.collidableObjects.keys()).index(self.name) in colisionIndexes :
-    #             return len(colisionIndexes)>1
-    #         return len(colisionIndexes)>0
-    #     return False
+    def updateFather(self,object):
+        if self.father.type != ObjectTypes.APLICATION :
+            self.father.imageSurface.blit(object.imageSurface,object.getPosition())

@@ -27,8 +27,7 @@ class Mouse():
         '''It checks for mouse events and deal with it'''
         if event.type == pg.MOUSEBUTTONDOWN :
             self.clickDown(aplication)
-            self.scripArea = ''
-            self.scripArea += f'{self.devPosition[0]}x{self.devPosition[1]}'
+            self.scripArea = f'{self.devPosition[0]}x{self.devPosition[1]}'
 
         if event.type == pg.MOUSEBUTTONUP :
             self.clickUp(aplication)
@@ -42,12 +41,14 @@ class Mouse():
     def clickDown(self,aplication):
         self.updatePosition(aplication)
         self.objectHitClickDown = self.getRecursiveColision(aplication.workstation)
-        ###- print(f'mouse.objectHitClickDown = {self.objectHitClickDown}')
+        print(f'mouse.objectHitClickDown = {self.objectHitClickDown}')
+        print(f'    mouse.objectHitClickDown.name = {self.objectHitClickDown.name}')
 
     def clickUp(self,aplication):
         self.updatePosition(aplication)
         self.objectHitClickUp = self.getRecursiveColision(aplication.workstation)
-        ###- print(f'mouse.objectHitClickUp = {self.objectHitClickUp}')
+        print(f'mouse.objectHitClickUp = {self.objectHitClickUp}')
+        print(f'    mouse.objectHitClickUp.name = {self.objectHitClickUp.name}')
 
         if self.objectHitClickDown == self.objectHitClickUp :
             self.action(self.objectHitClickUp,aplication)
