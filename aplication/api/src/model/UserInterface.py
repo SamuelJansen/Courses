@@ -63,7 +63,7 @@ class UserInterface(Object.Object):
     SQUARE = 'square'
 
     def __init__(self,name,position,size,scale,father,aplication,
-        padding=None,
+        padding = None,
         imagePath = None,
         soundPath = None
     ):
