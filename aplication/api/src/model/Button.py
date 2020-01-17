@@ -15,15 +15,13 @@ class Button(UserInterface.UserInterface):
 
     @function
     def unlaunch(object,aplication) :
+        print(f'    function called: unlaunch({aplication.name})')
         print(f'''object.father.objectHandler.objects[{object.name}].name = {object.father.objectHandler.objects[object.name].name}''')
-        tab = '    '
         del object.father.objectHandler.objects[object.name]
         print('object.father.objectHandler.objects:')
         for name in object.father.objectHandler.objects :
-            print(f'{tab}- {name}')
+            print(f'    - {name}')
         object.father.updateScreen()
-        print(f'    function called: unlaunch({aplication.name})')
-        pass
 
     @function
     def launch(object,aplication) :

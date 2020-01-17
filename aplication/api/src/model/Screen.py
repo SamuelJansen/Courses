@@ -22,19 +22,11 @@ class Screen():
         )
 
     def getBlitList(self):
-        try :
-            return [
-                (object.screenSurface,object.rect)
-                for object in self.object.objectHandler.objects.values()
-                if self.blitRect.colliderect(object.rect)
-            ]
-        except :
-            print(f'Screen.getBlitList() --> Error in {self.object.name} object')
-            return [
-                (object.screenSurface,object.rect)
-                for object in self.object.objectHandler.objects.values()
-                if self.blitRect.colliderect(object.rect)
-            ]
+        return [
+            (object.screenSurface,object.rect)
+            for object in self.object.objectHandler.objects.values()
+            if self.blitRect.colliderect(object.rect)
+        ]
 
     def update(self):
         print(f'Screen.update() --> function call of {self.object.name} object')
@@ -45,14 +37,17 @@ class Screen():
             except :
                 print(f'Screem.update() --> Error in {object.name} object')
 
-        if self.object.mustUpdateScreen and self.object.type!=Object.ObjectTypes.APLICATION:
+        if self.object.mustUpdateScreen : # and self.object.type!=Object.ObjectTypes.APLICATION :
             self.updateBlitRect() ###- precaution
             self.updateBlitList()
+            print(f'Screen.update() --> function call of {self.object.name} object - updated')
             try :
-                self.object.screenSurface = imageFunction.resetScreenSurface(self.object.image,self.object.screenSurface)
-                print(f'Screen.update() --> {self.object.name} object')
+                # self.object.screenSurface = imageFunction.newImageSurface(self.object.image,self.object.size)
+                imageFunction.resetScreenSurface(self.object)
+                # print(f'Screen.update() --> {self.object.name} object')
             except :
                 print(f'Screen.update() --> Error reseting {self.object.name} object')
+                pass
         self.object.screenSurface.blits(self.blitList)
         self.object.mustUpdateScreen = False
 
@@ -61,3 +56,5 @@ class Screen():
 
     def updateBlitList(self):
         self.blitList = self.getBlitList()
+        for element in self.blitList :
+            print(element[1])

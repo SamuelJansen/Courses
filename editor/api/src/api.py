@@ -16,7 +16,7 @@ colors =    {
             'backgroundColor' : (237,201,202),
             'red' : (255,0,0)
             }
-fps = 30
+fps = 1
 aps = 30
 editorPosition = (960,0)
 editor = Editor.Editor(editorName,fps,aps,colors,

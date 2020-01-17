@@ -4,6 +4,7 @@ import pygame as pg
 import numpy as np
 from model import Aplication,Screen
 from function import imageFunction
+import time as now
 
 class ObjectTypes:
     APLICATION = 'aplication'
@@ -44,7 +45,7 @@ class ObjectHandler:
     def itColided(self,object):
         if object.collides :
             colisionIndexes = object.collidableRect.collidelistall(self.father.spaceCostObjectsPositionRectList)
-            if list(aplication.collidableObjects.keys()).index(object.name) in colisionIndexes :
+            if list(self.father.collidableObjects.keys()).index(object.name) in colisionIndexes :
                 return len(colisionIndexes)>1
             return len(colisionIndexes)>0
         return False
@@ -109,8 +110,8 @@ class Object:
             self.imagePath = aplication.imagePath + self.type + '/' + self.name + '.png'
         ###- print(f'object.imagePath = {self.imagePath}')
         self.image = imageFunction.getImage(self.imagePath,self.size,aplication)
-        self.screenSurface = imageFunction.newImageSurface(self.image,self.size)
-
+        self.originalScreenSurface = imageFunction.newImageSurface(self.image,self.size)
+        self.screenSurface = self.originalScreenSurface.copy()
 
         self.soundPath = soundPath
 
@@ -174,5 +175,8 @@ class Object:
         self.updateFather()
 
     def updateFather(self):
+        timeNow = now.time()
+        while now.time() - timeNow <0.2 :
+            pass
         if self.father.type != ObjectTypes.APLICATION :
             self.father.updateScreen()
