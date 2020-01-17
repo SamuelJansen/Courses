@@ -34,9 +34,9 @@ class Editor(Aplication.Aplication):
 
         print(f'Editor.workstation.size = {self.workstation.size}')
 
-        headderSurfaceName = 'headderSurface'
+        headderSurfaceName = 'headerSurface'
         headderSurfacePosition  = [0,0]
-        headerSurfaceSize = ['100%',15]
+        headerSurfaceSize = ['100%',22]
         scale = None
         father = self.workstation
         aplication = self
@@ -51,7 +51,7 @@ class Editor(Aplication.Aplication):
             soundPath = None
         )
         self.headerButtons = {}
-        self.headerButtonsName = ['exit','unlaunch','launch','update']
+        self.headerButtonsName = ['exit','open','close','save','add','launch','update','unlaunch']
 
         initialPosition = [0,0]
         padding = [2,2]

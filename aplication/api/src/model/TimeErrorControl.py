@@ -4,36 +4,38 @@ clear = lambda: os.system('cls')
 class TimeErrorControl:
     '''
     It calculates unexpected time errors'''
-    def __init__(self,timeNow) :
+    def __init__(self,frame,aplication) :
         '''
-        TimeErrors(timeNow)'''
-        self.now = timeNow
-        self.before = timeNow
+        TimeErrors(frame,aplication)'''
+        self.aplication = aplication
+        self.frame = frame
+        self.now = self.aplication.timeNow
+        self.before = self.aplication.timeNow
         self.innerLoops = 0
 
-    def checkTimeError(self,timeNow,frame,mustPrint=False):
+    def checkTimeError(self,mustPrint=False):
         '''
         It checks any time errors each frame.fps frames
-        TimeError.checkErrors(timeNow,Frame)'''
+        TimeError.checkErrors(aplication,frame)'''
         self.innerLoops += 1
 
-        if frame.newSecond :
-            frame.timeOveralError = 0
+        if self.frame.newSecond :
+            self.frame.timeOveralError = 0
             self.before = self.now
-            self.now = timeNow
-            frame.timeOveralError += frame.correctionFactor * ( self.now - self.before - 1 - frame.timeOveralError )
-            if frame.timeOveralError<0 :
-                frame.timeOveralError = 0
+            self.now = self.aplication.timeNow
+            self.frame.timeOveralError += self.frame.correctionFactor * ( self.now - self.before - 1 - self.frame.timeOveralError )
+            if self.frame.timeOveralError<0 :
+                self.frame.timeOveralError = 0
 
             if mustPrint :
                 clear()
                 print(f'''      Main loop -- It should be 1: {self.now-self.before}
-                timeNow = {timeNow}, frame.timeNext = {frame.timeNext}
-                frame.timeError         = {frame.timeError}
-                frame.timeOveralError   = {frame.timeOveralError}
-                frame.apfTimeError      = {frame.apfTimeError}
-                frame.fpsCounter    = {frame.fpsCounter}
-                frame.apsCounter    = {frame.apsCounter}
+                aplication.timeNow = {self.aplication.timeNow}, frame.timeNext = {self.frame.timeNext}
+                frame.timeError         = {self.frame.timeError}
+                frame.timeOveralError   = {self.frame.timeOveralError}
+                frame.apfTimeError      = {self.frame.apfTimeError}
+                frame.fpsCounter    = {self.frame.fpsCounter}
+                frame.apsCounter    = {self.frame.apsCounter}
                 innerLoops      = {self.innerLoops}''')
 
             self.innerLoops = 0

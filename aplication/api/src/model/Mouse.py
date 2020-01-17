@@ -36,19 +36,19 @@ class Mouse():
 
     def action(self,object,aplication):
         if object.__class__.__name__ == 'Button' :
-            object.run(aplication)
+            object.run(object,aplication)
 
     def clickDown(self,aplication):
         self.updatePosition(aplication)
         self.objectHitClickDown = self.getRecursiveColision(aplication.workstation)
-        print(f'mouse.objectHitClickDown = {self.objectHitClickDown}')
-        print(f'    mouse.objectHitClickDown.name = {self.objectHitClickDown.name}')
+        # print(f'mouse.objectHitClickDown = {self.objectHitClickDown}')
+        # print(f'    mouse.objectHitClickDown.name = {self.objectHitClickDown.name}')
 
     def clickUp(self,aplication):
         self.updatePosition(aplication)
         self.objectHitClickUp = self.getRecursiveColision(aplication.workstation)
-        print(f'mouse.objectHitClickUp = {self.objectHitClickUp}')
-        print(f'    mouse.objectHitClickUp.name = {self.objectHitClickUp.name}')
+        # print(f'mouse.objectHitClickUp = {self.objectHitClickUp}')
+        # print(f'    mouse.objectHitClickUp.name = {self.objectHitClickUp.name}')
 
         if self.objectHitClickDown == self.objectHitClickUp :
             self.action(self.objectHitClickUp,aplication)

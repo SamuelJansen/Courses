@@ -46,21 +46,21 @@ class Aplication:
         pg.display.set_caption(self.name)
 
         if self.settings['screenSize']==[0,0] :
-            self.screenModule = pg.display.set_mode([0,0],pg.FULLSCREEN)
-            screenSizeX, screenSizeY = self.screenModule.get_size()
+            self.screenSurface = pg.display.set_mode([0,0],pg.FULLSCREEN)
+            screenSizeX, screenSizeY = self.screenSurface.get_size()
             self.size = [screenSizeX, screenSizeY]
         else :
             self.size = self.settings['screenSize']
-        self.screenModule = pg.display.set_mode(self.size,pg.NOFRAME|pg.HWSURFACE|pg.DOUBLEBUF|pg.SRCALPHA,32)
-        # self.screenModule = pg.display.set_mode(self.size,pg.NOFRAME|pg.HWSURFACE|pg.SRCALPHA,32)
-        # self.screenModule = pg.display.set_mode(self.size,pg.NOFRAME|pg.SRCALPHA,32)
-        # self.screenModule = pg.display.set_mode(self.size,pg.NOFRAME|pg.HWSURFACE|pg.DOUBLEBUF|pg.SRCALPHA)
-        # self.screenModule = pg.display.set_mode(self.size,pg.NOFRAME|pg.HWSURFACE|pg.SRCALPHA)
-        # self.screenModule = pg.display.set_mode(self.size,pg.NOFRAME|pg.SRCALPHA)
-        # self.screenModule = pg.display.set_mode(self.size,pg.NOFRAME|pg.HWSURFACE|pg.DOUBLEBUF)
-        # self.screenModule = pg.display.set_mode(self.size,pg.NOFRAME|pg.HWSURFACE)
-        # self.screenModule = pg.display.set_mode(self.size,pg.NOFRAME|pg.DOUBLEBUF)
-        # self.screenModule = pg.display.set_mode(self.size)
+        self.screenSurface = pg.display.set_mode(self.size,pg.NOFRAME|pg.HWSURFACE|pg.DOUBLEBUF|pg.SRCALPHA,32)
+        # self.screenSurface = pg.display.set_mode(self.size,pg.NOFRAME|pg.HWSURFACE|pg.SRCALPHA,32)
+        # self.screenSurface = pg.display.set_mode(self.size,pg.NOFRAME|pg.SRCALPHA,32)
+        # self.screenSurface = pg.display.set_mode(self.size,pg.NOFRAME|pg.HWSURFACE|pg.DOUBLEBUF|pg.SRCALPHA)
+        # self.screenSurface = pg.display.set_mode(self.size,pg.NOFRAME|pg.HWSURFACE|pg.SRCALPHA)
+        # self.screenSurface = pg.display.set_mode(self.size,pg.NOFRAME|pg.SRCALPHA)
+        # self.screenSurface = pg.display.set_mode(self.size,pg.NOFRAME|pg.HWSURFACE|pg.DOUBLEBUF)
+        # self.screenSurface = pg.display.set_mode(self.size,pg.NOFRAME|pg.HWSURFACE)
+        # self.screenSurface = pg.display.set_mode(self.size,pg.NOFRAME|pg.DOUBLEBUF)
+        # self.screenSurface = pg.display.set_mode(self.size)
 
         SetWindowPos(
             pg.display.get_wm_info()['window'],
@@ -85,33 +85,40 @@ class Aplication:
         except :
             print("Mixer module not initialized")
 
+        self.mustUpdateScreen = False
         self.screen = None
         self.frame = None
 
-        self.objectHandler = Object.ObjectHandler()
+        self.objectHandler = Object.ObjectHandler(self)
 
         self.running = False
 
     def initialize(self,timeNow):
         '''
         It's better to call this method after create all objects'''
+        self.timeNow = timeNow
         self.screen = Screen.Screen(self)
+        self.mustUpdateScreen = True
+        self.screenSurface.fill(self.color['backgroundColor'])
         if self.frame :
             print('Frame already created')
         else :
-            self.frame = Frame.Frame(timeNow,self)
+            self.frame = Frame.Frame(self)
         self.running = True
+
+    def update(self,timeNow):
+        self.timeNow = timeNow
+        self.updateFrame()
+
+    def updateFrame(self):
+        self.frame.update()
+        if self.frame.new :
+            self.updateScreen()
 
     def updateScreen(self):
         '''
         It updates the screen image in the right order.
         Cenario at the background, objects and characteres respecting its places'''
-        self.screen.update(self)
-
-    def updateFrame(self,timeNow):
-        self.frame.update(timeNow,self)
-        if self.frame.new :
-            self.updateScreen()
-
-    def update(self,timeNow):
-        self.updateFrame(timeNow)
+        self.screenSurface.fill(self.color['backgroundColor'])
+        self.screen.update()
+        pg.display.update(self.screen.blitRect)

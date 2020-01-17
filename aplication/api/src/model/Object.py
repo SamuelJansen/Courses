@@ -2,7 +2,7 @@ from function import importMannanger
 pathMannanger = importMannanger.makeAplicationLibrariesAvaliable()
 import pygame as pg
 import numpy as np
-from model import Aplication
+from model import Aplication,Screen
 from function import imageFunction
 
 class ObjectTypes:
@@ -35,14 +35,15 @@ class ObjectTypes:
 
 class ObjectHandler:
 
-    def __init__(self):
+    def __init__(self,father):
+        self.father = father
         self.objects = {}
         self.collidableObjects = {}
         self.collidableObjectsPosition = []
 
-    def itColided(self,object,aplication):
+    def itColided(self,object):
         if object.collides :
-            colisionIndexes = object.spaceCostRect.collidelistall(aplication.spaceCostObjectsPositionRectList)
+            colisionIndexes = object.collidableRect.collidelistall(self.father.spaceCostObjectsPositionRectList)
             if list(aplication.collidableObjects.keys()).index(object.name) in colisionIndexes :
                 return len(colisionIndexes)>1
             return len(colisionIndexes)>0
@@ -50,18 +51,17 @@ class ObjectHandler:
 
     def updateCollidableObjects(self):
         self.collidableObjects = {object.name:object for object in sorted(self.objects.values(),key=self.renderOrder) if object.collides}
-        self.collidableObjectsPosition = [object.spaceCostRect for object in self.collidableObjects.values()]
+        self.collidableObjectsPosition = [object.collidableRect for object in self.collidableObjects.values()]
 
     def renderOrder(self,object):
-        return object.blitOrder,object.spaceCostRect.bottom
+        return object.blitOrder,object.collidableRect.bottom
 
-    def addNewObject(self,object,father,aplication):
-        # self.objects[object.name] = object
+    def addNewObject(self,object,aplication):
         if object.name == aplication.name :
             aplication.objectHandler.objects[object.name] = object
         else :
-            father.objectHandler.objects[object.name] = object
-            father.blit(object)
+            self.father.objectHandler.objects[object.name] = object
+            self.father.updateScreen()
 
 
 class Object:
@@ -109,7 +109,8 @@ class Object:
             self.imagePath = aplication.imagePath + self.type + '/' + self.name + '.png'
         ###- print(f'object.imagePath = {self.imagePath}')
         self.image = imageFunction.getImage(self.imagePath,self.size,aplication)
-        self.imageSurface = imageFunction.newImageSurface(self.image,self.size)
+        self.screenSurface = imageFunction.newImageSurface(self.image,self.size)
+
 
         self.soundPath = soundPath
 
@@ -121,7 +122,7 @@ class Object:
             self.collides = False
         self.collidableSize[0] = int(np.ceil(self.collidableSize[0] * self.scaleFactor))
         self.collidableSize[1] = int(np.ceil(self.collidableSize[1] * self.scaleFactor))
-        self.spaceCostRect = pg.Rect(
+        self.collidableRect = pg.Rect(
             self.position[0],
             self.position[1]+self.size[1]-self.collidableSize[1],
             self.collidableSize[0],
@@ -130,8 +131,12 @@ class Object:
 
         self.velocity = velocity * aplication.velocityControl
 
-        self.objectHandler = ObjectHandler()
-        father.objectHandler.addNewObject(self,father,aplication)
+        self.mustUpdateScreen = True
+
+        self.objectHandler = ObjectHandler(self)
+        self.father.objectHandler.addNewObject(self,aplication)
+
+        self.screen = Screen.Screen(self)
         ###- print(f'{self.name} created successfully')
 
     def updatePosition(self,move,aplication):
@@ -142,9 +147,9 @@ class Object:
             module = ( (move[0]**2+move[1]**2)**(1/2) ) / self.velocity
             xMovement = move[0]/module
             yMovement = move[1]/module
-            self.spaceCostRect.move_ip(xMovement,yMovement)
+            self.collidableRect.move_ip(xMovement,yMovement)
             if self.objectHandler.itColided(self,aplication) :
-                self.spaceCostRect.move_ip(-xMovement,-yMovement)
+                self.collidableRect.move_ip(-xMovement,-yMovement)
                 self.position = self.getPosition()
             else :
                 self.rect.move_ip(xMovement,yMovement)
@@ -156,17 +161,18 @@ class Object:
         if self.position[0]!=position[0] or self.position[1]!=position[1] :
             self.position = position
             self.rect = pg.Rect(self.position[0],self.position[1],self.size[0],self.size[1])
-            self.spaceCostRect = pg.Rect(
+            self.collidableRect = pg.Rect(
                 self.position[0],
                 self.position[1]+self.size[1]-self.collidableSize[1],
                 self.collidableSize[0],
                 self.collidableSize[1]
             )
 
-    def blit(self,object):
-        self.imageSurface.blit(object.image,object.getPosition())
-        self.updateFather(self)
+    def updateScreen(self):
+        self.mustUpdateScreen = True
+        self.screen.update()
+        self.updateFather()
 
-    def updateFather(self,object):
+    def updateFather(self):
         if self.father.type != ObjectTypes.APLICATION :
-            self.father.imageSurface.blit(object.imageSurface,object.getPosition())
+            self.father.updateScreen()

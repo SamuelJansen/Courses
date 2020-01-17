@@ -35,7 +35,7 @@ def saveImage(image,path) :
     return image
 
 def newImageSurface(image,size) :
-    imageSurface = pg.Surface(size,pg.HWSURFACE|pg.DOUBLEBUF|pg.SRCALPHA,32)
+    screenSurface = pg.Surface(size,pg.HWSURFACE|pg.DOUBLEBUF|pg.SRCALPHA,32)
     # threshold = (40,40,40)
     # image = colorFilter(threshold,image)
 
@@ -49,8 +49,12 @@ def newImageSurface(image,size) :
     # imageSurface = pg.Surface(size,pg.DOUBLEBUF)
     # imageSurface = pg.Surface(size)
 
-    imageSurface.blit(image,(0,0))
-    return imageSurface
+    screenSurface.blit(image,(0,0))
+    return screenSurface
+
+def resetScreenSurface(image,screenSurface) :
+    screenSurfaceReseted = screenSurface.blit(image,(0,0))
+    return screenSurfaceReseted
 
 def colorFilter(threshold,image) :
     colorThreshold = threshold

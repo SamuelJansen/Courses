@@ -18,7 +18,7 @@ colors =    {
             }
 fps = 30
 aps = 30
-editorPosition = (600,0)
+editorPosition = (960,0)
 editor = Editor.Editor(editorName,fps,aps,colors,
     position = editorPosition
 )
@@ -47,7 +47,7 @@ while editor.running :
                 gl.playSound(leftSound)
             #"""
 
-        editor.objectHandler.updateCollidableObjects()
+        # editor.objectHandler.updateCollidableObjects()
 
     editor.update(now.time())
 
