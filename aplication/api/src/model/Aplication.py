@@ -41,12 +41,13 @@ class Aplication:
         self.settings = setting.getSettings(self.settingsPath)
         self.size = setting.getAplicationSize(self)
 
+
+        os.environ['SDL_VIDEO_WINDOW_POS'] = "%d,%d" % position
+        self.localMachinePosition = ctypes.windll.user32.SetWindowPos
         pg.mixer.pre_init(44100,16,32,0)
         pg.init()
         pg.display.set_caption(self.name)
 
-        os.environ['SDL_VIDEO_WINDOW_POS'] = "%d,%d" % position
-        self.localMachinePosition = ctypes.windll.user32.SetWindowPos
         self.position = None
         self.updatePosition(position)
 
@@ -69,6 +70,20 @@ class Aplication:
         self.frame = None
         self.objectHandler = Object.ObjectHandler(self)
         self.screen = Screen.Screen(self)
+
+        father = self
+        aplication = self
+
+        self.floor = Object.Object(
+            self.name,
+            [0,0],
+            self.size,
+            self.scaleRange,
+            0.0001,
+            father,
+            aplication,
+            type = Object.ObjectTypes.APLICATION_FLOOR
+        )
 
         self.running = False
 

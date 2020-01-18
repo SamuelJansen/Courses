@@ -17,28 +17,13 @@ class Editor(Aplication.Aplication):
             imagePath = imagePath,
             soundPath = soundPath
         )
-
-        father = self
-        aplication = self
-
-        self.workstation = Object.Object(
-            self.name,
-            [0,0],
-            self.size,
-            self.scaleRange,
-            0.0001,
-            father,
-            aplication,
-            type = Object.ObjectTypes.USER_INTERFACE
-        )
-
-        print(f'Editor.workstation.size = {self.workstation.size}')
+        print(f'Editor.floor.size = {self.floor.size}')
 
         headderSurfaceName = 'headerSurface'
         headderSurfacePosition  = [0,0]
         headerSurfaceSize = ['100%',22]
         scale = None
-        father = self.workstation
+        father = self.floor
         aplication = self
         self.headerSurface = UserInterfaceSurface.UserInterfaceSurface(
             headderSurfaceName,

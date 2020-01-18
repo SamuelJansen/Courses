@@ -23,18 +23,18 @@ aps = 30
 plataform = Plataform.Plataform(plataformName,fps,aps,colors)
 
 objectName = '1'
-objectFolder = ''
 objectPosition = [0,0]
 objectSize = plataform.size
 objectScale = 1000
 objectVelocity = .0001
+father=None
 Object.Object(
     objectName,
-    objectFolder,
     objectPosition,
     objectSize,
     objectScale,
     objectVelocity,
+    plataform,
     plataform
 )
 
@@ -54,15 +54,15 @@ arrow = ArrowKey.ArrowKey()
 mouse = Mouse.Mouse(plataform)
 move = [np.random.randint(3)-1,np.random.randint(3)-1]
 
-plataform.createFrame(now.time())
-while plataform.playing :
+plataform.initialize(now.time())
+while plataform.running :
 
     if plataform.frame.apfNew :
         for event in pg.event.get() :
             if event.type == pg.QUIT :
-                plataform.playing = False
+                plataform.running = False
             arrow.events(event)
-            mouse.events(event,plataform)
+            mouse.events(event)
             """
             if a.arrows[1]==-1 :
                 gl.playSound(upSound)
@@ -74,7 +74,7 @@ while plataform.playing :
                 gl.playSound(leftSound)
             #"""
 
-        plataform.updateSpaceCostRectList()
+        plataform.objectHandler.update()
 
     plataform.update(now.time())
 

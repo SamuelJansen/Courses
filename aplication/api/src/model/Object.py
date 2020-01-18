@@ -113,6 +113,9 @@ class ObjectHandler:
         self.collidableObjects = {}
         self.collidableObjectsRect = []
 
+    def update(self):
+        pass
+
     def itColided(self,object):
         if object.collides :
             colisionIndexes = object.collidableRect.collidelistall(self.collidableObjectsRect)
@@ -142,15 +145,17 @@ class ObjectHandler:
 
 class ObjectTypes:
     APLICATION = 'aplication'
+    APLICATION_FLOOR = 'aplication_floor'
     CENARIO = 'cenario'
     STANDARD_OBJECT = 'standard_object'
     USER_INTERFACE = 'user_interface'
 
     types = {
-        0 : 'aplication',
-        10 : 'cenario',
-        100 : 'standard_object',
-        1000 : 'user_interface'
+        0 : APLICATION,
+        10 : APLICATION_FLOOR,
+        100 : CENARIO,
+        1000 : STANDARD_OBJECT,
+        10000 : USER_INTERFACE
     }
 
     blitOrder = (lambda types=types : { types[key]:key for key in types.keys() })()

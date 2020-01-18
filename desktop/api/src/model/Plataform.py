@@ -9,8 +9,6 @@ class Plataform(Aplication.Aplication):
         soundPath = pathMannanger.localPath+'Courses/course/api/src/resourse/sound/'
     ):
 
-        self.localPath = pathMannanger.localPath
-
         Aplication.Aplication.__init__(self,name,fps,aps,colors,
             position=position,
             imagePath=imagePath,

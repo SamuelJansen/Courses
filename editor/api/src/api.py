@@ -7,7 +7,7 @@ import os
 import pygame as pg
 import time as now
 import numpy as np
-from model import ArrowKey,Mouse,Object
+from model import ArrowKey, Mouse, Object
 
 editorName = 'editor'
 colors =    {
@@ -47,7 +47,7 @@ while editor.running :
                 gl.playSound(leftSound)
             #"""
 
-        # editor.objectHandler.updateCollidableObjects()
+        # editor.objectHandler.update()
 
     editor.update(now.time())
 
