@@ -5,13 +5,14 @@ import os
 import ctypes
 from function import setting, fatherFunction
 
-class Aplication:
+class Aplication():
     '''
     It defines the aplication characteristics'''
     def __init__(
         self,name,fps,aps,colors,
         position=(0,0),
         scaleRange=1000,
+        floor=False,
         imagePath = 'resourse\\image\\',
         soundPath = 'resourse\\sound\\',
         settingsPath = None
@@ -74,16 +75,20 @@ class Aplication:
         father = self
         aplication = self
 
-        self.floor = Object.Object(
-            self.name,
-            [0,0],
-            self.size,
-            self.scaleRange,
-            0.0001,
-            father,
-            aplication,
-            type = Object.ObjectTypes.APLICATION_FLOOR
-        )
+        if floor :
+            self.floor = Object.Object(
+                self.name,
+                [0,0],
+                self.size,
+                self.scaleRange,
+                0.0001,
+                father,
+                aplication,
+                type = Object.ObjectTypes.APLICATION_FLOOR
+            )
+        else :
+            self.floor = None
+            self.rect = pg.Rect(self.position[0],self.position[1],self.size[0],self.size[1])
 
         self.running = False
 
@@ -104,15 +109,16 @@ class Aplication:
 
     def updateFrame(self):
         self.frame.update()
-        if self.frame.new and self.screen.mustUpdate :
+        if self.frame.new :
             self.updateScreen()
 
     def updateScreen(self):
         '''
         It updates the screen image in the right order.
         Cenario at the background, objects and characteres respecting its places'''
-        self.screen.surface.fill(self.color['backgroundColor'])
-        self.screen.update()
+        if self.screen.mustUpdate :
+            self.screen.surface.fill(self.color['backgroundColor'])
+            self.screen.update()
         pg.display.update(self.screen.blitRect)
 
     def updatePosition(self,position):

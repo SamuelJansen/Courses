@@ -28,7 +28,7 @@ class Object:
 
         self.blitOrder = ObjectTypes.getBlitOrder(self)
         tab = '   '
-        print(f'{self.name}\n{tab}object type: {self.type}\n{tab}blit order: {self.blitOrder}\n')
+        print(f'{self.name}\n{tab}object type: {self.type}\n{tab}blit order: {self.blitOrder}')
 
         self.size = size.copy()
         if scale :
@@ -132,11 +132,11 @@ class ObjectHandler:
         return object.blitOrder,object.collidableRect.bottom
 
     def addNewObject(self,object):
-        print(f'======= {self.object.name}.objectHandler.addNewObject() --> function call ======')
+        # print(f'======= {self.object.name}.objectHandler.addNewObject() --> function call ======')
         self.objects[object.name] = object
         self.object.screen.mustUpdateNextFrame()
-        print(f'=========== {object.name} object added to {self.object.name} object ======')
-        print(f'======= {self.object.name}.objectHandler.addNewObject() --> function resolved ======')
+        # print(f'=========== {object.name} object added to {self.object.name} object ======')
+        # print(f'======= {self.object.name}.objectHandler.addNewObject() --> function resolved ======')
 
     def deleteObject(self,objectName):
         del self.objects[objectName]

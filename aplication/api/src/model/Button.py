@@ -1,6 +1,7 @@
 from function import importMannanger
 pathMannanger = importMannanger.makeAplicationLibrariesAvaliable()
 from model import UserInterface
+from model.course import Module
 
 class Button(UserInterface.UserInterface):
 
@@ -15,12 +16,12 @@ class Button(UserInterface.UserInterface):
 
     @function
     def unlaunch(object) :
-        print(f'    function called: unlaunch({object.aplication.name})')
-        print(f'''object.father.objectHandler.objects[{object.name}].name = {object.father.objectHandler.objects[object.name].name}''')
+        # print(f'''object.father.objectHandler.objects[{object.name}].name = {object.father.objectHandler.objects[object.name].name}''')
         object.father.objectHandler.deleteObject(object.name)
-        print('object.father.objectHandler.objects:')
-        for name in object.father.objectHandler.objects :
-            print(f'    - {name}')
+        # print('object.father.objectHandler.objects:')
+        # for name in object.father.objectHandler.objects :
+        #     print(f'    - {name}')
+        print(f'    function called: unlaunch({object.aplication.name})')
 
     @function
     def launch(object) :
@@ -34,6 +35,12 @@ class Button(UserInterface.UserInterface):
 
     @function
     def add(object) :
+        modulesPath = pathMannanger.getApiModulePath('course') + Module.Module.MODULES_FILE
+        modules = []
+        with open(modulesPath,"r",encoding="utf-8") as modulesFile :
+            for line in modulesFile :
+                modules.append(line.strip())
+        print(modules)
         print(f'    function called: add({object.aplication.name})')
         pass
 

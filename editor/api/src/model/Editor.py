@@ -14,10 +14,11 @@ class Editor(Aplication.Aplication):
 
         Aplication.Aplication.__init__(self,name,fps,aps,colors,
             position = position,
+            floor = True,
             imagePath = imagePath,
             soundPath = soundPath
         )
-        print(f'Editor.floor.size = {self.floor.size}')
+        # print(f'Editor.floor.size = {self.floor.size}')
 
         headderSurfaceName = 'headerSurface'
         headderSurfacePosition  = [0,0]
@@ -41,7 +42,7 @@ class Editor(Aplication.Aplication):
         initialPosition = [0,0]
         padding = [2,2]
         self.instanciateHeaderButtons(initialPosition,padding,self.headerSurface)
-        self.instanciateCreateButtons()
+        # self.instanciateCreateButtons()
 
     def instanciateHeaderButtons(self,initialPosition,padding,father):
 
@@ -69,14 +70,8 @@ class Editor(Aplication.Aplication):
                 padding=padding
             )
 
-    def instanciateCreateButtons(self):
-        modulesPath = pathMannanger.getApiModulePath('course') + Module.Module.MODULES_FILE
+    # def instanciateCreateButtons(self):
 
-        modules = []
-        with open(modulesPath,"r",encoding="utf-8") as modulesFile :
-            for line in modulesFile :
-                modules.append(line.strip())
-        print(modules)
 
     def instanciateSelectButtons(self):
         pass

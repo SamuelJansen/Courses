@@ -8,7 +8,7 @@ def parseSize(size,father) :
     return sizeParsed
 
 def getFeatureSize(sizeParsed,featureSize,featureSizeIndex,size,father) :
-    print(f'featureSize.__class__.__name__ = {featureSize.__class__.__name__}')
+    # print(f'featureSize.__class__.__name__ = {featureSize.__class__.__name__}')
     if featureSize.__class__.__name__ == 'str' :
         sizeParsed = getFeatureByPoligono(sizeParsed,featureSize,featureSizeIndex,size,father)
         sizeParsed = getFeatureByPercentage(sizeParsed,featureSize,featureSizeIndex,father)
@@ -72,7 +72,7 @@ class UserInterface(Object.Object):
         size = parseSize(size,father)
         size = getSizePadded(size,padding)
         position = getPositionPadded(position,padding)
-        print(f'{name}.size = {size}, {name}.position = {position}')
+        # print(f'{name}.size = {size}, {name}.position = {position}')
 
         Object.Object.__init__(
             self,

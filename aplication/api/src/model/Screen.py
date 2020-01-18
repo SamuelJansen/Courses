@@ -10,7 +10,7 @@ class Screen:
         It blits all objects on the screen.surface'''
 
         self.object = object
-        print(f'   {self.object.name}.screen --> __init__() call')
+        # print(f'   {self.object.name}.screen --> __init__() call -- object type = {self.object.type}')
 
         self.surface = None
         if fatherFunction.isNotAplication(self.object) :
@@ -37,10 +37,11 @@ class Screen:
         if fatherFunction.isNotAplication(self.object) :
             self.object.father.objectHandler.addNewObject(self.object)
         else :
-            print(f'ELSE screen.object.name = {self.object.name}, screen.object.father.name = {self.object.father.name}')
-            print(f'     screen.object.type = {self.object.type}')
+        #     print(f'ELSE screen.object.name = {self.object.name}, screen.object.father.name = {self.object.father.name}')
+        #     print(f'     screen.object.type = {self.object.type}')
+            pass
 
-        print(f'   {self.object.name}.screen --> __init__() resolved')
+        # print(f'   {self.object.name}.screen --> __init__() resolved')
 
     def getBlitRect(self):
         return pg.Rect(
@@ -65,13 +66,13 @@ class Screen:
         # print(f'      {self.object.name}.screen.mustUpdateNextFrame() --> function resolved')
 
     def didUpdate(self):
-        print(f'         {self.object.name}.screen.didUpdate() --> function call')
+        # print(f'         {self.object.name}.screen.didUpdate() --> function call')
         self.mustUpdate = False
-        print(f'         {self.object.name}.screen.didUpdate() --> function resolved')
+        # print(f'         {self.object.name}.screen.didUpdate() --> function resolved')
 
     def update(self):
-        print(f'{self.object.name}.screen.update() --> function call')
-        print(f'   {self.object.name}.screen.mustUpdate = {self.mustUpdate}')
+        # print(f'{self.object.name}.screen.update() --> function call -- object type = {self.object.type}')
+        # print(f'   {self.object.name}.screen.mustUpdate = {self.mustUpdate}')
         if self.mustUpdate : # and self.object.type!=Object.ObjectTypes.APLICATION :
 
             # print(f'   {self.object.name}.objectHandler.objects = {self.object.objectHandler.objects}')
@@ -84,7 +85,7 @@ class Screen:
             self.reset()
             self.surface.blits(self.blitList)
         self.didUpdate()
-        print(f'{self.object.name}.screen.update() --> function resolved\n')
+        # print(f'{self.object.name}.screen.update() --> function resolved\n')
 
     def updateBlitRect(self):
         self.blitRect = self.getBlitRect()
@@ -95,7 +96,7 @@ class Screen:
         #     print(element[1])
 
     def reset(self):
-        print(f'         {self.object.name}.screen.reset() --> function call')
+        # print(f'         {self.object.name}.screen.reset() --> function call')
         if fatherFunction.isNotAplication(self.object) :
             self.surface = self.originalSurface.copy()
-        print(f'         {self.object.name}.screen.reset() --> function resolved')
+        # print(f'         {self.object.name}.screen.reset() --> function resolved')
