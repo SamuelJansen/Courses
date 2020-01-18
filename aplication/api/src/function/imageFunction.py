@@ -52,9 +52,6 @@ def newImageSurface(image,size) :
     screenSurface.blit(image,(0,0))
     return screenSurface
 
-def resetScreenSurface(object) :
-    object.screenSurface = object.originalScreenSurface.copy()
-
 def colorFilter(threshold,image) :
     colorThreshold = threshold
     for x in range(image.get_width()):

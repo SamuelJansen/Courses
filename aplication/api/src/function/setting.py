@@ -13,3 +13,12 @@ def getSettings(path) :
         #elif setting.startswith('*') :
         #    settings.append(Setting(setting.rstrip()[2:].split()))
     return settings
+
+def getAplicationSize(aplication) :
+    if aplication.settings['screenSize']==[0,0] :
+        temporaryScreen = pg.display.set_mode([0,0],pg.FULLSCREEN)
+        screenSizeX, screenSizeY = temporaryScreen.get_size()
+        size = [screenSizeX, screenSizeY]
+    else :
+        size = aplication.settings['screenSize']
+    return size

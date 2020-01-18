@@ -8,50 +8,51 @@ class Mouse():
     def __init__(self,aplication):
         '''
         Mouse.position is pondered by dev screen size'''
+        self.aplication = aplication
         self.position = [0,0]
         self.devPosition = [0,0]
-        self.updatePosition(aplication)
+        self.updatePosition()
         self.scripArea = ''
 
         self.objectHitClickDown = None
         self.objectHitClickUp = None
 
-    def updatePosition(self,aplication):
+    def updatePosition(self):
         ###- It needs some work
         self.position = list(pg.mouse.get_pos())
-        self.devPosition[0] = int(self.position[0]*aplication.devResize[0])
-        self.devPosition[1] = int(self.position[1]*aplication.devResize[1])
+        self.devPosition[0] = int(self.position[0]*self.aplication.devResize[0])
+        self.devPosition[1] = int(self.position[1]*self.aplication.devResize[1])
         # self.setPosition(self.position)
 
-    def events(self,event,aplication):
+    def events(self,event):
         '''It checks for mouse events and deal with it'''
         if event.type == pg.MOUSEBUTTONDOWN :
-            self.clickDown(aplication)
+            self.clickDown()
             self.scripArea = f'{self.devPosition[0]}x{self.devPosition[1]}'
 
         if event.type == pg.MOUSEBUTTONUP :
-            self.clickUp(aplication)
+            self.clickUp()
             self.scripArea += f'x{self.devPosition[0]}x{self.devPosition[1]}'
             print(f'mouse.scripArea = {self.scripArea}')
 
-    def action(self,object,aplication):
+    def action(self,object):
         if object.__class__.__name__ == 'Button' :
-            object.run(object,aplication)
+            object.run(object)
 
-    def clickDown(self,aplication):
-        self.updatePosition(aplication)
-        self.objectHitClickDown = self.getRecursiveColision(aplication.workstation)
+    def clickDown(self):
+        self.updatePosition()
+        self.objectHitClickDown = self.getRecursiveColision(self.aplication.workstation)
         # print(f'mouse.objectHitClickDown = {self.objectHitClickDown}')
         # print(f'    mouse.objectHitClickDown.name = {self.objectHitClickDown.name}')
 
-    def clickUp(self,aplication):
-        self.updatePosition(aplication)
-        self.objectHitClickUp = self.getRecursiveColision(aplication.workstation)
+    def clickUp(self):
+        self.updatePosition()
+        self.objectHitClickUp = self.getRecursiveColision(self.aplication.workstation)
         # print(f'mouse.objectHitClickUp = {self.objectHitClickUp}')
         # print(f'    mouse.objectHitClickUp.name = {self.objectHitClickUp.name}')
 
         if self.objectHitClickDown == self.objectHitClickUp :
-            self.action(self.objectHitClickUp,aplication)
+            self.action(self.objectHitClickUp)
 
     def getRecursiveColision(self,object):
         if object.objectHandler.objects.values() :

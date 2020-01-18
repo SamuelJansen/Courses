@@ -16,7 +16,7 @@ colors =    {
             'backgroundColor' : (237,201,202),
             'red' : (255,0,0)
             }
-fps = 1
+fps = 30
 aps = 30
 editorPosition = (960,0)
 editor = Editor.Editor(editorName,fps,aps,colors,
@@ -35,7 +35,7 @@ while editor.running :
             if event.type == pg.QUIT :
                 editor.running = False
             arrow.events(event)
-            mouse.events(event,editor)
+            mouse.events(event)
             """
             if a.arrows[1]==-1 :
                 gl.playSound(upSound)

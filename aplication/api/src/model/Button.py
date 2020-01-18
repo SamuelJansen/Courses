@@ -8,59 +8,58 @@ class Button(UserInterface.UserInterface):
     function = (lambda functions=functions : lambda function:functions.setdefault(function.__name__,function))()
 
     @function
-    def exit(object,aplication) :
-        aplication.running = False
-        print(f'    function called: exit({aplication.name})')
+    def exit(object) :
+        object.aplication.running = False
+        print(f'    function called: exit({object.aplication.name})')
         pass
 
     @function
-    def unlaunch(object,aplication) :
-        print(f'    function called: unlaunch({aplication.name})')
+    def unlaunch(object) :
+        print(f'    function called: unlaunch({object.aplication.name})')
         print(f'''object.father.objectHandler.objects[{object.name}].name = {object.father.objectHandler.objects[object.name].name}''')
-        del object.father.objectHandler.objects[object.name]
+        object.father.objectHandler.deleteObject(object.name)
         print('object.father.objectHandler.objects:')
         for name in object.father.objectHandler.objects :
             print(f'    - {name}')
-        object.father.updateScreen()
 
     @function
-    def launch(object,aplication) :
-        print(f'    function called: launch({aplication.name})')
+    def launch(object) :
+        print(f'    function called: launch({object.aplication.name})')
         pass
 
     @function
-    def update(object,aplication) :
-        print(f'    function called: update({aplication.name})')
+    def update(object) :
+        print(f'    function called: update({object.aplication.name})')
         pass
 
     @function
-    def add(object,aplication) :
-        print(f'    function called: add({aplication.name})')
+    def add(object) :
+        print(f'    function called: add({object.aplication.name})')
         pass
 
     @function
-    def close(object,aplication) :
-        print(f'    function called: adclosed({aplication.name})')
+    def close(object) :
+        print(f'    function called: adclosed({object.aplication.name})')
         pass
 
     @function
-    def open(object,aplication) :
-        print(f'    function called: open({aplication.name})')
+    def open(object) :
+        print(f'    function called: open({object.aplication.name})')
         pass
 
     @function
-    def save(object,aplication) :
-        print(f'    function called: save({aplication.name})')
+    def save(object) :
+        print(f'    function called: save({object.aplication.name})')
         pass
 
     @function
-    def nextPage(object,aplication) :
-        print(f'    function called: nextPage({aplication.name})')
+    def nextPage(object) :
+        print(f'    function called: nextPage({object.aplication.name})')
         pass
 
     @function
-    def previousPage(object,aplication) :
-        print(f'    function called: previousPage({aplication.name})')
+    def previousPage(object) :
+        print(f'    function called: previousPage({object.aplication.name})')
         pass
 
     def __init__(
