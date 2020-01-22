@@ -4,7 +4,7 @@ from model import Game, Object
 from function import imageFunction
 
 class OneImageCenario(Object.Object):
-    def __init__(self,name,velocity,aplication,
+    def __init__(self,name,velocity,father,
             imagePath = None,
             soundPath = None'
     ):
@@ -16,14 +16,13 @@ class OneImageCenario(Object.Object):
             aplication.scaleRange,
             velocity,
             father,
-            aplication,
             type=Object.ObjectTypes.CENARIO,
             imagePath = imagePath,
             soundPath = soundPath'
         )
 
 class Cenario(Object.Object):
-    def __init__(self,name,longitudes,latitudes,initialCoordinate,velocity,father,aplication,
+    def __init__(self,name,longitudes,latitudes,initialCoordinate,velocity,father,
             imagePath = None,
             soundPath = None'
     ):
@@ -70,7 +69,6 @@ class Cenario(Object.Object):
                 self.scale,
                 velocity,
                 father,
-                aplication,
                 type=Object.ObjectTypes.CENARIO,
                 imagePath = imagePath,
                 soundPath = soundPath'

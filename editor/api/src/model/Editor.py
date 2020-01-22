@@ -32,7 +32,6 @@ class Editor(Aplication.Aplication):
             headerSurfaceSize,
             scale,
             father,
-            aplication,
             imagePath = None,
             soundPath = None
         )
@@ -65,13 +64,9 @@ class Editor(Aplication.Aplication):
                 position,
                 functionKey,
                 father,
-                aplication,
                 size=size,
                 padding=padding
             )
-
-    # def instanciateCreateButtons(self):
-
 
     def instanciateSelectButtons(self):
         pass

@@ -10,7 +10,7 @@ class Object:
     '''
     It's a object'''
 
-    def __init__(self,name,position,size,scale,velocity,father,aplication,
+    def __init__(self,name,position,size,scale,velocity,father,
             type = None,
             collidableSize = None,
             imagePath = None,

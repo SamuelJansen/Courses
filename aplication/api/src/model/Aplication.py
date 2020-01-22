@@ -72,9 +72,6 @@ class Aplication():
         self.objectHandler = Object.ObjectHandler(self)
         self.screen = Screen.Screen(self)
 
-        father = self
-        aplication = self
-
         if floor :
             self.floor = Object.Object(
                 self.name,
@@ -82,8 +79,7 @@ class Aplication():
                 self.size,
                 self.scaleRange,
                 0.0001,
-                father,
-                aplication,
+                self.father,
                 type = Object.ObjectTypes.APLICATION_FLOOR
             )
         else :
