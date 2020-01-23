@@ -1,3 +1,3 @@
-def exitFunction(event) :
-    event.aplication.running = False
-    print(f'    EventFunction called: exit({event.aplication.name})')
+def exit(event) :
+    event.object.aplication.running = False
+    print(f'    EventFunction called: exit({event.object.aplication.name})')

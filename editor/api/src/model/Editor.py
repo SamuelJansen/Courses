@@ -36,7 +36,7 @@ class Editor(Aplication.Aplication):
             soundPath = None
         )
         self.headerButtons = {}
-        self.headerButtonsName = ['exit','open','close','save','add','launch','update','unlaunch']
+        self.headerButtonsName = ['exit','openModule','close','save','add','launch','update','unlaunch']
 
         initialPosition = [0,0]
         padding = [2,2]

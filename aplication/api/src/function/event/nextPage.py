@@ -1,3 +1,3 @@
-def nextPageFunction(object) :
-    print(f'    EventFunction called: nextPage({object.aplication.name})')
+def next(event) :
+    print(f'    EventFunction called: nextPage({event.object.aplication.name})')
     pass

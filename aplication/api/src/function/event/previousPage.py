@@ -1,3 +1,3 @@
-def previousPageFunction(object) :
-    print(f'    EventFunction called: previousPage({object.aplication.name})')
+def previousPage(event) :
+    print(f'    EventFunction called: previousPage({event.object.aplication.name})')
     pass

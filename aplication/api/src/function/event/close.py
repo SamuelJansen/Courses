@@ -1,3 +1,3 @@
-def closeFunction(object) :
-    print(f'    EventFunction called: adclosed({object.aplication.name})')
+def close(event) :
+    print(f'    EventFunction called: adclosed({event.object.aplication.name})')
     pass

@@ -1,5 +1,5 @@
 from function.event.exit import *
-from function.event.open import *
+from function.event.openModule import *
 from function.event.save import *
 from function.event.close import *
 from function.event.add import *
@@ -12,42 +12,45 @@ from function.event.previousPage import *
 eventFunctions = {}
 EventFunction = (lambda eventFunctions=eventFunctions : lambda EventFunction:eventFunctions.setdefault(EventFunction.__name__,EventFunction))()
 
-@EventFunction
-def exit(event) :
-    return exitFunction(event)
+def getFunctionKey(functionKey) :
+    return functionKey + 'Function'
 
 @EventFunction
-def open(event) :
-    return openFunction(event)
+def exitFunction(event) :
+    return exit(event)
 
 @EventFunction
-def save(event) :
-    return saveFunction(event)
+def openModuleFunction(event) :
+    return openModule(event)
 
 @EventFunction
-def close(event) :
-    return closeFunction(event)
+def saveFunction(event) :
+    return save(event)
 
 @EventFunction
-def add(event) :
-    return addFunction(event)
+def closeFunction(event) :
+    return close(event)
 
 @EventFunction
-def launch(event) :
-    return launchFunction(event)
+def addFunction(event) :
+    return add(event)
 
 @EventFunction
-def update(event) :
-    return updateFunction(event)
+def launchFunction(event) :
+    return launch(event)
 
 @EventFunction
-def unlaunch(event) :
-    return unlaunchFunction(event)
+def updateFunction(event) :
+    return update(event)
 
 @EventFunction
-def nextPage(event) :
-    return nextPageFunction(event)
+def unlaunchFunction(event) :
+    return unlaunch(event)
 
 @EventFunction
-def previousPage(event) :
-    return previousPageFunction(event)
+def nextPageFunction(event) :
+    return nextPage(event)
+
+@EventFunction
+def previousPageFunction(event) :
+    return previousPage(event)

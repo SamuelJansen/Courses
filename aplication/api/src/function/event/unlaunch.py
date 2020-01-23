@@ -1,3 +1,3 @@
-def unlaunchFunction(object) :
-    object.father.objectHandler.deleteObject(object.name)
-    print(f'    EventFunction called: unlaunch({object.aplication.name})')
+def unlaunch(event) :
+    event.object.father.objectHandler.deleteObject(event.object.name)
+    print(f'    EventFunction called: unlaunch({event.object.aplication.name})')

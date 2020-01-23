@@ -1,3 +1,3 @@
-def updateFunction(object) :
-    print(f'    EventFunction called: update({object.aplication.name})')
+def update(event) :
+    print(f'    EventFunction called: update({event.object.aplication.name})')
     pass

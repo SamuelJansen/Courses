@@ -1,9 +1,9 @@
 from function import importMannanger
 pathMannanger = importMannanger.makeAplicationLibrariesAvaliable()
 import pygame as pg
-from model import Object,Button
+from model import Object, Button, Event
 
-class Mouse():
+class Mouse:
 
     def __init__(self,aplication):
         '''
@@ -36,8 +36,9 @@ class Mouse():
             print(f'mouse.scripArea = {self.scripArea}')
 
     def action(self,object):
-        if object.__class__.__name__ == 'Button' :
-            object.run(object)
+        event = Event.Event(object)
+        if event.className == Event.Event.BUTTON :
+            object.run(event)
 
     def clickDown(self):
         self.updatePosition()

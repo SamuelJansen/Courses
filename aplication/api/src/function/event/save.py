@@ -1,3 +1,3 @@
-def saveFunction(object) :
-    print(f'    EventFunction called: save({object.aplication.name})')
+def save(event) :
+    print(f'    EventFunction called: save({event.object.aplication.name})')
     pass

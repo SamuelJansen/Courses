@@ -1,3 +1,3 @@
-def launchFunction(object) :
-    print(f'    EventFunction called: launch({object.aplication.name})')
+def launch(event) :
+    print(f'    EventFunction called: launch({event.object.aplication.name})')
     pass
