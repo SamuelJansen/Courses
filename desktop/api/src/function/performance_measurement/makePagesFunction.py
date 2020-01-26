@@ -1,5 +1,3 @@
-from function import importMannanger
-pathMannanger = importMannanger.makeAplicationLibrariesAvaliable()
 from function import imageFunction, pathFunction
 import pygame as pg
 
@@ -9,7 +7,7 @@ def makeSoManyPages(courseName,moduleName,lessonName,amountOfPagesToMake,platafo
 
     moduleNameParsed = pathFunction.parseName(moduleName)
     lessonNameParsed = pathFunction.parseName(lessonName)
-    pagesPath = pathMannanger.getApiModulePath('course')+'resourse/modules/'+moduleNameParsed+'/'+lessonNameParsed+'/image/'
+    pagesPath = plataform.pathMannanger.getApiModulePath('course')+'resourse/modules/'+moduleNameParsed+'/'+lessonNameParsed+'/image/'
     basePageImage = imageFunction.getImage(pagesPath+'performance_measurement.png',plataform.size,plataform)
 
     for page in range(amountOfPagesToMake) :

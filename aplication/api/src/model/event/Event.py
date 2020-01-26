@@ -1,6 +1,4 @@
-from function import importMannanger
-pathMannanger = importMannanger.makeAplicationLibrariesAvaliable()
-from model import Button
+from model.object.user_interface import Button
 
 class Event:
 

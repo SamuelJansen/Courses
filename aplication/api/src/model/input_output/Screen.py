@@ -1,6 +1,8 @@
 import pygame as pg
 from function import imageFunction, fatherFunction
-from model import Object
+# from model import Object
+
+print('Screen library imported')
 
 class Screen:
     '''
@@ -12,12 +14,23 @@ class Screen:
         self.object = object
         # print(f'   {self.object.name}.screen --> __init__() call -- object type = {self.object.type}')
 
-        self.surface = None
+        self.surface = self.newSurface(object)
+
+        self.blitRect = self.getBlitRect()
+        # self.blitList = self.getBlitList()
+        # self.surface.blits(self.blitList)
+        self.blitList = []
+        self.mustUpdate = False
+        self.mustUpdateNextFrame()
+
+        # print(f'   {self.object.name}.screen --> __init__() resolved')
+
+    def newSurface(self,object):
         if fatherFunction.isNotAplication(self.object) :
             self.originalSurface = imageFunction.newImageSurface(self.object.image,self.object.size)
-            self.surface = self.originalSurface.copy()
+            return self.originalSurface.copy()
         else :
-            self.surface = pg.display.set_mode(self.object.size,pg.NOFRAME|pg.HWSURFACE|pg.DOUBLEBUF|pg.SRCALPHA,32)
+            return pg.display.set_mode(self.object.size,pg.NOFRAME|pg.HWSURFACE|pg.DOUBLEBUF|pg.SRCALPHA,32)
             # self.screenSurface = pg.display.set_mode(self.size,pg.NOFRAME|pg.HWSURFACE|pg.SRCALPHA,32)
             # self.screenSurface = pg.display.set_mode(self.size,pg.NOFRAME|pg.SRCALPHA,32)
             # self.screenSurface = pg.display.set_mode(self.size,pg.NOFRAME|pg.HWSURFACE|pg.DOUBLEBUF|pg.SRCALPHA)
@@ -27,21 +40,6 @@ class Screen:
             # self.screenSurface = pg.display.set_mode(self.size,pg.NOFRAME|pg.HWSURFACE)
             # self.screenSurface = pg.display.set_mode(self.size,pg.NOFRAME|pg.DOUBLEBUF)
             # self.screenSurface = pg.display.set_mode(self.size)
-
-        self.blitRect = self.getBlitRect()
-        self.blitList = self.getBlitList()
-        self.surface.blits(self.blitList)
-        self.mustUpdate = None
-        self.mustUpdateNextFrame()
-
-        if fatherFunction.isNotAplication(self.object) :
-            self.object.father.objectHandler.addNewObject(self.object)
-        else :
-        #     print(f'ELSE screen.object.name = {self.object.name}, screen.object.father.name = {self.object.father.name}')
-        #     print(f'     screen.object.type = {self.object.type}')
-            pass
-
-        # print(f'   {self.object.name}.screen --> __init__() resolved')
 
     def getBlitRect(self):
         return pg.Rect(

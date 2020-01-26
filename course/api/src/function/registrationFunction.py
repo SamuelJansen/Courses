@@ -1,13 +1,11 @@
-from function import importMannanger
-pathMannanger = importMannanger.makeAplicationLibrariesAvaliable()
 from function import pathFunction
-from model.course import Course,Module
+from model.course import Course, Module
 
-def getCourses(coursesName) :
+def getCourses(coursesName,plataform) :
     courses = {}
     for courseName in coursesName :
         courseNameParsed = pathFunction.parseName(courseName)
-        coursePath = pathMannanger.getApiModulePath('course')+'resourse/courses/'+courseNameParsed+'/'+courseNameParsed+'.ht'
+        coursePath = plataform.pathMannanger.getApiModulePath('course')+'resourse/courses/'+courseNameParsed+'/'+courseNameParsed+'.ht'
         ###- print(f'coursePath = {coursePath}')
         try :
             with open(coursePath,"r",encoding="utf-8") as courseFile :
@@ -26,11 +24,11 @@ def getCourses(coursesName) :
 
     return courses
 
-def getModules(modulesName) :
+def getModules(modulesName,plataform) :
     modules = {}
     for moduleName in modulesName :
         moduleNameParsed = pathFunction.parseName(moduleName)
-        modulePath = pathMannanger.getApiModulePath('course')+'resourse/modules/'+moduleNameParsed+'/'+moduleNameParsed+'.ht'
+        modulePath = plataform.pathMannanger.getApiModulePath('course')+'resourse/modules/'+moduleNameParsed+'/'+moduleNameParsed+'.ht'
         try :
             with open(modulePath,"r",encoding="utf-8") as moduleFile :
                 lessonsName = []

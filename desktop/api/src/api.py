@@ -1,5 +1,7 @@
 from function import importMannanger
-pathMannanger = importMannanger.makeAplicationLibrariesAvaliable()
+pathMannanger = importMannanger.updateImportMannger()
+from function import importMannanger
+
 from model.course import Course
 from model.user import AplicationUser
 from model import Plataform
@@ -48,7 +50,7 @@ makeScriptFunction.makeAScript(courseName,moduleName,lessonName,amountOfPagesToM
 coursesName = [courseName]
 aplicationUserRegistration = '000000'
 aplicationUserPassword = '123'
-aplicationUser = AplicationUser.AplicationUser(aplicationUserRegistration,aplicationUserPassword,coursesName=coursesName)
+aplicationUser = AplicationUser.AplicationUser(aplicationUserRegistration,aplicationUserPassword,plataform,coursesName=coursesName)
 
 arrow = ArrowKey.ArrowKey()
 mouse = Mouse.Mouse(plataform)

@@ -1,14 +1,15 @@
-from function import importMannanger
-pathMannanger = importMannanger.makeAplicationLibrariesAvaliable()
 import pygame as pg
+
+from model import Aplication
+from model.input_output import Screen
+
+from function import imageFunction, fatherFunction
+
 import numpy as np
-from model import Aplication,Screen
-from function import imageFunction
-import time as now
+
+print('Object library imported')
 
 class Object:
-    '''
-    It's a object'''
 
     def __init__(self,name,position,size,scale,velocity,father,
             type = None,
@@ -39,14 +40,15 @@ class Object:
         self.size[0] = int(np.ceil(self.size[0] * self.scaleFactor))
         self.size[1] = int(np.ceil(self.size[1] * self.scaleFactor))
 
-        self.position = position ###- self.getPosition() #
+        self.position = position.copy()
         self.rect = pg.Rect(self.position[0],self.position[1],self.size[0],self.size[1])
 
         ###- print(f'imagePath = {imagePath}')
         if imagePath :
-            self.imagePath = imagePath + self.name + '.png'
+            self.imagePath = f'{imagePath}{self.name}.png'
+            print(f'    imagePath = {self.imagePath}')
         else :
-            self.imagePath = self.aplication.imagePath + self.type + '/' + self.name + '.png'
+            self.imagePath = f'{self.aplication.imagePath}{self.type}\\{self.name}.png'
         ###- print(f'object.imagePath = {self.imagePath}')
         self.image = imageFunction.getImage(self.imagePath,self.size,self.aplication)
         # self.originalScreenSurface = imageFunction.newImageSurface(self.image,self.size)
@@ -71,14 +73,14 @@ class Object:
 
         self.velocity = velocity * self.aplication.velocityControl
 
-        self.objectHandler = ObjectHandler(self)
         self.screen = Screen.Screen(self)
+        self.objectHandler = ObjectHandler(self)
+
+        self.father.objectHandler.addNewObject(self)
+
         ###- print(f'{self.name} created successfully')
 
     def updatePosition(self,move):
-        '''
-        It updates the object position
-        updatePosition(move)'''
         if move[0]!=0 or move[1]!=0 :
             module = ( (move[0]**2+move[1]**2)**(1/2) ) / self.velocity
             xMovement = move[0]/module
@@ -86,9 +88,20 @@ class Object:
             self.collidableRect.move_ip(xMovement,yMovement)
             if self.objectHandler.itColided(self) :
                 self.collidableRect.move_ip(-xMovement,-yMovement)
-                self.position = self.getPosition()
             else :
                 self.rect.move_ip(xMovement,yMovement)
+                self.position = self.getPosition()
+
+    def setPosition(self,position):
+        self.position = position.copy()
+        self.rect = pg.Rect(self.position[0],self.position[1],self.size[0],self.size[1])
+        self.collidableRect = pg.Rect(
+            self.position[0],
+            self.position[1]+self.size[1]-self.collidableSize[1],
+            self.collidableSize[0],
+            self.collidableSize[1]
+        )
+        self.father.mustUpdateNextFrame()
 
     def getPosition(self):
         return [self.rect[0],self.rect[1]] ###- upper left corner
@@ -112,6 +125,12 @@ class ObjectHandler:
         self.objects = {}
         self.collidableObjects = {}
         self.collidableObjectsRect = []
+
+        print(f'ObjectHandler.object.father.name = {self.object.father.name}')
+
+        if fatherFunction.isNotAplication(self.object) :
+            self.object.father.objectHandler.addNewObject(self.object)
+
 
     def update(self):
         pass

@@ -16,12 +16,14 @@ def getImage(path,size,aplication) :
         try :
             canonicalizedPath = path.replace('/',os.sep).replace('\\',os.sep)
             image = pg.image.load(canonicalizedPath)#.convert_alpha()
+            print(f'importing image: {canonicalizedPath}')
         except :
             # print(aplication.imagePath)
-            path = aplication.imagePath+'standard_image.png'
+            path = f'{aplication.imagePath}standard_image.png'
             # path = aplication.imagePath+'character_token.png'
             # path = aplication.imagePath+'bola.png'
             canonicalizedPath = path.replace('/',os.sep).replace('\\',os.sep)
+            print(f'importing image: {canonicalizedPath}')
             image = pg.image.load(canonicalizedPath)#.convert_alpha()
         image = pg.transform.smoothscale(image,size)#.convert_alpha()
     imageLibrary[path] = image

@@ -1,7 +1,10 @@
-from function import importMannanger
-pathMannanger = importMannanger.makeAplicationLibrariesAvaliable()
 import pygame as pg
-from model import Object, Button, Event
+
+from model.object import Object
+from model.object.user_interface import Button
+from model.event import Event
+
+print('Mouse library imported')
 
 class Mouse:
 

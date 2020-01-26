@@ -1,15 +1,15 @@
-from function import importMannanger
-pathMannanger = importMannanger.makeAplicationLibrariesAvaliable()
 from model import Aplication
 
+print('Plataform library imported')
+
 class Plataform(Aplication.Aplication):
-    def __init__(self,name,fps,aps,colors,
+    def __init__(self,name,fps,aps,colors,pathMannanger,
         position=(0,0),
-        imagePath = pathMannanger.localPath+'Courses/course/api/src/resourse/image/',
-        soundPath = pathMannanger.localPath+'Courses/course/api/src/resourse/sound/'
+        imagePath = None,
+        soundPath = None
     ):
 
-        Aplication.Aplication.__init__(self,name,fps,aps,colors,
+        Aplication.Aplication.__init__(self,name,fps,aps,colors,pathMannanger,
             position=position,
             imagePath=imagePath,
             soundPath=soundPath

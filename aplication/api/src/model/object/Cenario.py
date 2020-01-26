@@ -3,6 +3,8 @@ import numpy as np
 from model import Game, Object
 from function import imageFunction
 
+print('Cenario library imported')
+
 class OneImageCenario(Object.Object):
     def __init__(self,name,velocity,father,
             imagePath = None,

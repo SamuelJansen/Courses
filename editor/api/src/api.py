@@ -1,13 +1,21 @@
 from function import importMannanger
-pathMannanger = importMannanger.makeAplicationLibrariesAvaliable()
-from model.course import Course
+pathMannanger = importMannanger.updateImportMannger()
+from function import importMannanger
+
+# from model.input_output import ArrowKey, Mouse
 from model.user import AplicationUser
+from model.object import Object
+from model.input_output import ArrowKey, Mouse
+
+from model.course import Course
 from model import Editor
+
 import os
 import pygame as pg
 import time as now
 import numpy as np
-from model import ArrowKey, Mouse, Object
+
+print('editor api')
 
 editorName = 'editor'
 colors =    {
@@ -19,7 +27,7 @@ colors =    {
 fps = 30
 aps = 30
 editorPosition = (960,0)
-editor = Editor.Editor(editorName,fps,aps,colors,
+editor = Editor.Editor(editorName,fps,aps,colors,pathMannanger,
     position = editorPosition
 )
 

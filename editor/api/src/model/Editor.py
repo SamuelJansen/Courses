@@ -1,18 +1,21 @@
-from function import importMannanger
-pathMannanger = importMannanger.makeAplicationLibrariesAvaliable()
-from model import Aplication, Object, UserInterface,UserInterfaceSurface
-from model import Button
+# import Aplication, Object, UserInterface, UserInterfaceSurface, Button
+from model import Aplication
+from model.object import Object
+from model.object.user_interface import UserInterface, UserInterfaceSurface, Header, Button
+
 from model.course import Module
+
+print('Editor library imported')
 
 class Editor(Aplication.Aplication):
 
-    def __init__(self,name,fps,aps,colors,
+    def __init__(self,name,fps,aps,colors,pathMannanger,
         position = (0,0),
-        imagePath = pathMannanger.localPath+'Courses\\editor\\api\\src\\resourse\\image\\',
-        soundPath = pathMannanger.localPath+'Courses\\editor\\api\\src\\resourse\\sound\\'
+        imagePath = None,
+        soundPath = None
     ):
 
-        Aplication.Aplication.__init__(self,name,fps,aps,colors,
+        Aplication.Aplication.__init__(self,name,fps,aps,colors,pathMannanger,
             position = position,
             floor = True,
             imagePath = imagePath,
@@ -25,48 +28,23 @@ class Editor(Aplication.Aplication):
         headerSurfaceSize = ['100%',22]
         scale = None
         father = self.floor
-        aplication = self
-        self.headerSurface = UserInterfaceSurface.UserInterfaceSurface(
+        Header.Header(
             headderSurfaceName,
             headderSurfacePosition,
             headerSurfaceSize,
             scale,
             father,
-            imagePath = None,
-            soundPath = None
+            padding = [2,2],
+            imagePath = imagePath,
+            soundPath = soundPath
         )
-        self.headerButtons = {}
-        self.headerButtonsName = ['exit','openModule','close','save','add','launch','update','unlaunch']
+        buttonsNameList = ['exit','openModule','close','save','add','launch','update','unlaunch']
 
-        initialPosition = [0,0]
-        padding = [2,2]
-        self.instanciateHeaderButtons(initialPosition,padding,self.headerSurface)
-        # self.instanciateCreateButtons()
+        print(f'Editor.objectHandler.objects = {self.objectHandler.objects}')
 
-    def instanciateHeaderButtons(self,initialPosition,padding,father):
+        buttonSize = ['square','100%']
+        for buttonName in buttonsNameList :
+            self.floor.objectHandler.objects[headderSurfaceName].addButton(buttonName,buttonSize)
 
-        previousPosition = initialPosition
-        size = ['square','100%']
-        size = UserInterface.parseSize(size,father)
-        size = UserInterface.getSizePadded(size,padding)
-        aplication = self
-
-        for buttonName in self.headerButtonsName :
-            name = buttonName #+ '_pressed'
-            position = [previousPosition[0],0]
-            position = UserInterface.getPositionPadded(position,padding)#+padding[0],+padding[1]]
-            previousPosition = position.copy()
-            previousPosition[0] += size[0]
-            functionKey = name#[:-8]
-
-            self.headerButtons[buttonName] = Button.Button(
-                name,
-                position,
-                functionKey,
-                father,
-                size=size,
-                padding=padding
-            )
-
-    def instanciateSelectButtons(self):
+    def newMenuColumn(self):
         pass

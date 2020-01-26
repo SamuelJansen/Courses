@@ -1,6 +1,4 @@
 def getSettings(path) :
-    '''
-    It gets overal Game Settings'''
     settings = {}
     with open(path,'r',encoding='utf-8') as settingsFile :
         allSettings = settingsFile.readlines()

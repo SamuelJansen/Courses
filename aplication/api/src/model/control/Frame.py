@@ -1,5 +1,5 @@
 import pygame as pg
-from model import TimeErrorControl
+from model.control import TimeErrorControl
 
 class Frame:
     '''

@@ -1,6 +1,6 @@
-from function import importMannanger
-pathMannanger = importMannanger.makeAplicationLibrariesAvaliable()
 import pygame as pg
+
+print('ArrowKey library imported')
 
 class ArrowKey:
     '''

@@ -1,5 +1,8 @@
 from function import importMannanger
-pathMannanger = importMannanger.makeAplicationLibrariesAvaliable()
+pathMannanger = importMannanger.updateImportMannger()
+from function import importMannanger
+
+print('glopals api')
 
 print(
 f'''pathMannanger = {pathMannanger}

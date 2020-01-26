@@ -1,4 +1,44 @@
-from model import Object
+from model.object import Object
+
+print('UserInterface library imported')
+
+class UserInterface(Object.Object):
+    SQUARE = 'square'
+
+    def __init__(self,name,position,size,scale,father,
+        padding = [0,0],
+        imagePath = None,
+        soundPath = None
+    ):
+
+        self.father = father
+        try :
+            self.userInterfaceSurface = self.father.userInterfaceSurface
+        except :
+            self.userInterfaceSurface = None
+
+        size = parseSize(size,father)
+        self.padding = padding
+        if self.userInterfaceSurface :
+            self.padding = self.UserInterfaceSurface.padding
+            size = getSizePadded(size,self.padding)
+            position = getPositionPadded(position,self.padding)
+
+        velocity = 0.00001
+
+        Object.Object.__init__(
+            self,
+            name,
+            position,
+            size,
+            scale,
+            velocity,
+            father,
+            type = Object.ObjectTypes.USER_INTERFACE,
+            imagePath = imagePath,
+            soundPath = soundPath
+        )
+
 
 def parseSize(size,father) :
     sizeParsed = [None,None]
@@ -57,30 +97,3 @@ def getPositionPadded(position,padding) :
         return positionPadded
     else :
         return position
-
-class UserInterface(Object.Object):
-    SQUARE = 'square'
-
-    def __init__(self,name,position,size,scale,father,
-        padding = None,
-        imagePath = None,
-        soundPath = None
-    ):
-
-        velocity = 0.00001
-        size = parseSize(size,father)
-        size = getSizePadded(size,padding)
-        position = getPositionPadded(position,padding)
-
-        Object.Object.__init__(
-            self,
-            name,
-            position,
-            size,
-            scale,
-            velocity,
-            father,
-            type = Object.ObjectTypes.USER_INTERFACE,
-            imagePath = imagePath,
-            soundPath = soundPath
-        )

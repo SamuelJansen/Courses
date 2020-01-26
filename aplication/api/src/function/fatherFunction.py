@@ -1,4 +1,5 @@
-from model import Object
+from model import Aplication
+from model.object import Object
 
 TAB = '         '
 

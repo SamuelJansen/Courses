@@ -1,20 +1,27 @@
 import pygame as pg
+
+from model.object import Object
+from model.input_output import Screen
+from model.control import Frame
+
+from function import setting, fatherFunction
+
 import time as now
-from model import Screen, Frame, Object
 import os
 import ctypes
-from function import setting, fatherFunction
+
+print('Aplication library imported')
 
 class Aplication():
     '''
     It defines the aplication characteristics'''
     def __init__(
-        self,name,fps,aps,colors,
+        self,name,fps,aps,colors,pathMannanger,
         position=(0,0),
         scaleRange=1000,
         floor=False,
-        imagePath = 'resourse\\image\\',
-        soundPath = 'resourse\\sound\\',
+        imagePath = None,
+        soundPath = None,
         settingsPath = None
     ):
         '''
@@ -25,23 +32,21 @@ class Aplication():
         apf     --> actions per frame'''
 
         self.aplication = self.father = fatherFunction.absoluteFather(self)
+        self.pathMannanger = pathMannanger
 
         self.name = name
         self.type = Object.ObjectTypes.APLICATION
 
-        self.imagePath = imagePath
-        self.soundPath = soundPath
-        if not settingsPath :
-            self.settingsPath = 'resourse/' + self.name + '.ht'
+        self.getPaths(imagePath,soundPath,settingsPath)
+
         self.color = colors
 
-        self.scaleRange = scaleRange
         self.fps = fps
         self.aps = aps
+        self.scaleRange = scaleRange
 
         self.settings = setting.getSettings(self.settingsPath)
         self.size = setting.getAplicationSize(self)
-
 
         os.environ['SDL_VIDEO_WINDOW_POS'] = "%d,%d" % position
         self.localMachinePosition = ctypes.windll.user32.SetWindowPos
@@ -49,7 +54,6 @@ class Aplication():
         pg.init()
         pg.display.set_caption(self.name)
 
-        self.position = None
         self.updatePosition(position)
 
         self.devScreenSize = (1000,564)
@@ -68,9 +72,9 @@ class Aplication():
             print("Mixer module not initialized")
 
 
-        self.frame = None
-        self.objectHandler = Object.ObjectHandler(self)
+        self.frame = None ###- Aplication.initialize() must be called
         self.screen = Screen.Screen(self)
+        self.objectHandler = Object.ObjectHandler(self)
 
         if floor :
             self.floor = Object.Object(
@@ -109,12 +113,10 @@ class Aplication():
             self.updateScreen()
 
     def updateScreen(self):
-        '''
-        It updates the screen image in the right order.
-        Cenario at the background, objects and characteres respecting its places'''
         if self.screen.mustUpdate :
             self.screen.surface.fill(self.color['backgroundColor'])
             self.screen.update()
+        # self.updatePosition(self.position)
         pg.display.update(self.screen.blitRect)
 
     def updatePosition(self,position):
@@ -127,3 +129,14 @@ class Aplication():
             0,
             0,
             0x0001 )
+
+    def getPaths(self,imagePath,soundPath,settingsPath):
+        self.imagePath = imagePath
+        self.soundPath = soundPath
+        self.settingsPath = settingsPath
+        if not self.imagePath :
+            self.imagePath = f'{self.pathMannanger.getApiModulePath(self.name)}resourse\\image\\'
+        if not self.soundPath :
+            self.soundPath = f'{self.pathMannanger.getApiModulePath(self.name)}resourse\\sound\\'
+        if not self.settingsPath :
+            self.settingsPath = 'resourse/' + self.name + '.ht'

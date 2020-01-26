@@ -1,5 +1,3 @@
-from function import importMannanger
-pathMannanger = importMannanger.makeAplicationLibrariesAvaliable()
 from function import pathFunction
 from model import Button
 
@@ -9,7 +7,7 @@ def makeAScript(courseName,moduleName,lessonName,amountOfPagesToMake,plataform) 
 
     moduleNameParsed = pathFunction.parseName(moduleName)
     lessonNameParsed = pathFunction.parseName(lessonName)
-    pagesPath = pathMannanger.getApiModulePath('course')+'resourse/modules/'+moduleNameParsed+'/'+lessonNameParsed+'/'
+    pagesPath = plataform.pathMannanger.getApiModulePath('course')+'resourse/modules/'+moduleNameParsed+'/'+lessonNameParsed+'/'
 
     previousPagePosition = '0x495x83x560'
     nextPagePosition = '901x497x996x562'
