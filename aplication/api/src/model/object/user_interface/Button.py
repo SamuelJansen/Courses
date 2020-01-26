@@ -8,7 +8,6 @@ class Button(UserInterface.UserInterface):
     def __init__(
         self,name,position,size,functionKey,father,
         padding = None,
-        scale = None,
         imagePath = None,
         soundPath = None
     ):
@@ -20,7 +19,7 @@ class Button(UserInterface.UserInterface):
             soundPath = f'{father.aplication.pathMannanger.getApiModulePath(father.aplication.name)}resourse\\button\\sound\\'
 
         UserInterface.UserInterface.__init__(
-            self,name,position,size,scale,father,
+            self,name,position,size,father,
             imagePath = imagePath,
             soundPath = soundPath
         )

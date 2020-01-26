@@ -10,7 +10,7 @@ print('Editor library imported')
 class Editor(Aplication.Aplication):
 
     def __init__(self,name,fps,aps,colors,pathMannanger,
-        position = (0,0),
+        position = [0,0],
         imagePath = None,
         soundPath = None
     ):
@@ -26,13 +26,17 @@ class Editor(Aplication.Aplication):
         headderSurfaceName = 'headerSurface'
         headderSurfacePosition  = [0,0]
         headerSurfaceSize = ['100%',22]
-        scale = None
-        father = self.floor
-        Header.Header(
+        if self.floor :
+            father = self.objectHandler.objects[Aplication.Aplication.FLOOR]
+        else :
+            father = self
+
+        print(f'Editor father.name = {father.name}')
+
+        headder = Header.Header(
             headderSurfaceName,
             headderSurfacePosition,
             headerSurfaceSize,
-            scale,
             father,
             padding = [2,2],
             imagePath = imagePath,
@@ -44,7 +48,7 @@ class Editor(Aplication.Aplication):
 
         buttonSize = ['square','100%']
         for buttonName in buttonsNameList :
-            self.floor.objectHandler.objects[headderSurfaceName].addButton(buttonName,buttonSize)
+            headder.addButton(buttonName,buttonSize)
 
     def newMenuColumn(self):
         pass

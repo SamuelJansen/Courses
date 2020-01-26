@@ -38,9 +38,6 @@ def saveImage(image,path) :
 
 def newImageSurface(image,size) :
     screenSurface = pg.Surface(size,pg.HWSURFACE|pg.DOUBLEBUF|pg.SRCALPHA,32)
-    # threshold = (40,40,40)
-    # image = colorFilter(threshold,image)
-
     # imageSurface = pg.Surface(size,pg.HWSURFACE|pg.SRCALPHA,32)
     # imageSurface = pg.Surface(size,pg.SRCALPHA,32)
     # imageSurface = pg.Surface(size,pg.HWSURFACE|pg.DOUBLEBUF|pg.SRCALPHA)
@@ -50,11 +47,28 @@ def newImageSurface(image,size) :
     # imageSurface = pg.Surface(size,pg.HWSURFACE)
     # imageSurface = pg.Surface(size,pg.DOUBLEBUF)
     # imageSurface = pg.Surface(size)
-
     screenSurface.blit(image,(0,0))
     return screenSurface
 
+def newDisplay(size) :
+    newDisplay = pg.display.set_mode(size,pg.NOFRAME|pg.HWSURFACE|pg.DOUBLEBUF|pg.SRCALPHA,32)
+    # self.screenSurface = pg.display.set_mode(self.size,pg.NOFRAME|pg.HWSURFACE|pg.SRCALPHA,32)
+    # self.screenSurface = pg.display.set_mode(self.size,pg.NOFRAME|pg.SRCALPHA,32)
+    # self.screenSurface = pg.display.set_mode(self.size,pg.NOFRAME|pg.HWSURFACE|pg.DOUBLEBUF|pg.SRCALPHA)
+    # self.screenSurface = pg.display.set_mode(self.size,pg.NOFRAME|pg.HWSURFACE|pg.SRCALPHA)
+    # self.screenSurface = pg.display.set_mode(self.size,pg.NOFRAME|pg.SRCALPHA)
+    # self.screenSurface = pg.display.set_mode(self.size,pg.NOFRAME|pg.HWSURFACE|pg.DOUBLEBUF)
+    # self.screenSurface = pg.display.set_mode(self.size,pg.NOFRAME|pg.HWSURFACE)
+    # self.screenSurface = pg.display.set_mode(self.size,pg.NOFRAME|pg.DOUBLEBUF)
+    # self.screenSurface = pg.display.set_mode(self.size)
+    return newDisplay
+
+def newAlphaSurface(size) :
+    screenSurface = pg.Surface(size,pg.HWSURFACE|pg.DOUBLEBUF|pg.SRCALPHA,32).fill((0,0,100,50))
+    return screenSurface
+
 def colorFilter(threshold,image) :
+    # threshold = (40,40,40)
     colorThreshold = threshold
     for x in range(image.get_width()):
         for y in range(image.get_height()):

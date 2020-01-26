@@ -22,8 +22,8 @@ def makeSoManyPages(courseName,moduleName,lessonName,amountOfPagesToMake,platafo
             newImage.blit(courseNameSurface,(24,24))
 
             myfont = pg.font.SysFont('Comic Sans MS', 14)
-            framSurface = myfont.render('    frame '+str(frame), False, (0, 0, 0))
-            newImage.blit(framSurface,(24,72))
+            frameSurface = myfont.render('    frame '+str(frame), False, (0, 0, 0))
+            newImage.blit(frameSurface,(24,72))
 
             newPagePath = pagesPath+newPageName+' '+str(frame)+'.png'
             imageFunction.saveImage(newImage,newPagePath)

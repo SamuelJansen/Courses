@@ -5,7 +5,8 @@ print('UserInterface library imported')
 class UserInterface(Object.Object):
     SQUARE = 'square'
 
-    def __init__(self,name,position,size,scale,father,
+    def __init__(self,name,position,size,father,
+        scale = None,
         padding = [0,0],
         imagePath = None,
         soundPath = None
@@ -18,7 +19,9 @@ class UserInterface(Object.Object):
             self.userInterfaceSurface = None
 
         size = parseSize(size,father)
+        self.originalSize = size.copy()
         self.padding = padding
+
         if self.userInterfaceSurface :
             self.padding = self.UserInterfaceSurface.padding
             size = getSizePadded(size,self.padding)
@@ -39,6 +42,8 @@ class UserInterface(Object.Object):
             soundPath = soundPath
         )
 
+def getSizeNotPadded(userInterface) :
+    return userInterface.originalSize
 
 def parseSize(size,father) :
     sizeParsed = [None,None]

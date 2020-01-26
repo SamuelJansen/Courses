@@ -126,7 +126,10 @@ class ObjectHandler:
         self.collidableObjects = {}
         self.collidableObjectsRect = []
 
-        print(f'ObjectHandler.object.father.name = {self.object.father.name}')
+        self.originalPosition = self.object.position.copy()
+        self.originalSize = self.object.size.copy()
+        self.originalImage = self.object.image.copy()
+        self.originalSurface = self.object.screen.surface.copy()
 
         if fatherFunction.isNotAplication(self.object) :
             self.object.father.objectHandler.addNewObject(self.object)

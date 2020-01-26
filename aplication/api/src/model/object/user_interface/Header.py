@@ -3,7 +3,8 @@ from model.object.user_interface import UserInterface, UserInterfaceSurface, But
 print('Header library imported')
 
 class Header(UserInterfaceSurface.UserInterfaceSurface):
-    def __init__(self,name,position,size,scale,father,
+    def __init__(self,name,position,size,father,
+        scale = None,
         padding = [0,0],
         imagePath = None,
         soundPath = None
@@ -14,8 +15,8 @@ class Header(UserInterfaceSurface.UserInterfaceSurface):
             name,
             position,
             size,
-            scale,
             father,
+            scale = scale,
             padding = padding,
             imagePath = imagePath,
             soundPath = imagePath

@@ -45,13 +45,13 @@ class Mouse:
 
     def clickDown(self):
         self.updatePosition()
-        self.objectHitClickDown = self.getRecursiveColision(self.aplication)#.floor)
+        self.objectHitClickDown = self.getRecursiveColision(self.aplication)
         print(f'mouse.objectHitClickDown = {self.objectHitClickDown}')
         print(f'    mouse.objectHitClickDown.name = {self.objectHitClickDown.name}, type = {self.objectHitClickDown.type}')
 
     def clickUp(self):
         self.updatePosition()
-        self.objectHitClickUp = self.getRecursiveColision(self.aplication)#.floor)
+        self.objectHitClickUp = self.getRecursiveColision(self.aplication)
         print(f'mouse.objectHitClickUp = {self.objectHitClickUp}')
         print(f'    mouse.objectHitClickUp.name = {self.objectHitClickUp.name}, type = {self.objectHitClickUp.type}')
 

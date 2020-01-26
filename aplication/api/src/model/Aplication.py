@@ -12,12 +12,13 @@ import ctypes
 
 print('Aplication library imported')
 
-class Aplication():
-    '''
-    It defines the aplication characteristics'''
+class Aplication:
+
+    FLOOR = 'floor'
+
     def __init__(
         self,name,fps,aps,colors,pathMannanger,
-        position=(0,0),
+        position=[0,0],
         scaleRange=1000,
         floor=False,
         imagePath = None,
@@ -48,13 +49,13 @@ class Aplication():
         self.settings = setting.getSettings(self.settingsPath)
         self.size = setting.getAplicationSize(self)
 
-        os.environ['SDL_VIDEO_WINDOW_POS'] = "%d,%d" % position
+        os.environ['SDL_VIDEO_WINDOW_POS'] = "%d,%d" % (position[0],position[1])
         self.localMachinePosition = ctypes.windll.user32.SetWindowPos
         pg.mixer.pre_init(44100,16,32,0)
         pg.init()
         pg.display.set_caption(self.name)
 
-        self.updatePosition(position)
+        self.setPosition(position)
 
         self.devScreenSize = (1000,564)
         self.devResize = [self.devScreenSize[0]/self.size[0],self.devScreenSize[1]/self.size[1]]
@@ -73,12 +74,13 @@ class Aplication():
 
 
         self.frame = None ###- Aplication.initialize() must be called
-        self.screen = Screen.Screen(self)
-        self.objectHandler = Object.ObjectHandler(self)
 
-        if floor :
-            self.floor = Object.Object(
-                self.name,
+        self.initializeObjectInterface()
+
+        self.floor = floor
+        if self.floor :
+            Object.Object(
+                Aplication.FLOOR,
                 [0,0],
                 self.size,
                 self.scaleRange,
@@ -86,11 +88,15 @@ class Aplication():
                 self.father,
                 type = Object.ObjectTypes.APLICATION_FLOOR
             )
-        else :
-            self.floor = None
-            self.rect = pg.Rect(self.position[0],self.position[1],self.size[0],self.size[1])
 
         self.running = False
+
+    def initializeObjectInterface(self):
+        self.rect = pg.Rect(self.position[0],self.position[1],self.size[0],self.size[1])
+        self.image = []
+        self.screen = Screen.Screen(self)
+        self.objectHandler = Object.ObjectHandler(self)
+
 
     def initialize(self,timeNow):
         '''
@@ -120,7 +126,10 @@ class Aplication():
         pg.display.update(self.screen.blitRect)
 
     def updatePosition(self,position):
-        self.position = position
+        self.setPosition(position)
+
+    def setPosition(self,position):
+        self.position = position.copy()
         self.localMachinePosition(
             pg.display.get_wm_info()['window'],
             -1,

@@ -1,6 +1,6 @@
-import pygame as pg
 from function import imageFunction, fatherFunction
-# from model import Object
+
+import pygame as pg
 
 print('Screen library imported')
 
@@ -12,34 +12,20 @@ class Screen:
         It blits all objects on the screen.surface'''
 
         self.object = object
-        # print(f'   {self.object.name}.screen --> __init__() call -- object type = {self.object.type}')
 
-        self.surface = self.newSurface(object)
+        self.surface = self.newSurface()
+        self.initializeAlphaSurface()
 
         self.blitRect = self.getBlitRect()
-        # self.blitList = self.getBlitList()
-        # self.surface.blits(self.blitList)
         self.blitList = []
-        self.mustUpdate = False
+
         self.mustUpdateNextFrame()
 
-        # print(f'   {self.object.name}.screen --> __init__() resolved')
-
-    def newSurface(self,object):
+    def newSurface(self):
         if fatherFunction.isNotAplication(self.object) :
-            self.originalSurface = imageFunction.newImageSurface(self.object.image,self.object.size)
-            return self.originalSurface.copy()
+            return imageFunction.newImageSurface(self.object.image,self.object.size)
         else :
-            return pg.display.set_mode(self.object.size,pg.NOFRAME|pg.HWSURFACE|pg.DOUBLEBUF|pg.SRCALPHA,32)
-            # self.screenSurface = pg.display.set_mode(self.size,pg.NOFRAME|pg.HWSURFACE|pg.SRCALPHA,32)
-            # self.screenSurface = pg.display.set_mode(self.size,pg.NOFRAME|pg.SRCALPHA,32)
-            # self.screenSurface = pg.display.set_mode(self.size,pg.NOFRAME|pg.HWSURFACE|pg.DOUBLEBUF|pg.SRCALPHA)
-            # self.screenSurface = pg.display.set_mode(self.size,pg.NOFRAME|pg.HWSURFACE|pg.SRCALPHA)
-            # self.screenSurface = pg.display.set_mode(self.size,pg.NOFRAME|pg.SRCALPHA)
-            # self.screenSurface = pg.display.set_mode(self.size,pg.NOFRAME|pg.HWSURFACE|pg.DOUBLEBUF)
-            # self.screenSurface = pg.display.set_mode(self.size,pg.NOFRAME|pg.HWSURFACE)
-            # self.screenSurface = pg.display.set_mode(self.size,pg.NOFRAME|pg.DOUBLEBUF)
-            # self.screenSurface = pg.display.set_mode(self.size)
+            return imageFunction.newDisplay(self.object.size)
 
     def getBlitRect(self):
         return pg.Rect(
@@ -96,5 +82,18 @@ class Screen:
     def reset(self):
         # print(f'         {self.object.name}.screen.reset() --> function call')
         if fatherFunction.isNotAplication(self.object) :
-            self.surface = self.originalSurface.copy()
+            self.surface = self.object.objectHandler.originalSurface.copy()
         # print(f'         {self.object.name}.screen.reset() --> function resolved')
+
+    def initializeAlphaSurface(self):
+        self.alphaSurfacePosition = None
+        self.alphaSurface = None
+        self.alphaSurfaceSize = None
+
+    def newAlphaSurface(self,position,size):
+        self.alphaSurfacePosition = position.copy()
+        self.alphaSurfaceSize = size.copy()
+        self.alphaSurface = imageFunction.newAlphaSurface(self.alphaSurfaceSize)
+
+    def removeAlphaSurface(self,position,size):
+        self.initializeAlphaSurface()
