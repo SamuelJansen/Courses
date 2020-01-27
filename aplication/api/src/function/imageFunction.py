@@ -9,7 +9,6 @@ def getImage(path,size,aplication) :
     It also returns the     image.
     It works on mac and windows
     getImage(path)'''
-    ##- print(f'DEBUG getImage(path,size,aplication) --> path = {path}')
     global imageLibrary
     image = imageLibrary.get(path)
     if image==None :
@@ -18,16 +17,22 @@ def getImage(path,size,aplication) :
             image = pg.image.load(canonicalizedPath)#.convert_alpha()
             print(f'importing image: {canonicalizedPath}')
         except :
-            # print(aplication.imagePath)
             path = f'{aplication.imagePath}standard_image.png'
-            # path = aplication.imagePath+'character_token.png'
-            # path = aplication.imagePath+'bola.png'
             canonicalizedPath = path.replace('/',os.sep).replace('\\',os.sep)
             print(f'importing image: {canonicalizedPath}')
             image = pg.image.load(canonicalizedPath)#.convert_alpha()
         image = pg.transform.smoothscale(image,size)#.convert_alpha()
     imageLibrary[path] = image
-    # print('new image')
+    return image.copy()
+
+def getNoImage(size,aplication) :
+    path = f'{aplication.imagePath}standard_image.png'
+    canonicalizedPath = path.replace('/',os.sep).replace('\\',os.sep)
+    image = pg.image.load(canonicalizedPath)
+    image = pg.transform.smoothscale(image,size).convert_alpha()
+    for x in range(image.get_width()):
+        for y in range(image.get_height()):
+            image.set_at((x, y), (0, 0, 0, 50))
     return image
 
 def saveImage(image,path) :
@@ -47,7 +52,7 @@ def newImageSurface(image,size) :
     # imageSurface = pg.Surface(size,pg.HWSURFACE)
     # imageSurface = pg.Surface(size,pg.DOUBLEBUF)
     # imageSurface = pg.Surface(size)
-    screenSurface.blit(image,(0,0))
+    screenSurface.blit(image,[0,0])
     return screenSurface
 
 def newDisplay(size) :
@@ -64,11 +69,12 @@ def newDisplay(size) :
     return newDisplay
 
 def newAlphaSurface(size) :
-    screenSurface = pg.Surface(size,pg.HWSURFACE|pg.DOUBLEBUF|pg.SRCALPHA,32).fill((0,0,100,50))
+    screenSurface = pg.Surface(size,pg.HWSURFACE|pg.DOUBLEBUF|pg.SRCALPHA,32)
+    screenSurface.fill((0,0,100,50))
     return screenSurface
 
 def colorFilter(threshold,image) :
-    # threshold = (40,40,40)
+    # threshold = (0,0,0)
     colorThreshold = threshold
     for x in range(image.get_width()):
         for y in range(image.get_height()):

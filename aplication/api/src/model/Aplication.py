@@ -95,7 +95,7 @@ class Aplication:
         self.rect = pg.Rect(self.position[0],self.position[1],self.size[0],self.size[1])
         self.image = []
         self.screen = Screen.Screen(self)
-        self.objectHandler = Object.ObjectHandler(self)
+        self.handler = Object.ObjectHandler(self)
 
 
     def initialize(self,timeNow):
@@ -149,3 +149,9 @@ class Aplication:
             self.soundPath = f'{self.pathMannanger.getApiModulePath(self.name)}resourse\\sound\\'
         if not self.settingsPath :
             self.settingsPath = 'resourse/' + self.name + '.ht'
+
+    def getFloor(self):
+        if self.floor :
+            return self.handler.objects[Aplication.FLOOR]
+        else :
+            return self

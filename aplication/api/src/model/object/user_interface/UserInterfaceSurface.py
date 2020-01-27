@@ -7,6 +7,7 @@ class UserInterfaceSurface(UserInterface.UserInterface):
     def __init__(self,name,position,size,father,
         scale = None,
         padding = [0,0],
+        noImage = False,
         imagePath = None,
         soundPath = None
     ):
@@ -17,6 +18,7 @@ class UserInterfaceSurface(UserInterface.UserInterface):
             self,name,position,size,father,
             scale = scale,
             padding = padding,
+            noImage = noImage,
             imagePath = imagePath,
             soundPath = soundPath
         )

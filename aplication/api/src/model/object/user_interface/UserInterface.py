@@ -8,6 +8,7 @@ class UserInterface(Object.Object):
     def __init__(self,name,position,size,father,
         scale = None,
         padding = [0,0],
+        noImage = False,
         imagePath = None,
         soundPath = None
     ):
@@ -38,6 +39,7 @@ class UserInterface(Object.Object):
             velocity,
             father,
             type = Object.ObjectTypes.USER_INTERFACE,
+            noImage = noImage,
             imagePath = imagePath,
             soundPath = soundPath
         )

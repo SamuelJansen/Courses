@@ -1,14 +1,15 @@
-from model.object.user_interface import UserInterface, UserInterfaceSurface, Button
+from model.object.user_interface import Modal
 
-class UserInterfaceCollumn(UserInterfaceSurface.UserInterfaceSurface):
+class ItemsSetCollumn(Modal.Modal):
     def __init__(self,name,position,size,father,
         scale = None,
         padding = [0,0],
+        noImage = False,
         imagePath = None,
         soundPath = None
     ):
 
-        UserInterfaceSurface.UserInterfaceSurface.__init__(
+        Modal.Modal.__init__(
             self,
             name,
             position,
@@ -16,6 +17,7 @@ class UserInterfaceCollumn(UserInterfaceSurface.UserInterfaceSurface):
             father,
             scale = scale,
             padding = padding,
+            noImage = noImage,
             imagePath = imagePath,
             soundPath = imagePath
         )

@@ -14,6 +14,7 @@ class Object:
     def __init__(self,name,position,size,scale,velocity,father,
             type = None,
             collidableSize = None,
+            noImage = False,
             imagePath = None,
             soundPath = None
         ):
@@ -43,16 +44,13 @@ class Object:
         self.position = position.copy()
         self.rect = pg.Rect(self.position[0],self.position[1],self.size[0],self.size[1])
 
-        ###- print(f'imagePath = {imagePath}')
         if imagePath :
             self.imagePath = f'{imagePath}{self.name}.png'
             print(f'    imagePath = {self.imagePath}')
         else :
             self.imagePath = f'{self.aplication.imagePath}{self.type}\\{self.name}.png'
-        ###- print(f'object.imagePath = {self.imagePath}')
-        self.image = imageFunction.getImage(self.imagePath,self.size,self.aplication)
-        # self.originalScreenSurface = imageFunction.newImageSurface(self.image,self.size)
-        # self.screenSurface = self.originalScreenSurface.copy()
+
+        self.image = self.newImage(noImage)
 
         self.soundPath = soundPath
 
@@ -73,12 +71,21 @@ class Object:
 
         self.velocity = velocity * self.aplication.velocityControl
 
-        self.screen = Screen.Screen(self)
-        self.objectHandler = ObjectHandler(self)
+        self.text = None
 
-        self.father.objectHandler.addNewObject(self)
+        self.screen = Screen.Screen(self)
+        self.handler = ObjectHandler(self)
+
+        self.father.handler.addNewObject(self)
 
         ###- print(f'{self.name} created successfully')
+
+    def newImage(self,noImage):
+        self.noImage = noImage
+        if self.noImage :
+             return imageFunction.getNoImage(self.size,self.aplication)
+        else :
+            return imageFunction.getImage(self.imagePath,self.size,self.aplication)
 
     def updatePosition(self,move):
         if move[0]!=0 or move[1]!=0 :
@@ -86,7 +93,7 @@ class Object:
             xMovement = move[0]/module
             yMovement = move[1]/module
             self.collidableRect.move_ip(xMovement,yMovement)
-            if self.objectHandler.itColided(self) :
+            if self.handler.itColided(self) :
                 self.collidableRect.move_ip(-xMovement,-yMovement)
             else :
                 self.rect.move_ip(xMovement,yMovement)
@@ -126,14 +133,16 @@ class ObjectHandler:
         self.collidableObjects = {}
         self.collidableObjectsRect = []
 
+        self.updateOriginalAttributes()
+
+        if fatherFunction.isNotAplication(self.object) :
+            self.object.father.handler.addNewObject(self.object)
+
+    def updateOriginalAttributes(self):
         self.originalPosition = self.object.position.copy()
         self.originalSize = self.object.size.copy()
         self.originalImage = self.object.image.copy()
         self.originalSurface = self.object.screen.surface.copy()
-
-        if fatherFunction.isNotAplication(self.object) :
-            self.object.father.objectHandler.addNewObject(self.object)
-
 
     def update(self):
         pass
@@ -154,11 +163,11 @@ class ObjectHandler:
         return object.blitOrder,object.collidableRect.bottom
 
     def addNewObject(self,object):
-        # print(f'======= {self.object.name}.objectHandler.addNewObject() --> function call ======')
+        # print(f'======= {self.object.name}.handler.addNewObject() --> function call ======')
         self.objects[object.name] = object
         self.object.screen.mustUpdateNextFrame()
         # print(f'=========== {object.name} object added to {self.object.name} object ======')
-        # print(f'======= {self.object.name}.objectHandler.addNewObject() --> function resolved ======')
+        # print(f'======= {self.object.name}.handler.addNewObject() --> function resolved ======')
 
     def deleteObject(self,objectName):
         del self.objects[objectName]

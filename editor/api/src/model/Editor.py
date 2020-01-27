@@ -26,10 +26,7 @@ class Editor(Aplication.Aplication):
         headderSurfaceName = 'headerSurface'
         headderSurfacePosition  = [0,0]
         headerSurfaceSize = ['100%',22]
-        if self.floor :
-            father = self.objectHandler.objects[Aplication.Aplication.FLOOR]
-        else :
-            father = self
+        father = self.getFloor()
 
         print(f'Editor father.name = {father.name}')
 
@@ -44,7 +41,7 @@ class Editor(Aplication.Aplication):
         )
         buttonsNameList = ['exit','openModule','close','save','add','launch','update','unlaunch']
 
-        print(f'Editor.objectHandler.objects = {self.objectHandler.objects}')
+        print(f'Editor.handler.objects = {self.handler.objects}')
 
         buttonSize = ['square','100%']
         for buttonName in buttonsNameList :

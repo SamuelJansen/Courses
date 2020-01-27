@@ -56,11 +56,16 @@ class Mouse:
         print(f'    mouse.objectHitClickUp.name = {self.objectHitClickUp.name}, type = {self.objectHitClickUp.type}')
 
         if self.objectHitClickDown == self.objectHitClickUp :
+            self.objectClicked = self.objectHitClickUp
+            print(f'  objectClicked.name = {self.objectClicked.name}')
+            for object in self.objectClicked.handler.objects.values() :
+                print(f'            objectClicked son --> {object.name}')
             self.action(self.objectHitClickUp)
+            self.objectClicked = None
 
     def getRecursiveColision(self,object):
-        if object.objectHandler.objects.values() :
-            for objectSon in object.objectHandler.objects.values() :
+        if object.handler.objects.values() :
+            for objectSon in object.handler.objects.values() :
                 objectHit = self.getRecursiveColision(objectSon)
                 if objectHit :
                     return objectHit

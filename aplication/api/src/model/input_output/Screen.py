@@ -14,7 +14,7 @@ class Screen:
         self.object = object
 
         self.surface = self.newSurface()
-        self.initializeAlphaSurface()
+        # self.initializeAlphaSurface()
 
         self.blitRect = self.getBlitRect()
         self.blitList = []
@@ -23,7 +23,11 @@ class Screen:
 
     def newSurface(self):
         if fatherFunction.isNotAplication(self.object) :
-            return imageFunction.newImageSurface(self.object.image,self.object.size)
+            if self.object.noImage :
+                print(f'Screen.object.name = {self.object.name}')
+                return imageFunction.newAlphaSurface(self.object.size)
+            else :
+                return imageFunction.newImageSurface(self.object.image,self.object.size)
         else :
             return imageFunction.newDisplay(self.object.size)
 
@@ -38,35 +42,26 @@ class Screen:
     def getBlitList(self):
         return [
             (object.screen.surface,object.rect)
-            for object in self.object.objectHandler.objects.values()
+            for object in self.object.handler.objects.values()
             if self.blitRect.colliderect(object.rect)
         ]
 
     def mustUpdateNextFrame(self):
-        # print(f'      {self.object.name}.screen.mustUpdateNextFrame() --> function call')
         self.mustUpdate = True
         fatherFunction.fatherMustUpdateNextFrame(self.object)
-        # print(f'         {self.object.name}.screen.mustUpdate = {self.mustUpdate}')
-        # print(f'      {self.object.name}.screen.mustUpdateNextFrame() --> function resolved')
 
     def didUpdate(self):
-        # print(f'         {self.object.name}.screen.didUpdate() --> function call')
         self.mustUpdate = False
-        # print(f'         {self.object.name}.screen.didUpdate() --> function resolved')
 
     def update(self):
-        # print(f'{self.object.name}.screen.update() --> function call -- object type = {self.object.type}')
-        # print(f'   {self.object.name}.screen.mustUpdate = {self.mustUpdate}')
-        if self.mustUpdate : # and self.object.type!=Object.ObjectTypes.APLICATION :
-
-            # print(f'   {self.object.name}.objectHandler.objects = {self.object.objectHandler.objects}')
-            for object in self.object.objectHandler.objects.values() :
+        if self.mustUpdate :
+            for object in self.object.handler.objects.values() :
                 if object.screen.mustUpdate :
                     object.screen.update()
 
             self.updateBlitRect() ###- precaution
             self.updateBlitList()
-            self.reset()
+            # self.reset()
             self.surface.blits(self.blitList)
         self.didUpdate()
         # print(f'{self.object.name}.screen.update() --> function resolved\n')
@@ -76,24 +71,20 @@ class Screen:
 
     def updateBlitList(self):
         self.blitList = self.getBlitList()
-        # for element in self.blitList :
-        #     print(element[1])
 
     def reset(self):
-        # print(f'         {self.object.name}.screen.reset() --> function call')
         if fatherFunction.isNotAplication(self.object) :
-            self.surface = self.object.objectHandler.originalSurface.copy()
-        # print(f'         {self.object.name}.screen.reset() --> function resolved')
+            self.surface = self.object.handler.originalSurface.copy()
 
-    def initializeAlphaSurface(self):
-        self.alphaSurfacePosition = None
-        self.alphaSurface = None
-        self.alphaSurfaceSize = None
-
-    def newAlphaSurface(self,position,size):
-        self.alphaSurfacePosition = position.copy()
-        self.alphaSurfaceSize = size.copy()
-        self.alphaSurface = imageFunction.newAlphaSurface(self.alphaSurfaceSize)
-
-    def removeAlphaSurface(self,position,size):
-        self.initializeAlphaSurface()
+    # def initializeAlphaSurface(self):
+    #     self.alphaSurface = False
+    #
+    # def newAlphaSurface(self,position,size,selfPosition):
+    #     self.alphaSurface = True
+    #     self.position = position.copy()
+    #     self.size = size.copy()
+    #     self.surface = imageFunction.newAlphaSurface(self.size)
+    #     self.surface.blit(self.object.image,selfPosition)
+    #
+    # def removeAlphaSurface(self,position,size):
+    #     self.initializeAlphaSurface()

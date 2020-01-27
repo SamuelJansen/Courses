@@ -48,8 +48,9 @@ class Header(UserInterfaceSurface.UserInterfaceSurface):
     def resetButtonsPosition(self):
 
         self.previousChildrenPosition = [0,0]
+        self.screen.reset()
 
-        for button in self.objectHandler.objects.values() :
+        for button in self.handler.objects.values() :
             position = [self.previousChildrenPosition[0],0].copy()
             position = UserInterface.getPositionPadded(position,self.padding)
             self.previousChildrenPosition = position.copy()
