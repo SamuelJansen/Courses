@@ -24,7 +24,7 @@ class UserInterface(Object.Object):
         self.padding = padding
 
         if self.userInterfaceSurface :
-            self.padding = self.UserInterfaceSurface.padding
+            self.padding = self.userInterfaceSurface.padding
             size = getSizePadded(size,self.padding)
             position = getPositionPadded(position,self.padding)
 

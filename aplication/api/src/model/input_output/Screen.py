@@ -14,8 +14,6 @@ class Screen:
         self.object = object
 
         self.surface = self.newSurface()
-        # self.initializeAlphaSurface()
-
         self.blitRect = self.getBlitRect()
         self.blitList = []
 
@@ -61,10 +59,10 @@ class Screen:
 
             self.updateBlitRect() ###- precaution
             self.updateBlitList()
-            # self.reset()
+            self.reset()
+            self.blitText()
             self.surface.blits(self.blitList)
         self.didUpdate()
-        # print(f'{self.object.name}.screen.update() --> function resolved\n')
 
     def updateBlitRect(self):
         self.blitRect = self.getBlitRect()
@@ -76,15 +74,11 @@ class Screen:
         if fatherFunction.isNotAplication(self.object) :
             self.surface = self.object.handler.originalSurface.copy()
 
-    # def initializeAlphaSurface(self):
-    #     self.alphaSurface = False
-    #
-    # def newAlphaSurface(self,position,size,selfPosition):
-    #     self.alphaSurface = True
-    #     self.position = position.copy()
-    #     self.size = size.copy()
-    #     self.surface = imageFunction.newAlphaSurface(self.size)
-    #     self.surface.blit(self.object.image,selfPosition)
-    #
-    # def removeAlphaSurface(self,position,size):
-    #     self.initializeAlphaSurface()
+    def blitText(self):
+        print(f'self.object.name = {self.object.name}')
+        if self.object.textList :
+            for textIndex in range(len(self.object.textList)) :
+                self.surface.blit(
+                    self.object.textList[textIndex],
+                    self.object.textPositionList[textIndex]
+                )

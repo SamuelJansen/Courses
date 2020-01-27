@@ -1,3 +1,5 @@
+from model.object import Object
+
 import pygame as pg
 import os
 
@@ -32,7 +34,7 @@ def getNoImage(size,aplication) :
     image = pg.transform.smoothscale(image,size).convert_alpha()
     for x in range(image.get_width()):
         for y in range(image.get_height()):
-            image.set_at((x, y), (0, 0, 0, 50))
+            image.set_at([x,y],Object.Object.NO_IMAGE_COLOR)
     return image
 
 def saveImage(image,path) :
@@ -70,16 +72,16 @@ def newDisplay(size) :
 
 def newAlphaSurface(size) :
     screenSurface = pg.Surface(size,pg.HWSURFACE|pg.DOUBLEBUF|pg.SRCALPHA,32)
-    screenSurface.fill((0,0,100,50))
-    return screenSurface
+    screenSurface.fill(Object.Object.NOT_SELECTABLE_COLOR)
+    return screenSurface.convert_alpha()
 
 def colorFilter(threshold,image) :
     # threshold = (0,0,0)
     colorThreshold = threshold
     for x in range(image.get_width()):
         for y in range(image.get_height()):
-            color = image.get_at((x, y))
+            color = image.get_at([x,y])
             # print(color)
             if ( color.r > colorThreshold[0] and color.g > colorThreshold[1] and color.b > colorThreshold[2] ):
-                image.set_at((x, y), (0, 0, 0, 0))
+                image.set_at([x,y],[0,0,0,0])
     return image

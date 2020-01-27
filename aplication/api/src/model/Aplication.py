@@ -72,6 +72,12 @@ class Aplication:
         except :
             print("Mixer module not initialized")
 
+        try :
+            pg.font.init()
+            self.font = pg.font.SysFont('Comic Sans MS', 18)
+        except :
+            self.font = None
+            print("TextFont module not initialized")
 
         self.frame = None ###- Aplication.initialize() must be called
 
@@ -94,6 +100,10 @@ class Aplication:
     def initializeObjectInterface(self):
         self.rect = pg.Rect(self.position[0],self.position[1],self.size[0],self.size[1])
         self.image = []
+        self.text = None
+        self.textPosition = None
+        self.textList = []
+        self.textPositionList = []
         self.screen = Screen.Screen(self)
         self.handler = Object.ObjectHandler(self)
 

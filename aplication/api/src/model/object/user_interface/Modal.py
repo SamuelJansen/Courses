@@ -10,14 +10,15 @@ class Modal(UserInterfaceSurface.UserInterfaceSurface):
         soundPath = None
     ):
 
-        modalFather = father.aplication.getFloor()
+        self.modalFather = father
+        father = father.aplication.getFloor()
 
         UserInterfaceSurface.UserInterfaceSurface.__init__(
             self,
             name,
             position,
             size,
-            modalFather,
+            father,
             scale = scale,
             padding = padding,
             noImage = noImage,
@@ -25,7 +26,8 @@ class Modal(UserInterfaceSurface.UserInterfaceSurface):
             soundPath = imagePath
         )
 
-        self.blitOrder = father.blitOrder + 1
+        # if self.modalFather :
+        self.blitOrder = self.modalFather.blitOrder + 1
         print(f'newBlitOrder = {self.blitOrder}')
-        self.screen.surface.blit(father.image,[0,0])
+        self.screen.surface.blit(self.modalFather.image,[0,0])
         self.handler.updateOriginalAttributes()

@@ -22,7 +22,6 @@ def openModule(event) :
 
     print(f'object.father.size = {object.father.size}')
 
-
     father = object
     userInterface = ItemsSetCollumn.ItemsSetCollumn(name,position,size,father,
         padding = [2,2],
@@ -31,14 +30,10 @@ def openModule(event) :
         soundPath = None
     )
 
-    pg.font.init()
-    myfont = pg.font.SysFont('Comic Sans MS', 18)
-
-    for indexModuleName in range(len(modules)) :
-        courseNameSurface = myfont.render(modules[indexModuleName],False,(0, 0, 0))
-        userInterface.screen.surface.blit(courseNameSurface,(2,+father.size[1]-4+indexModuleName*20))
-    userInterface.screen.mustUpdateNextFrame()
-
-
+    for moduleIndex in range(len(modules)) :
+        # courseNameSurface = myfont.render(modules[indexModuleName],False,(0, 0, 0))
+        userInterface.addText(modules[moduleIndex],[2,+father.size[1]-4+moduleIndex*20])
+        # userInterface.screen.surface.blit(courseNameSurface,)
+    # userInterface.screen.mustUpdateNextFrame()
 
     print(f'    EventFunction called: openModule({event.object.aplication.name})')

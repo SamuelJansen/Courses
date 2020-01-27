@@ -11,6 +11,9 @@ print('Object library imported')
 
 class Object:
 
+    NOT_SELECTABLE_COLOR = [0,0,100,40]#[0,0,0,0]#
+    NO_IMAGE_COLOR = [255,0,0,40]#[0,0,0,0]#
+
     def __init__(self,name,position,size,scale,velocity,father,
             type = None,
             collidableSize = None,
@@ -72,6 +75,9 @@ class Object:
         self.velocity = velocity * self.aplication.velocityControl
 
         self.text = None
+        self.textPosition = None
+        self.textList = []
+        self.textPositionList = []
 
         self.screen = Screen.Screen(self)
         self.handler = ObjectHandler(self)
@@ -86,6 +92,16 @@ class Object:
              return imageFunction.getNoImage(self.size,self.aplication)
         else :
             return imageFunction.getImage(self.imagePath,self.size,self.aplication)
+
+    def addText(self,text,position):
+        self.textList.append(self.aplication.font.render(text,False,(0, 0, 0)))
+        self.textPositionList.append(position.copy())
+
+    def deleteText(self):
+        self.text = None
+        self.textPosition = None
+        self.textList = []
+        self.textPositionList = []
 
     def updatePosition(self,move):
         if move[0]!=0 or move[1]!=0 :
@@ -164,6 +180,7 @@ class ObjectHandler:
 
     def addNewObject(self,object):
         # print(f'======= {self.object.name}.handler.addNewObject() --> function call ======')
+        self.object.father.screen.reset()
         self.objects[object.name] = object
         self.object.screen.mustUpdateNextFrame()
         # print(f'=========== {object.name} object added to {self.object.name} object ======')
