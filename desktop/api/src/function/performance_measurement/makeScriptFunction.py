@@ -1,5 +1,6 @@
-from function import pathFunction
-from model import Button
+import Button
+
+import pathFunction
 
 def makeAScript(courseName,moduleName,lessonName,amountOfPagesToMake,plataform) :
     ###- Course will need some work later on

@@ -7,7 +7,7 @@ class PathMannanger:
     API_MODULES = [
         GLOBALS_MODULE,
         'course',
-        'aplication',
+        'application',
         'desktop',
         'editor'
     ]
@@ -31,6 +31,8 @@ class PathMannanger:
     def getApiModulePath(self,apiModuleName):
         return f'{self.apiPath}{apiModuleName}\\{self.baseApiPath}'
 
+
+
 def updateImportMannger() :
 
     pathMannanger = PathMannanger()
@@ -52,23 +54,24 @@ def updateImportMannger() :
     return makeAplicationLibrariesAvaliable()
 
 def makeAplicationLibrariesAvaliable() :
+
     import sys
     # https://stackoverflow.com/questions/3430372/how-do-i-get-the-full-path-of-the-current-files-directory
     from pathlib import Path
 
-    pathMannanger = PathMannanger()
-    for apiModule in pathMannanger.apiModules :
-        print('HEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEERRRRRRRRRRRRRRRRRRRRRRRRREEEEEEEEEEEEEEEE')
-        if apiModule != pathMannanger.globalsModule :
-            apiModulePath = f'{pathMannanger.apiPath}{apiModule}\\{pathMannanger.baseApiPath}'
+    newPathMannanger = PathMannanger()
+
+    for apiModule in newPathMannanger.apiModules :
+        if apiModule != newPathMannanger.globalsModule :
+            apiModulePath = f'{newPathMannanger.apiPath}{apiModule}\\{newPathMannanger.baseApiPath}'
             print(f'new path: {apiModulePath}')
             sys.path.append(apiModulePath)
 
-    # from model import aplicationModelPath
-    # modelPathList = aplicationModelPath.getPathList()
-    # apiModulePath = f'{pathMannanger.apiPath}aplication\\{pathMannanger.baseApiPath}model\\'
-    # for path in modelPathList :
-    #     print(f'new path: {apiModulePath}{path}')
-    #     sys.path.append(f'{apiModulePath}{path}')
+    from function import applicationPathFunction
+    applicationPathList = applicationPathFunction.getPathList()
+    apiModulePath = newPathMannanger.getApiModulePath('application')
+    for path in applicationPathList :
+        print(f'new path: {apiModulePath}{path}')
+        sys.path.append(f'{apiModulePath}{path}')
 
-    return pathMannanger
+    return newPathMannanger

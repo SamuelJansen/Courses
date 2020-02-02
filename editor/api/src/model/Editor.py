@@ -1,34 +1,20 @@
-# import Aplication, Object, UserInterface, UserInterfaceSurface, Button
-from model import Aplication
-from model.object import Object
-from model.object.user_interface import UserInterface, UserInterfaceSurface, Header, Button
+import Application, Header
 
 from model.course import Module
 
 print('Editor library imported')
 
-class Editor(Aplication.Aplication):
+class Editor(Application.Application):
 
-    def __init__(self,name,fps,aps,colors,pathMannanger,
-        position = [0,0],
-        imagePath = None,
-        soundPath = None
-    ):
+    def __init__(self,*args,**kargs):
 
-        Aplication.Aplication.__init__(self,name,fps,aps,colors,pathMannanger,
-            position = position,
-            floor = True,
-            imagePath = imagePath,
-            soundPath = soundPath
-        )
-        # print(f'Editor.floor.size = {self.floor.size}')
+        Application.Application.__init__(self,*args,**kargs)
 
         headderSurfaceName = 'headerSurface'
         headderSurfacePosition  = [0,0]
         headerSurfaceSize = ['100%',22]
         father = self.getFloor()
-
-        print(f'Editor father.name = {father.name}')
+        print(f'Editor father.name = {father.name}, father type = {father.type}')
 
         headder = Header.Header(
             headderSurfaceName,
@@ -36,8 +22,8 @@ class Editor(Aplication.Aplication):
             headerSurfaceSize,
             father,
             padding = [2,2],
-            imagePath = imagePath,
-            soundPath = soundPath
+            imagePath = self.imagePath,
+            soundPath = self.soundPath
         )
         buttonsNameList = ['exit','openModule','close','save','add','launch','update','unlaunch']
 

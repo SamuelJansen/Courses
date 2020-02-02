@@ -1,4 +1,4 @@
-from model import Aplication
+import Aplication
 
 print('Plataform library imported')
 
