@@ -1,5 +1,3 @@
-import Object
-
 import pygame as pg
 import os
 
@@ -28,6 +26,7 @@ def getImage(path,size,aplication) :
     return image.copy()
 
 def getNoImage(size,aplication) :
+    import Object
     path = f'{aplication.imagePath}standard_image.png'
     canonicalizedPath = path.replace('/',os.sep).replace('\\',os.sep)
     image = pg.image.load(canonicalizedPath)
@@ -71,6 +70,7 @@ def newDisplay(size) :
     return newDisplay
 
 def newAlphaSurface(size) :
+    import Object
     screenSurface = pg.Surface(size,pg.HWSURFACE|pg.DOUBLEBUF|pg.SRCALPHA,32)
     screenSurface.fill(Object.Object.NOT_SELECTABLE_COLOR)
     return screenSurface.convert_alpha()

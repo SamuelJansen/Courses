@@ -1,7 +1,7 @@
 import pygame as pg
 
-import Application, Screen, Handler
-import imageFunction, fatherFunction
+import Screen, Handler
+import imageFunction, eventFunction
 
 import numpy as np
 
@@ -16,8 +16,13 @@ class Object:
     NOT_SELECTABLE_COLOR = [0,0,100,40]
     NO_IMAGE_COLOR = [255,0,0,40]
     #'''
+
+    SINGLE_CLICK_SELECTABLE = 'SINGLE_CLICK_SELECTABLE'
+    DOUBLE_CLICK_SELECTABLE = 'DOUBLE_CLICK_SELECTABLE'
+
     def __init__(self,name,position,size,scale,velocity,father,
             type = None,
+            functionKey = None,
             collidableSize = None,
             noImage = False,
             imagePath = None,
@@ -25,7 +30,7 @@ class Object:
         ):
 
         self.father = father
-        self.aplication = self.father.aplication
+        self.application = self.father.application
 
         self.name = name
         if type :
@@ -38,18 +43,14 @@ class Object:
         print(f'{self.name}\n{tab}object type: {self.type}\n{tab}blit order: {self.blitOrder}')
 
         self.size = size.copy()
-        print(f'                Object.size = {self.size}')
         if scale :
-            self.scale = (self.aplication.scaleRange * self.size[1]) / self.aplication.size[1]
-            self.scaleFactor = (self.scale * self.aplication.size[1]) / (self.aplication.scaleRange * self.size[1])
+            self.scale = (self.application.scaleRange * self.size[1]) / self.application.size[1]
+            self.scaleFactor = (self.scale * self.application.size[1]) / (self.application.scaleRange * self.size[1])
             self.size[0] = int(np.ceil(self.size[0] * self.scaleFactor))
             self.size[1] = int(np.ceil(self.size[1] * self.scaleFactor))
         else :
             self.scale = scale
             self.scaleFactor = 1
-
-
-        print(f'                Object.size = {self.size}')
 
         self.position = position.copy()
         self.rect = pg.Rect(self.position[0],self.position[1],self.size[0],self.size[1])
@@ -58,7 +59,7 @@ class Object:
             self.imagePath = f'{imagePath}{self.name}.png'
             print(f'    imagePath = {self.imagePath}')
         else :
-            self.imagePath = f'{self.aplication.imagePath}{self.type}\\{self.name}.png'
+            self.imagePath = f'{self.application.imagePath}{self.type}\\{self.name}.png'
 
         self.image = self.newImage(noImage)
 
@@ -81,7 +82,7 @@ class Object:
 
         self.selectable = True
 
-        self.velocity = velocity * self.aplication.velocityControl
+        self.velocity = velocity * self.application.velocityControl
 
         self.text = None
         self.textPosition = None
@@ -89,37 +90,53 @@ class Object:
         self.textPositionList = []
         self.font = None
 
+        if functionKey :
+            self.functionKey = eventFunction.getFunctionKey(functionKey)
+            self.handleEvent = eventFunction.eventFunctions[self.functionKey]
+            self.singleClickSelectable = self.handleEvent(Object.SINGLE_CLICK_SELECTABLE)
+            self.doubleClickSelectable = self.handleEvent(Object.DOUBLE_CLICK_SELECTABLE)
+        else :
+            self.functionKey = None
+            self.handleEvent = None
+            self.singleClickSelectable = False
+            self.doubleClickSelectable = False
+
         self.screen = Screen.Screen(self)
         self.handler = Handler.Handler(self)
 
         self.father.handler.addObject(self)
 
-        print(f'{self.name} created successfully, size = {self.size}')
+        ###- print(f'{self.name} created successfully')
 
     def newImage(self,noImage):
         self.noImage = noImage
         if self.noImage :
-             return imageFunction.getNoImage(self.size,self.aplication)
+             return imageFunction.getNoImage(self.size,self.application)
         else :
-            return imageFunction.getImage(self.imagePath,self.size,self.aplication)
+            return imageFunction.getImage(self.imagePath,self.size,self.application)
 
     def addText(
         self,text,position,fontSize,
         fontStyle = None
     ):
-        yAxisAdjustment = -6
+        textPositionErrorCompensation = self.getTextPositionError()
         if not fontStyle :
-            fontStyle = self.aplication.fontStyle
-            print(f'Object.aplication.fontStyle = {self.aplication.fontStyle}')
+            fontStyle = self.application.fontStyle
+            print(f'Object.application.fontStyle = {self.application.fontStyle}')
         try :
             pg.font.init()
             self.font = pg.font.SysFont(fontStyle,fontSize)
             self.textList.append(self.font.render(text,False,(0, 0, 0)))
-            self.textPositionList.append([position[0],position[1]+yAxisAdjustment])
+            self.textPositionList.append([
+                position[0] + textPositionErrorCompensation[0],
+                position[1] + textPositionErrorCompensation[1]
+            ])
         except :
             print("TextFont module not initialized")
             self.deleteText()
 
+    def getTextPositionError(self):
+        return[0,-6]
 
     def deleteText(self):
         self.text = None
@@ -164,6 +181,9 @@ class Object:
                 self.collidableSize[0],
                 self.collidableSize[1]
             )
+
+    def updateSelectionStatus(self,newStatus):
+        self.isSelected = newStatus
 
 
 class ObjectType:

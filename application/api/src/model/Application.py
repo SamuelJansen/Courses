@@ -1,6 +1,6 @@
 import pygame as pg
 
-import Frame , Object, Handler, Mouse, Screen
+import Frame, Object, Handler, Mouse, Screen
 
 import setting, fatherFunction
 
@@ -24,7 +24,7 @@ class Application:
         settingsPath = None
     ):
 
-        self.aplication = self.father = fatherFunction.absoluteFather(self)
+        self.application = self.father = fatherFunction.absoluteFather(self)
         self.pathMannanger = pathMannanger
 
         self.name = name
@@ -170,7 +170,7 @@ class Application:
                     if pgEvent.type == pg.QUIT :
                         self.running = False
                     arrow.newEvent(pgEvent)
-                    self.mouse.newEvent(pgEvent)
+                    self.mouse.handleEvent(pgEvent)
                     """
                     if a.arrows[1]==-1 :
                         gl.playSound(upSound)

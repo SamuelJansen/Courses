@@ -1,7 +1,7 @@
 import Object
 
 def isNotAplication(object) :
-    return object.type!=Object.ObjectType.APPLICATION
+    return object.type != Object.ObjectType.APPLICATION
 
 def absoluteFather(aplication):
     return aplication

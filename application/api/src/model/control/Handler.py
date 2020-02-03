@@ -1,5 +1,4 @@
-import Object
-import imageFunction, fatherFunction
+import fatherFunction
 
 print('Handler library imported')
 
@@ -8,6 +7,7 @@ class Handler:
     def __init__(self,object):
         self.object = object
         self.objects = {}
+        self.events = {}
         self.collidableObjects = {}
         self.collidableObjectsRect = []
 
@@ -33,25 +33,6 @@ class Handler:
             return len(colisionIndexes)>0
         return False
 
-    def isSelected(self,selectionPoint):
-        print(f'handler.object.name = {self.object.name}')
-        if self.object.selectable :
-            try :
-                notSelected = True
-                pixelColor = self.object.screen.surface.get_at(selectionPoint)
-                notSelected = (pixelColor[0] == Object.Object.NOT_SELECTABLE_COLOR[0]) and notSelected
-                notSelected = (pixelColor[1] == Object.Object.NOT_SELECTABLE_COLOR[1]) and notSelected
-                notSelected = (pixelColor[2] == Object.Object.NOT_SELECTABLE_COLOR[2]) and notSelected
-                notSelected = (pixelColor[3] == Object.Object.NOT_SELECTABLE_COLOR[3]) and notSelected
-                print(f'object hit name = {self.object.name}, pixelColor = {pixelColor}')
-                print(f'    notSelected = {notSelected}')
-                return not notSelected
-            except :
-                print(f'    selected = {notSelected}')
-                return True
-        print(f'    notSelected = {notSelected}')
-        return False
-
     def updateCollidableObjects(self):
         self.collidableObjects = {object.name:object for object in sorted(self.objects.values(),key=self.renderOrder) if object.collides}
         self.collidableObjectsRect = [object.collidableRect for object in self.collidableObjects.values()]
@@ -65,6 +46,15 @@ class Handler:
         self.object.screen.mustUpdateNextFrame()
 
     def deleteObject(self,objectName):
-        print(f'ObjectHandler.object.name = {self.object.name}, ObjectHandler.deleteObject({objectName})')
+        print(f'---------------> Handler.object.name = {self.object.name}, Handler.deleteObject({objectName}), Handler.object.father.name = {self.object.father.name}')
         del self.objects[objectName]
         self.object.screen.mustUpdateNextFrame()
+
+    def addEvent(self,newEvent):
+        self.events[newEvent.name] = newEvent
+
+    def updateEvent(self,newEvent):
+        self.events[newEvent.name].update(newEvent)
+
+    def deleteEvent(self,eventName):
+        del self.events[eventName]

@@ -1,4 +1,4 @@
-import Application, Header
+import Application, Header, Surface
 
 from model.course import Module
 
@@ -10,28 +10,20 @@ class Editor(Application.Application):
 
         Application.Application.__init__(self,*args,**kargs)
 
-        headderSurfaceName = 'headerSurface'
-        headderSurfacePosition  = [0,0]
-        headerSurfaceSize = ['100%',22]
-        father = self.getFloor()
-        print(f'Editor father.name = {father.name}, father type = {father.type}')
+        headerName = 'headerSurface'
+        headerPosition  = [0,0]
+        headerSize = ['100%',22]
+        headerFather = self.getFloor()
+        print(f'Editor headerFather.name = {headerFather.name}, type = {headerFather.type}')
 
-        headder = Header.Header(
-            headderSurfaceName,
-            headderSurfacePosition,
-            headerSurfaceSize,
-            father,
-            padding = [2,2],
-            imagePath = self.imagePath,
-            soundPath = self.soundPath
-        )
         buttonsNameList = ['exit','openModule','close','save','add','launch','update','unlaunch']
-
-        print(f'Editor.handler.objects = {self.handler.objects}')
-
-        buttonSize = ['square','100%']
-        for buttonName in buttonsNameList :
-            headder.addButton(buttonName,buttonSize)
-
-    def newMenuColumn(self):
-        pass
+        buttonSize = [Surface.Surface.SQUARE,'100%']
+        header = Header.Header(
+            headerName,
+            headerPosition,
+            headerSize,
+            headerFather,
+            itemsName = buttonsNameList,
+            itemSize = buttonSize,
+            padding = [2,2]
+        )

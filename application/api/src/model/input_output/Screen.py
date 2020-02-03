@@ -45,8 +45,10 @@ class Screen:
         ]
 
     def mustUpdateNextFrame(self):
+        print(f' -- !! -- !! -- Screen.mustUpdateNextFrame() --> name = {self.object.name}')
         self.mustUpdate = True
         fatherFunction.fatherMustUpdateNextFrame(self.object)
+        print('     END OF Screen.mustUpdateNextFrame()')
 
     def didUpdate(self):
         self.mustUpdate = False

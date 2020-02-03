@@ -1,43 +1,41 @@
-import pygame as pg
-
-import ItemsSet
-
-from model.course import Module
+import Object
 
 def openModule(event) :
-    modulesPath = f'{event.object.aplication.pathMannanger.getApiModulePath("course")}{Module.Module.MODULES_FILE}'
+
+    if requestingAttributes(event) :
+        return getAttributes(event)
+    import ItemSet, Event
+    from model.course import Module
+
+    modulesPath = f'{event.object.application.pathMannanger.getApiModulePath("course")}{Module.Module.MODULES_FILE}'
     modules = []
     with open(modulesPath,"r",encoding="utf-8") as modulesFile :
         for line in modulesFile :
             modules.append(line.strip())
-    print(modules)
 
-    name = 'moduleCollumn'
-    object = event.object
-
-    print(f'object.name = {object.name}, object.father.name = {object.father.name}')
-
-    position = object.position
-
-    print(f'object.father.size = {object.father.size}')
-
+    name = 'modulesItemSet'
+    position = event.object.position.copy()
     itemsFunctionKey = 'resolveSelection'
-    father = object
-    userInterface = ItemsSet.ItemsSet(name,position,itemsFunctionKey,father,
+    father = event.object
+    event.object.application.focus = ItemSet.ItemSet(name,position,father,
         itemsName = modules,
         itemsText = modules,
         itemSize = [240,20],
+        itemsFunctionKey = itemsFunctionKey,
         noImage = True,
         imagePath = None,
         soundPath = None
     )
 
-    object.aplication.focus = userInterface
-    print(f'    new Application.focus = {object.aplication.focus.name}')
+    print(f'    new Application.focus = {event.object.application.focus.name}')
+    print(f'        EventFunction called: openModule({event.object.application.name})')
 
-        # courseNameSurface = myfont.render(modules[indexModuleName],False,(0, 0, 0))
-        # userInterface.addText(modules[moduleIndex],[2,+father.size[1]-4+moduleIndex*20])
-        # userInterface.screen.surface.blit(courseNameSurface,)
-    # userInterface.screen.mustUpdateNextFrame()
+    return Event.Event.NOT_RESOLVED
 
-    print(f'        EventFunction called: openModule({event.object.aplication.name})')
+def requestingAttributes(event):
+    return type(event) == type('')
+
+def getAttributes(type) :
+    if type == Object.Object.SINGLE_CLICK_SELECTABLE : return True
+    if type == Object.Object.DOUBLE_CLICK_SELECTABLE : return False
+    return None

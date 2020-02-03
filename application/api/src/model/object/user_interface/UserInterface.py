@@ -1,12 +1,11 @@
 import Surface
 
-import fatherFunction
-
 print('UserInterface library imported')
 
 class UserInterface(Surface.Surface):
 
     def __init__(self,name,position,size,father,
+        functionKey = None,
         scale = None,
         padding = None,
         noImage = False,
@@ -30,6 +29,7 @@ class UserInterface(Surface.Surface):
 
         Surface.Surface.__init__(
             self,name,position,size,father,
+            functionKey = functionKey,
             scale = scale,
             padding = padding,
             noImage = noImage,

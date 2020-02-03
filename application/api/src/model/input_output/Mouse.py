@@ -1,19 +1,19 @@
 import pygame as pg
 
-import Object, Button, Event
+import Object, SelectionEvent
 
 print('Mouse library imported')
 
 class Mouse:
 
     FREE = 'FREE'
-    LEFT_CLICK_UP = 'CLICK_UP'
-    LEFT_CLICK_DOWN = 'CLICK_DOWN'
+    LEFT_CLICK_UP = 'LEFT_CLICK_UP'
+    LEFT_CLICK_DOWN = 'LEFT_CLICK_DOWN'
 
-    def __init__(self,aplication):
+    def __init__(self,application):
         '''
         Mouse.position is pondered by dev screen size'''
-        self.aplication = aplication
+        self.application = application
         self.position = [0,0]
         self.devPosition = [0,0]
         self.updatePosition()
@@ -29,23 +29,21 @@ class Mouse:
     def updatePosition(self):
         ###- It needs some work
         self.position = list(pg.mouse.get_pos())
-        self.devPosition[0] = int(self.position[0]*self.aplication.devResize[0])
-        self.devPosition[1] = int(self.position[1]*self.aplication.devResize[1])
-        # self.setPosition(self.position)
+        self.devPosition[0] = int(self.position[0]*self.application.devResize[0])
+        self.devPosition[1] = int(self.position[1]*self.application.devResize[1])
 
     def update(self):
         self.updatePosition()
 
-    def newEvent(self,pgEvent):
-        self.hit = None
-        print(f'    pg.mouse.get_pressed() = {pg.mouse.get_pressed()}')
-        print(f'    pg.event.get() = {pg.event.get()}')
-        if pgEvent.type == pg.MOUSEBUTTONDOWN :
-            print(f'    pgEvent.button = {pgEvent.button}')
-            if pgEvent.button == 4 :
-                print(f'    whell up')
-            elif pgEvent.button == 5 :
-                print(f'    whell down')
+    def handleEvent(self,pgEvent):
+        # print(f'    pg.mouse.get_pressed() = {pg.mouse.get_pressed()}')
+        # print(f'    pg.event.get() = {pg.event.get()}')
+        # if pgEvent.type == pg.MOUSEBUTTONDOWN :
+        #     print(f'    pgEvent.button = {pgEvent.button}')
+        #     if pgEvent.button == 4 :
+        #         print(f'    whell up')
+        #     elif pgEvent.button == 5 :
+        #         print(f'    whell down')
         if pgEvent.type == pg.MOUSEBUTTONDOWN :
             self.clickDown()
             self.scripArea = f'{self.devPosition[0]}x{self.devPosition[1]}'
@@ -54,14 +52,14 @@ class Mouse:
             self.clickUp()
             self.scripArea += f'x{self.devPosition[0]}x{self.devPosition[1]}'
             try :
-                print(f'mouse.scripArea = {self.scripArea} ------------ Aplication.focus.name = {self.aplication.focus.name}')
+                print(f'mouse.scripArea = {self.scripArea} ------------ Aplication.focus.name = {self.application.focus.name}')
             except :
-                print(f'mouse.scripArea = {self.scripArea} ------------ Aplication.focus = {self.aplication.focus}')
-            self.resolveClick()
+                print(f'mouse.scripArea = {self.scripArea} ------------ Aplication.focus = {self.application.focus}')
+        self.resolveClick()
 
     def clickDown(self):
         self.state = Mouse.LEFT_CLICK_DOWN
-        self.getRecursiveColision(self.aplication)
+        self.getRecursiveColision(self.application)
         # print(f'mouse.objectHitClickDown = {self.hit}')
         if self.hit :
             print(f'    mouse.objectHitClickDown.name = {self.hit.name}, type = {self.hit.type}')
@@ -69,7 +67,7 @@ class Mouse:
 
     def clickUp(self):
         self.state = Mouse.LEFT_CLICK_UP
-        self.getRecursiveColision(self.aplication)
+        self.getRecursiveColision(self.application)
         # print(f'mouse.objectHitClickUp = {self.hit}')
         if self.hit :
             print(f'    mouse.objectHitClickUp.name = {self.hit.name}, type = {self.hit.type}')
@@ -100,35 +98,43 @@ class Mouse:
     def getColision(self,object):
         print(f'{object.name} object in colision test, object.rect = {object.rect}, mouse.position = {self.position}')
         if object.rect.collidepoint(self.position) :
-            print(f'mouse colided with {object.name}')
-            if object.handler.isSelected(self.position) :
+            print(f'mouse collided with {object.name}')
+            object.updateSelectionStatus( self.didSelected(object) )
+            if object.isSelected :
                 return object
 
-    def resolveClick(self):
-        self.objectSelected = self.objectHitClickUp
-        if self.objectSelected and self.objectHitClickDown == self.objectHitClickUp :
-            print(f'  objectClicked.name = {self.objectSelected.name}')
+    def didSelected(self,object):
+        if object.selectable :
+            try :
+                notSelected = True
+                pixelColor = object.screen.surface.get_at(self.position)
+                notSelected = (pixelColor[0] == Object.Object.NOT_SELECTABLE_COLOR[0]) and notSelected
+                notSelected = (pixelColor[1] == Object.Object.NOT_SELECTABLE_COLOR[1]) and notSelected
+                notSelected = (pixelColor[2] == Object.Object.NOT_SELECTABLE_COLOR[2]) and notSelected
+                notSelected = (pixelColor[3] == Object.Object.NOT_SELECTABLE_COLOR[3]) and notSelected
+                print(f'object hit name = {object.name}, pixelColor = {pixelColor}')
+                print(f'    notSelected = {notSelected}')
+                return not notSelected
+            except :
+                print(f'    it was selected')
+                return True
 
-            if self.aplication.focus and self.aplication.focus!=self.objectSelected :
-                self.removeFocus()
-            else :
-                self.action(self.objectSelected)
-        else :
-            self.removeFocus()
+    def resolveClick(self):
+        if self.objectHitClickDown == self.objectHitClickUp :
+            self.objectSelected = self.objectHitClickUp
+
+        SelectionEvent.SelectionEvent(self)
+
+        self.objectSelected = None
+        self.state = Mouse.FREE
+        self.hit = None
 
     def removeFocus(self) :
-        if self.aplication.focus :
-            print(f'Aplication.focus.name = {self.aplication.focus.name}')
-            self.aplication.focus.father.handler.deleteObject(self.aplication.focus.name)
-        self.aplication.focus = None
+        if self.application.focus :
+            print(f'Aplication.focus.name = {self.application.focus.name}')
+            self.application.focus.father.handler.deleteObject(self.application.focus.name)
+        self.application.focus = None
         self.objectSelected = None
-
-    def action(self,object):
-        event = Event.Event(object)
-        if event.className == Event.Event.BUTTON :
-            object.run(event)
-
-
 
 
 #################################

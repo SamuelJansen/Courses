@@ -1,5 +1,5 @@
-from function.event.exit import *
-from function.event.openModule import *
+from function.event.exit import exit
+from function.event.openModule import openModule
 from function.event.save import *
 from function.event.close import *
 from function.event.add import *

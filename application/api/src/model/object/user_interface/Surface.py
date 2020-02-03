@@ -1,15 +1,15 @@
 import numpy as np
 
 import Object
-import fatherFunction
 
 print('UserInterfaceSurface library imported')
 
 class Surface(Object.Object):
 
-    SQUARE = 'square'
+    SQUARE = 'SQUARE'
 
     def __init__(self,name,position,size,father,
+        functionKey = None,
         scale = None,
         padding = None,
         noImage = False,
@@ -27,9 +27,6 @@ class Surface(Object.Object):
         size = parseSize(size,father)
         velocity = 0.00001
 
-        print(f'            Surface.size = {size}')
-        print(f'                    scale = {scale}')
-
         Object.Object.__init__(
             self,
             name,
@@ -39,20 +36,25 @@ class Surface(Object.Object):
             velocity,
             father,
             type = Object.ObjectType.USER_INTERFACE,
+            functionKey = functionKey,
             noImage = noImage,
             imagePath = imagePath,
             soundPath = soundPath
         )
 
+        print(f'                                    Surface.padding = {self.padding}')
+
 def getSizeNotPadded(surface) :
     return surface.originalSize
 
 def parseSize(size,father) :
-    sizeParsed = [None,None]
-    for featureSizeIndex in range(len(size)) :
-        featureSize = size[featureSizeIndex]
-        sizeParsed = getFeatureSize(sizeParsed,featureSize,featureSizeIndex,size,father)
-    return sizeParsed
+    if size :
+        sizeParsed = [None,None]
+        for featureSizeIndex in range(len(size)) :
+            featureSize = size[featureSizeIndex]
+            sizeParsed = getFeatureSize(sizeParsed,featureSize,featureSizeIndex,size,father)
+        return sizeParsed
+    return None
 
 def getFeatureSize(sizeParsed,featureSize,featureSizeIndex,size,father) :
     if featureSize.__class__.__name__ == 'str' :
@@ -69,14 +71,14 @@ def getFeatureSize(sizeParsed,featureSize,featureSizeIndex,size,father) :
 def getFeatureByPoligono(sizeParsed,featureSize,featureSizeIndex,size,father) :
     if not sizeParsed[featureSizeIndex] :
         if featureSize == Surface.SQUARE :
-            if featureSizeIndex==0 :
+            if featureSizeIndex == 0 :
                 try :
                     sizeParsed[featureSizeIndex] = getFeatureSize(
                         sizeParsed,size[1],1,size,father
                     )[1]
                 except :
                     pass
-            elif featureSizeIndex==1 :
+            elif featureSizeIndex == 1 :
                 try :
                     sizeParsed[featureSizeIndex] = size[0]
                 except :
