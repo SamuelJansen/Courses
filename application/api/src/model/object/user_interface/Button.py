@@ -24,3 +24,4 @@ class Button(UserInterface.UserInterface):
             imagePath = imagePath,
             soundPath = soundPath
         )
+        # self.handler.fixOriginalPosition()

@@ -8,17 +8,17 @@ import numpy as np
 print('Object library imported')
 
 class Object:
-    #'''
-    NOT_SELECTABLE_COLOR = [0,0,0,0]
+    '''
+    NOT_HITTABLE_COLOR = [0,0,0,0]
     NO_IMAGE_COLOR = [0,0,0,0]
     #'''
-    '''
-    NOT_SELECTABLE_COLOR = [0,0,100,40]
+    #'''
+    NOT_HITTABLE_COLOR = [0,0,100,40]
     NO_IMAGE_COLOR = [255,0,0,40]
     #'''
 
-    SINGLE_CLICK_SELECTABLE = 'SINGLE_CLICK_SELECTABLE'
-    DOUBLE_CLICK_SELECTABLE = 'DOUBLE_CLICK_SELECTABLE'
+    SINGLE_CLICKABLE = 'SINGLE_CLICKABLE'
+    DOUBLE_CLICKABLE = 'DOUBLE_CLICKABLE'
 
     def __init__(self,name,position,size,scale,velocity,father,
             type = None,
@@ -29,7 +29,7 @@ class Object:
             soundPath = None
         ):
 
-        self.father = father
+        self.tutor = self.father = father
         self.application = self.father.application
 
         self.name = name
@@ -39,8 +39,8 @@ class Object:
             self.type = ObjectType.STANDARD_OBJECT
 
         self.blitOrder = ObjectType.getBlitOrder(self)
-        tab = '   '
-        print(f'{self.name}\n{tab}object type: {self.type}\n{tab}blit order: {self.blitOrder}')
+        # tab = '   '
+        # print(f'{self.name}\n{tab}object type: {self.type}\n{tab}blit order: {self.blitOrder}')
 
         self.size = size.copy()
         if scale :
@@ -57,7 +57,7 @@ class Object:
 
         if imagePath :
             self.imagePath = f'{imagePath}{self.name}.png'
-            print(f'    imagePath = {self.imagePath}')
+            # print(f'    imagePath = {self.imagePath}')
         else :
             self.imagePath = f'{self.application.imagePath}{self.type}\\{self.name}.png'
 
@@ -80,26 +80,14 @@ class Object:
             self.collidableSize[1]
         )
 
-        self.selectable = True
-
         self.velocity = velocity * self.application.velocityControl
 
-        self.text = None
         self.textPosition = None
         self.textList = []
         self.textPositionList = []
         self.font = None
 
-        if functionKey :
-            self.functionKey = eventFunction.getFunctionKey(functionKey)
-            self.handleEvent = eventFunction.eventFunctions[self.functionKey]
-            self.singleClickSelectable = self.handleEvent(Object.SINGLE_CLICK_SELECTABLE)
-            self.doubleClickSelectable = self.handleEvent(Object.DOUBLE_CLICK_SELECTABLE)
-        else :
-            self.functionKey = None
-            self.handleEvent = None
-            self.singleClickSelectable = False
-            self.doubleClickSelectable = False
+        self.initializeInteractiability(functionKey)
 
         self.screen = Screen.Screen(self)
         self.handler = Handler.Handler(self)
@@ -115,14 +103,13 @@ class Object:
         else :
             return imageFunction.getImage(self.imagePath,self.size,self.application)
 
-    def addText(
-        self,text,position,fontSize,
+    def addText(self,text,position,fontSize,
         fontStyle = None
     ):
         textPositionErrorCompensation = self.getTextPositionError()
         if not fontStyle :
             fontStyle = self.application.fontStyle
-            print(f'Object.application.fontStyle = {self.application.fontStyle}')
+            # print(f'Object.application.fontStyle = {self.application.fontStyle}')
         try :
             pg.font.init()
             self.font = pg.font.SysFont(fontStyle,fontSize)
@@ -139,7 +126,6 @@ class Object:
         return[0,-6]
 
     def deleteText(self):
-        self.text = None
         self.textPosition = None
         self.textList = []
         self.textPositionList = []
@@ -168,9 +154,6 @@ class Object:
         )
         self.father.mustUpdateNextFrame()
 
-    def getPosition(self):
-        return [self.rect[0],self.rect[1]] ###- upper left corner
-
     def setPosition(self,position):
         if self.position[0]!=position[0] or self.position[1]!=position[1] :
             self.position = position
@@ -182,8 +165,60 @@ class Object:
                 self.collidableSize[1]
             )
 
-    def updateSelectionStatus(self,newStatus):
-        self.isSelected = newStatus
+    def getPosition(self):
+        return [self.rect[0],self.rect[1]] ###- upper left corner
+
+    def getAbsolutePosition(self):
+        if self.father.type == ObjectType.APPLICATION :
+            return self.getPosition()
+        else :
+            position = self.getPosition()
+            fatherAbsolutePosition = self.father.getAbsolutePosition()
+            return [
+                position[0] + fatherAbsolutePosition[0],
+                position[1] + fatherAbsolutePosition[1]
+            ]
+
+    def getAbsoluteOriginalPosition(self):
+        if self.type == ObjectType.APPLICATION :
+            return [0,0]
+        elif self.father.type == ObjectType.APPLICATION :
+            return self.handler.getOriginalPosition()
+        else :
+            position = self.handler.getOriginalPosition()
+            fatherAbsoluteOriginalPosition = self.father.getAbsoluteOriginalPosition()
+            return [
+                position[0] + fatherAbsoluteOriginalPosition[0],
+                position[1] + fatherAbsoluteOriginalPosition[1]
+            ]
+
+    def initializeInteractiability(self,functionKey) :
+        self.hit = False
+        self.clickable = False
+        self.functionKey = None
+        self.handleEvent = None
+        self.singleClickable = False
+        self.doubleClickable = False
+
+        if functionKey :
+            self.clickable = True
+            self.clicked = False
+            self.functionKey = eventFunction.getFunctionKey(functionKey)
+            self.handleEvent = eventFunction.eventFunctions[self.functionKey]
+            self.singleClickable = self.handleEvent(Object.SINGLE_CLICKABLE)
+            self.doubleClickable = self.handleEvent(Object.DOUBLE_CLICKABLE)
+
+    def updateHitStatus(self,status):
+        self.hit = status
+
+    def updateClickedStatus(self,status):
+        if self.clickable :
+            self.clicked = status
+
+    def isClicked(self):
+        if self.clickable :
+            return self.clicked
+        return False
 
 
 class ObjectType:

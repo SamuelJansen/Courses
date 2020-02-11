@@ -17,13 +17,6 @@ class Surface(Object.Object):
         soundPath = None
     ):
 
-        if padding :
-            self.padding = padding
-        else :
-            self.padding = [0,0]
-
-        self.userInterfaceSurface = self
-
         size = parseSize(size,father)
         velocity = 0.00001
 
@@ -42,10 +35,37 @@ class Surface(Object.Object):
             soundPath = soundPath
         )
 
-        print(f'                                    Surface.padding = {self.padding}')
+        if padding :
+            self.padding = padding
+        else :
+            self.padding = [0,0]
 
-def getSizeNotPadded(surface) :
-    return surface.originalSize
+        self.userInterfaceSurface = self
+
+        self.handler.fixOriginalPosition()
+        self.handler.fixOriginalSize()
+
+        try :
+            print(f'Surface: name = {self.name}, position = {self.position}, originalPosition = {self.handler.originalPosition}, size = {self.size}, originalSize = {self.handler.originalSize}, padding = {self.padding}')
+        except :
+            print(f'Surface: name = {self.name}, position = {self.position}, originalPosition = {self.handler.originalPosition}, size = {self.size}, originalSize = {self.handler.originalSize}, padding = noPadding')
+        try :
+            print(f'        father = {self.father.name}, position = {self.father.position}, originalPosition = {self.father.handler.originalPosition}, size = {self.father.size}, originalSize = {self.father.handler.originalSize}, padding = {self.father.padding}')
+        except :
+            print(f'        father = {self.father.name}, position = {self.father.position}, originalPosition = {self.father.handler.originalPosition}, size = {self.father.size}, originalSize = {self.father.handler.originalSize}, padding = noPadding')
+        try :
+            print(f'        tutor = {self.tutor.name}, position = {self.tutor.position}, originalPosition = {self.tutor.handler.originalPosition}, size = {self.tutor.size}, originalSize = {self.tutor.handler.originalSize}, padding = {self.tutor.padding}')
+        except :
+            print(f'        tutor = {self.tutor.name}, position = {self.tutor.position}, originalPosition = {self.tutor.handler.originalPosition}, size = {self.tutor.size}, originalSize = {self.tutor.handler.originalSize}, padding = noPadding')
+
+    def getAbsolutePosition(self):
+        position = self.getPosition()
+        fatherAbsoluteOriginalPosition = self.father.getAbsoluteOriginalPosition()
+        return [
+            position[0] + fatherAbsoluteOriginalPosition[0],
+            position[1] + fatherAbsoluteOriginalPosition[1]
+        ]
+
 
 def parseSize(size,father) :
     if size :
@@ -62,8 +82,8 @@ def getFeatureSize(sizeParsed,featureSize,featureSizeIndex,size,father) :
         sizeParsed = getFeatureByPercentage(sizeParsed,featureSize,featureSizeIndex,father)
         if not sizeParsed[featureSizeIndex] :
             sizeParsed[featureSizeIndex] = featureSize
-            print(f'error : --> getFeatureSize()')
-            print(f'    {size}.featureSize = {featureSize}')
+            # print(f'error : --> getFeatureSize()')
+            # print(f'    {size}.featureSize = {featureSize}')
     else :
         sizeParsed[featureSizeIndex] = featureSize
     return sizeParsed
@@ -96,7 +116,6 @@ def getFeatureByPercentage(sizeParsed,featureSize,featureSizeIndex,father) :
 def getSizePadded(size,padding) :
     if padding :
         sizePadded = [size[index]-2*padding[index] for index in range(len(size))]
-        print(f'                sizePadded = {sizePadded}')
         return sizePadded
     else :
         return size

@@ -22,7 +22,7 @@ class Screen:
     def newSurface(self):
         if fatherFunction.isNotAplication(self.object) :
             if self.object.noImage :
-                print(f'Screen.object.name = {self.object.name}')
+                # print(f'Screen.object.name = {self.object.name}')
                 return imageFunction.newAlphaSurface(self.object.size)
             else :
                 return imageFunction.newImageSurface(self.object.image,self.object.size)
@@ -45,10 +45,10 @@ class Screen:
         ]
 
     def mustUpdateNextFrame(self):
-        print(f' -- !! -- !! -- Screen.mustUpdateNextFrame() --> name = {self.object.name}')
+        # print(f' -- !! -- !! -- Screen.mustUpdateNextFrame() --> name = {self.object.name}')
         self.mustUpdate = True
         fatherFunction.fatherMustUpdateNextFrame(self.object)
-        print('     END OF Screen.mustUpdateNextFrame()')
+        # print('     END OF Screen.mustUpdateNextFrame()')
 
     def didUpdate(self):
         self.mustUpdate = False
@@ -77,7 +77,7 @@ class Screen:
             self.surface = self.object.handler.originalSurface.copy()
 
     def blitText(self):
-        print(f'Screen.object.name = {self.object.name}')
+        # print(f'Screen.object.name = {self.object.name}')
         if self.object.textList :
             for textIndex in range(len(self.object.textList)) :
                 self.surface.blit(

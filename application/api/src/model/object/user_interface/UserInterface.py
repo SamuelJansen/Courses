@@ -20,12 +20,9 @@ class UserInterface(Surface.Surface):
             except :
                 padding = [0,0]
 
-        self.originalSize = size.copy()
-        size = Surface.getSizePadded(size,padding)
         position = Surface.getPositionPadded(position,padding)
-
-        print( f'                       UserInterface.sizePadded = {size}')
-        print( f'                       UserInterface.positionPadded = {position}')
+        size = Surface.parseSize(size,father)
+        size = Surface.getSizePadded(size,padding)
 
         Surface.Surface.__init__(
             self,name,position,size,father,
@@ -36,8 +33,3 @@ class UserInterface(Surface.Surface):
             imagePath = imagePath,
             soundPath = soundPath
         )
-
-        try :
-            self.userInterfaceSurface = father.userInterfaceSurface
-        except :
-            padding = [0,0]

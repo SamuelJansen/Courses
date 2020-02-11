@@ -1,14 +1,12 @@
 import Object
 import eventFunction
 
-def close(event) :
+def resolveLessonClick(event) :
 
     if requestingAttributes(event) :
         return getAttributes(event)
 
-    print(f'    EventFunction called: adclosed({event.object.application.name})')
-    return eventFunction.EventStatus.NOT_RESOLVED
-
+    print(f'    EventFunction called: {event.object.name}.resolveLessonClick({event.object.application.name})')
 
 def requestingAttributes(event):
     return type(event) == type('')

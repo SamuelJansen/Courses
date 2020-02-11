@@ -1,26 +1,35 @@
-import Surface, Button
+import Surface, UserInterface, Button
+import modalFunction
 
 print('Header library imported')
 
-class Header(Surface.Surface):
+class Header(UserInterface.UserInterface):
     def __init__(self,name,position,size,father,
         itemsName = None,
         itemSize = None,
         padding = None
     ):
 
-        Surface.Surface.__init__(self,name,position,size,father,
+        padding,originalPadding = modalFunction.stashPadding(padding,father)
+
+        UserInterface.UserInterface.__init__(self,name,position,size,father,
             padding = padding
         )
 
+        self.padding = originalPadding
         self.itemsName = itemsName
         itemFather = self
         self.itemSize = Surface.parseSize(itemSize,itemFather)
         self.initialChildPosition = [0,0]
 
-        print(f'                                    Header.padding = {self.padding}')
-
         self.buildItems()
+
+    def setHeadderAttributesBack(self,tutor,originalPadding):
+        self.tutor = tutor
+        self.blitOrder = self.tutor.blitOrder + 1
+        self.userInterfaceSurface = self.tutor.userInterfaceSurface
+        self.padding = originalPadding
+        self.handler.addRelative(self.tutor,[0,0])
 
     def buildItems(self):
         itemFather = self
@@ -60,7 +69,6 @@ class Header(Surface.Surface):
             itemPosition = Surface.getPositionPadded(self.getItemPosition(itemIndex),self.padding)
             button = itemsList[itemIndex]
             button.setPosition(itemPosition)
-            print(f'button.name = {button.name}, position = {itemPosition}')
 
     def getItemPosition(self,itemIndex):
         return [

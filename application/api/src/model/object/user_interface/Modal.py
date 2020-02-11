@@ -1,8 +1,12 @@
-import Surface
+import UserInterface
+import modalFunction, surfaceFunction
 
 print('Modal library imported')
 
-class Modal(Surface.Surface):
+class Modal(UserInterface.UserInterface):
+
+    NAME = 'Modal'
+
     def __init__(self,name,position,size,father,
         functionKey = None,
         scale = None,
@@ -12,9 +16,9 @@ class Modal(Surface.Surface):
         soundPath = None
     ):
 
-        father, padding = self.setModelAsFloorChild(father,padding)
+        father,tutor,position,padding,originalPadding = self.getModalFatherAttributes(padding,father)
 
-        Surface.Surface.__init__(
+        UserInterface.UserInterface.__init__(
             self,name,position,size,father,
             functionKey = functionKey,
             scale = scale,
@@ -24,19 +28,18 @@ class Modal(Surface.Surface):
             soundPath = imagePath
         )
 
-        self.setModelBackOnTop()
+        self.setModalTutorAttributes(tutor,originalPadding)
 
-    def setModelAsFloorChild(self,father,padding):
-        self.modalFather = father
-        father = self.modalFather.application.getFloor()
-        if not padding :
-            padding = self.modalFather.userInterfaceSurface.padding
+    def getModalFatherAttributes(self,padding,father):
+        position = father.getAbsoluteOriginalPosition()
+        padding,originalPadding = modalFunction.stashPadding(padding,father)
+        tutor = father
+        father = father.application.getFloor()
+        return father,tutor,position,padding,originalPadding
 
-        return father, padding
-
-    def setModelBackOnTop(self):
-        self.blitOrder = self.modalFather.blitOrder + 1
-        print(f'newBlitOrder = {self.blitOrder}')
-        self.userInterfaceSurface = self.modalFather.userInterfaceSurface
-        self.screen.surface.blit(self.modalFather.image,[0,0])
-        self.handler.updateOriginalAttributes()
+    def setModalTutorAttributes(self,tutor,originalPadding):
+        self.tutor = tutor
+        self.blitOrder = self.tutor.blitOrder + 1
+        self.userInterfaceSurface = self.tutor.userInterfaceSurface
+        self.padding = originalPadding
+        self.handler.addTutor(self.tutor,surfaceFunction.getPositionPadded([0,0],self.padding))

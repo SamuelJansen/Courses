@@ -24,7 +24,7 @@ class Application:
         settingsPath = None
     ):
 
-        self.application = self.father = fatherFunction.absoluteFather(self)
+        self.application = self.tutor = self.father = fatherFunction.absoluteFather(self)
         self.pathMannanger = pathMannanger
 
         self.name = name
@@ -97,6 +97,54 @@ class Application:
         self.selectable = True
         self.screen = Screen.Screen(self)
         self.handler = Handler.Handler(self)
+        self.hit = False
+        self.clickable = False
+        self.functionKey = None
+        self.handleEvent = None
+        self.singleClickable = False
+        self.doubleClickable = False
+
+    def setFocus(self,object):
+        if not self.focus :
+            self.focus = object
+        # else :
+        #     debugText = 'Application already in focus\n'
+        #     debugText += f'actual focus = {self.focus.name}\n'
+        #     debugText += f'new focus = {object.name}\n'
+        #     self.holdForDebug(debugText)
+
+    def removeFocus(self):
+        self.handler.forceDeleteObject(self.focus.name)
+        self.focus = None
+
+    def getPaths(self,imagePath,soundPath,settingsPath):
+        self.imagePath = imagePath
+        self.soundPath = soundPath
+        self.settingsPath = settingsPath
+        if not self.imagePath :
+            self.imagePath = f'{self.pathMannanger.getApiModulePath(self.name)}resourse\\image\\'
+        if not self.soundPath :
+            self.soundPath = f'{self.pathMannanger.getApiModulePath(self.name)}resourse\\sound\\'
+        if not self.settingsPath :
+            self.settingsPath = 'resourse/' + self.name + '.ht'
+
+    def getFloor(self):
+        if self.floor :
+            return self.handler.objects[Application.FLOOR]
+        else :
+            return self
+
+    def setPosition(self,position):
+        self.position = position.copy()
+        self.localMachinePosition(
+            pg.display.get_wm_info()['window'],
+            -1,
+            self.position[0], ###- x
+            self.position[1], ###- y
+            0,
+            0,
+            0x0001
+        )
 
     def initialize(self,timeNow):
         '''
@@ -132,34 +180,15 @@ class Application:
     def updatePosition(self,position):
         self.setPosition(position)
 
-    def setPosition(self,position):
-        self.position = position.copy()
-        self.localMachinePosition(
-            pg.display.get_wm_info()['window'],
-            -1,
-            self.position[0], ###- x
-            self.position[1], ###- y
-            0,
-            0,
-            0x0001
-        )
+    def updateHitStatus(self,status):
+        self.hit = status
 
-    def getPaths(self,imagePath,soundPath,settingsPath):
-        self.imagePath = imagePath
-        self.soundPath = soundPath
-        self.settingsPath = settingsPath
-        if not self.imagePath :
-            self.imagePath = f'{self.pathMannanger.getApiModulePath(self.name)}resourse\\image\\'
-        if not self.soundPath :
-            self.soundPath = f'{self.pathMannanger.getApiModulePath(self.name)}resourse\\sound\\'
-        if not self.settingsPath :
-            self.settingsPath = 'resourse/' + self.name + '.ht'
-
-    def getFloor(self):
-        if self.floor :
-            return self.handler.objects[Application.FLOOR]
-        else :
-            return self
+    def holdForDebug(self,debugText):
+        print(' -- DEBUGING -- ')
+        print(debugText)
+        debuging = True
+        while(debuging) :
+            pass
 
     def run(self,arrow):
         self.initialize(now.time())

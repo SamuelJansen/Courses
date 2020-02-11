@@ -15,11 +15,11 @@ def getImage(path,size,aplication) :
         try :
             canonicalizedPath = path.replace('/',os.sep).replace('\\',os.sep)
             image = pg.image.load(canonicalizedPath)#.convert_alpha()
-            print(f'importing image: {canonicalizedPath}')
+            # print(f'importing image: {canonicalizedPath}')
         except :
             path = f'{aplication.imagePath}standard_image.png'
             canonicalizedPath = path.replace('/',os.sep).replace('\\',os.sep)
-            print(f'importing image: {canonicalizedPath}')
+            # print(f'importing image: {canonicalizedPath}')
             image = pg.image.load(canonicalizedPath)#.convert_alpha()
         image = pg.transform.smoothscale(image,size)#.convert_alpha()
     imageLibrary[path] = image
@@ -72,7 +72,7 @@ def newDisplay(size) :
 def newAlphaSurface(size) :
     import Object
     screenSurface = pg.Surface(size,pg.HWSURFACE|pg.DOUBLEBUF|pg.SRCALPHA,32)
-    screenSurface.fill(Object.Object.NOT_SELECTABLE_COLOR)
+    screenSurface.fill(Object.Object.NOT_HITTABLE_COLOR)
     return screenSurface.convert_alpha()
 
 def colorFilter(threshold,image) :
