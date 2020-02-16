@@ -14,7 +14,7 @@ def resolveModuleClick(event) :
 
     name = 'lessonsItemSet'
     position = event.object.getAbsolutePosition()
-    eventFunction = resolveLessonClick
+    externalEvent = resolveLessonClick
     father = event.object
     print(f'resolveModuleClick(): father.name = {father.name}')
 
@@ -23,7 +23,7 @@ def resolveModuleClick(event) :
         itemsText = lessons,
         itemSize = [100,20],
         itemDirection = ItemSet.ItemSet.RIGHT,
-        eventFunction = eventFunction,
+        externalEvent = externalEvent,
         noImage = True,
         imagePath = None,
         soundPath = None

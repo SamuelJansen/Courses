@@ -6,7 +6,7 @@ class Button(UserInterface.UserInterface):
 
     def __init__(
         self,name,position,size,father,
-        eventFunction = None,
+        externalEvent = None,
         padding = None,
         imagePath = None,
         soundPath = None
@@ -19,7 +19,7 @@ class Button(UserInterface.UserInterface):
 
         UserInterface.UserInterface.__init__(
             self,name,position,size,father,
-            eventFunction = eventFunction,
+            externalEvent = externalEvent,
             padding = padding,
             imagePath = imagePath,
             soundPath = soundPath

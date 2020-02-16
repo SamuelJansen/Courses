@@ -11,6 +11,10 @@ print('Aplication library imported')
 
 class Application:
 
+    def update(self,timeNow):
+        self.timeNow = timeNow
+        self.updateFrame()
+
     def __init__(
         self,name,fps,aps,colors,pathMannanger,
         position = [0,0],
@@ -103,55 +107,29 @@ class Application:
 
     def setFocus(self,object):
         print()
-        print('++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++')
+        print('++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++')
         print(f'Application.setFocus(): {object.name}')
         if not self.focus :
-            self.focus = object
+            self.focus = object.tutor
         else :
             debugText = 'Application already in focus\n'
             debugText += f'     actual focus = {self.focus.name}\n'
-            debugText += f'     new focus = {object.name}\n'
+            debugText += f'     new focus = {object.tutor.name}\n'
             # print(debugText)
             self.holdForDebug(debugText)
-        print('++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++')
+        print('++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++')
         print()
-
-
-    # def updateFocus(self,event):
-    #     if self.focus :
-    #         print(f'Application.updateFocus(): focus.name = {self.focus.name}')
-    #         print(f'Application.updateFocus(): focus.father.name = {self.focus.father.name}')
-    #         print(f'Application.updateFocus(): focus.tutor.name = {self.focus.tutor.name}')
-    #         if not self.hittingFocusChild(self.objectClicked) :
-    #             # self.application.removeFocus()
-    #             pass
-
-    def hittingFocusChild(self,object):
-        if object.father == self.application.focus :
-            return True
-        elif (
-                object.father.type == objectFunction.Type.APPLICATION and
-                object.father.tutor.type == objectFunction.Type.APPLICATION
-            ) :
-            return False
-        elif (
-                object.father.type == objectFunction.Type.APPLICATION and
-                object.father.tutor.type != objectFunction.Type.APPLICATION
-            ) :
-            return self.hittingApplicationFocusChild(object.father)
-        else :
-            return self.hittingApplicationFocusChild(object.tutor)
 
     def removeFocus(self):
         print()
-        print('......................................................................................................................................................................')
+        print('............................................................................................................................................................')
         print(f'Application.removeFocus(): {self.focus.name}')
         if self.floor :
-            self.handler.objects[applicationFunction.Attribute.FLOOR].handler.deleteObjectTree(self.focus)
+            self.handler.objects[applicationFunction.Attribute.FLOOR].handler.removeObjectTree(self.focus)
         else :
-            self.handler.deleteObjectTree(self.focus)
+            self.handler.removeObjectTree(self.focus)
         self.focus = None
-        print('......................................................................................................................................................................')
+        print('............................................................................................................................................................')
         print()
 
     def getPaths(self,imagePath,soundPath,settingsPath):
@@ -193,10 +171,6 @@ class Application:
             self.frame = Frame.Frame(self)
         self.updateScreen()
         self.running = True
-
-    def update(self,timeNow):
-        self.timeNow = timeNow
-        self.updateFrame()
 
     def updateFrame(self):
         self.frame.update()

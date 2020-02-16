@@ -5,8 +5,20 @@ import imageFunction, fatherFunction
 print('Screen library imported')
 
 class Screen:
-    '''
-    It blits all objects on the screen.surface'''
+
+    def update(self):
+        if self.mustUpdate :
+            for object in self.object.handler.objects.values() :
+                if object.screen.mustUpdate :
+                    object.screen.update()
+
+            self.updateBlitRect() ###- precaution
+            self.updateBlitList()
+            self.reset()
+            self.blitText()
+            self.surface.blits(self.blitList)
+        self.didUpdate()
+        
     def __init__(self,object):
         '''
         It blits all objects on the screen.surface'''
@@ -52,19 +64,6 @@ class Screen:
 
     def didUpdate(self):
         self.mustUpdate = False
-
-    def update(self):
-        if self.mustUpdate :
-            for object in self.object.handler.objects.values() :
-                if object.screen.mustUpdate :
-                    object.screen.update()
-
-            self.updateBlitRect() ###- precaution
-            self.updateBlitList()
-            self.reset()
-            self.blitText()
-            self.surface.blits(self.blitList)
-        self.didUpdate()
 
     def updateBlitRect(self):
         self.blitRect = self.getBlitRect()

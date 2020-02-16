@@ -1,53 +1,86 @@
-import Button, Surface
 import eventFunction
 
 print('Event library imported')
 
 class Event:
 
+    def update(self):
+        print(f'Event() - {self.type}.update() - {getObjectFocusDebugText(self)}')
+        self.object.handleEvent(self)
+
     def __init__(self,object,
         name = None,
-        autoUpdate = True
+        type = eventFunction.Type.EVENT,
+        inherited = False
     ):
 
         if object :
             self.object = object
             self.application = self.object.application
+            self.inherited = inherited
+
+            if type :
+                self.type = type
+            else :
+                self.type = eventFunction.Type.EVENT
 
             if name :
                 self.name = name
             else :
-                self.name = object.name
+                self.name = f'{self.type}.{object.name}'
             self.targetClass = object.__class__.__name__
 
             self.status = eventFunction.Status.NOT_RESOLVED
-            self.autoUpdate = autoUpdate
 
-            if self.object.name not in self.object.tutor.handler.events :
+            if self.name not in self.object.tutor.handler.events :
+                print(f"Event(): {self.name} added in Event.__init__()")
                 self.object.tutor.handler.addEvent(self)
+            else :
+                print(f'{self.type} felt in Event.update()')
+                self.object.tutor.handler.events[self.name].update()
 
-            if self.autoUpdate :
-                self.update()
-                if self.status == eventFunction.Status.RESOLVED :
-                    self.resolve()
+            self.execute()
 
-    def update(self):
-        print(f'------- START OF RESOLVE EVENT -------{getObjectFocusDebugText(self)}')
-        self.object.handleEvent(self)
+        else :
+            object.application.holdForDebug(getObjectHitDebugText(object))
 
     def resolve(self):
-        # if self.name in self.object.tutor.handler.events :
-        #     self.status = eventFunction.Status.RESOLVED
-        # else :
-        #     debugText = f'Event: {self.name}.resolve()\n'
-        #     debugText += f'{self.name} not found in event.object.tutor.handler.events'
-        #     self.application.holdForDebug(debugText)
-        print(f'-------- END OF RESOLVE EVENT --------{getObjectFocusDebugText(self)}')
+        self.object.tutor.handler.removeEvent(self)
+        print(f'{self.type}.update() resolved -{getObjectFocusDebugText(self)}')
+
+    def execute(self):
+        if not self.inherited :
+            print(f'{self.type}.execute()')
+            self.update()
+            if self.status == eventFunction.Status.RESOLVED :
+                self.resolve()
 
 
 def getObjectFocusDebugText(self):
-    debugText = f' {self.name}, application.focus = {self.object.application.focus}'
+    debugText = f' {self.name}, application.focus = {id(self.object.application.focus)}'
     try :
         debugText += f', name = {self.object.application.focus.name}'
     except : pass
+    return debugText
+
+def getObjectHitDebugText(object) :
+    debugText = ' -- Event:\n'
+    debugText += '''Event(object): object = None\n'''
+    debugText += f'mouse.objectHit = {object.application.mouse.objectHit}\n'
+    try :
+        debugText += f'mouse.objectHit.name = {object.application.mouse.objectHit.name}\n'
+    except : pass
+    debugText += f'mouse.objectHitDown = {object.application.mouse.objectHitDown}\n'
+    try :
+        debugText += f'mouse.objectHitDown.name = {object.application.mouse.objectHitDown.name}\n'
+    except : pass
+    debugText += f'mouse.objectHitUp = {object.application.mouse.objectHitUp}\n'
+    try :
+        debugText += f'mouse.objectHitUp.name = {object.application.mouse.objectHitUp.name}\n'
+    except : pass
+    debugText += f'     Application.focus = {object.application.mouse.application.focus}\n'
+    try :
+        debugText += f'     Application.focus.name = {mouse.application.focus.name}\n'
+    except : pass
+
     return debugText

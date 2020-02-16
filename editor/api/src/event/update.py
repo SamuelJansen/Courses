@@ -2,7 +2,7 @@ import eventFunction
 
 def update(event) :
     father = event.object.father
-    father.handler.deleteObject(event.object)
+    father.handler.removeObjectTree(event.object)
     father.resetButtonsPosition()
 
     event.status = eventFunction.Status.RESOLVED

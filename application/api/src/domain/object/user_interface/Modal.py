@@ -6,7 +6,7 @@ print('Modal library imported')
 class Modal(UserInterface.UserInterface):
 
     def __init__(self,name,position,size,father,
-        eventFunction = None,
+        externalEvent = None,
         scale = None,
         padding = None,
         noImage = False,
@@ -18,7 +18,7 @@ class Modal(UserInterface.UserInterface):
 
         UserInterface.UserInterface.__init__(
             self,name,position,size,father,
-            eventFunction = eventFunction,
+            externalEvent = externalEvent,
             scale = scale,
             padding = padding,
             noImage = noImage,

@@ -11,7 +11,7 @@ class ItemSet(Modal.Modal):
     RIGHT = 'RIGHT'
 
     def __init__(self,name,position,father,
-        eventFunction = None,
+        externalEvent = None,
         itemsName = None,
         itemsText = None,
         itemSize = None,
@@ -28,7 +28,7 @@ class ItemSet(Modal.Modal):
 
         Modal.Modal.__init__(
             self,name,position,size,father,
-            eventFunction = eventFunction,
+            externalEvent = externalEvent,
             scale = scale,
             padding = padding,
             noImage = noImage,
@@ -99,16 +99,16 @@ class ItemSet(Modal.Modal):
                 ]
 
             if self.itemsEventFunction :
-                eventFunction = self.itemsEventFunction
+                externalEvent = self.itemsEventFunction
             else :
-                eventFunction = self.itemsName[itemIndex]
+                externalEvent = self.itemsName[itemIndex]
 
             newItem = Button.Button(
                 self.itemsName[itemIndex],
                 itemPosition,
                 self.itemSize.copy(),
                 itemsFather,
-                eventFunction = eventFunction
+                externalEvent = externalEvent
             )
 
             if self.itemsText :

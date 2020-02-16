@@ -40,23 +40,22 @@ class Header(UserInterface.UserInterface):
                 itemPosition,
                 self.itemSize,
                 itemFather,
-                eventFunction = itemEvent
+                externalEvent = itemEvent
             )
 
     def addButton(self,name,size):
-
         father = self
         size = surfaceFunction.parseSize(size,father)
         itemIndex = len(self.handler.objects)
         position = self.getItemPosition(itemIndex)
-        eventFunction = name
+        externalEvent = name
 
         mewButton = Button.Button(
             name,
             position,
             size,
             father,
-            eventFunction = eventFunction
+            externalEvent = externalEvent
         )
 
     def resetButtonsPosition(self):

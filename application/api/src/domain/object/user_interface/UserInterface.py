@@ -6,7 +6,7 @@ print('UserInterface library imported')
 class UserInterface(Surface.Surface):
 
     def __init__(self,name,position,size,father,
-        eventFunction = None,
+        externalEvent = None,
         scale = None,
         padding = None,
         noImage = False,
@@ -29,7 +29,7 @@ class UserInterface(Surface.Surface):
 
         Surface.Surface.__init__(
             self,name,position,size,father,
-            eventFunction = eventFunction,
+            externalEvent = externalEvent,
             scale = scale,
             padding = padding,
             noImage = noImage,

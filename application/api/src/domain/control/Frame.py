@@ -3,39 +3,8 @@ import pygame as pg
 import TimeErrorControl
 
 class Frame:
-    '''
-    It's a class to control time'''
-    def __init__(self,aplication):
-        '''
-        Frame(aplication)'''
-        self.aplication = aplication
-        self.newSecond = True
-        #- Frame stuffs
-        self.counter = 0
-        self.new = True
-        self.width = 1 / self.aplication.fps
-        self.timeNext = self.aplication.timeNow + self.width
-        #- Frame stuffs
-        self.fpsCounter = 0
-        self.apsCounter = 0
-        #- Actions per frame. It was much simpler to implement
-        self.apf = self.aplication.aps/self.aplication.fps
-        self.apfWidth = self.width / self.apf
-        self.apfCounter = 0
-        self.apfNew = True
-        self.apfTimeNext = self.aplication.timeNow + self.apfWidth
-        #- Time issues
-        self.timeError = 0
-        self.apfTimeError = 0
-        self.timeOveralError = 0
-        self.correctionFactor = .6
-        #- External time corrector
-        self.correction = TimeErrorControl.TimeErrorControl(self,self.aplication)
-
+    
     def update(self):
-        '''
-        It aims to mantain the fps and aps constant
-        Frame.update()'''
         #- dealling with frame control
         self.new = False
         self.newSecond = False
@@ -75,3 +44,28 @@ class Frame:
         if self.newSecond :
             self.fpsCounter = 0
             self.apsCounter = 0
+
+    def __init__(self,aplication):
+        self.aplication = aplication
+        self.newSecond = True
+        #- Frame stuffs
+        self.counter = 0
+        self.new = True
+        self.width = 1 / self.aplication.fps
+        self.timeNext = self.aplication.timeNow + self.width
+        #- Frame stuffs
+        self.fpsCounter = 0
+        self.apsCounter = 0
+        #- Actions per frame. It was much simpler to implement
+        self.apf = self.aplication.aps/self.aplication.fps
+        self.apfWidth = self.width / self.apf
+        self.apfCounter = 0
+        self.apfNew = True
+        self.apfTimeNext = self.aplication.timeNow + self.apfWidth
+        #- Time issues
+        self.timeError = 0
+        self.apfTimeError = 0
+        self.timeOveralError = 0
+        self.correctionFactor = .6
+        #- External time corrector
+        self.correction = TimeErrorControl.TimeErrorControl(self,self.aplication)

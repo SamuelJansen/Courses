@@ -5,31 +5,8 @@ print('ClickEvent library imported')
 
 class ClickEvent(Event.Event):
 
-    def __init__(self,mouse):
-
-        object = mouse.objectHit
-
-        if not object :
-            mouse.application.holdForDebug(getObjectHitDebugText(mouse))
-
-        if object :
-            Event.Event.__init__(self,object,
-                name = eventFunction.Type.CLICK_EVENT,
-                autoUpdate = False
-            )
-
-            self.mouse = mouse
-            self.clickTime = self.application.timeNow
-            self.objectClicked = self.getObjectClicked()
-            self.update()
-            self.resolve()
-
-    def getObjectClicked(self):
-        if self.mouse.objectHitDown == self.mouse.objectHitUp :
-            return self.mouse.objectHit
-
     def update(self):
-        print(f'------- START OF RESOLVE EVENT ------- {self.name}')
+        print(f'ClickEvent() - {self.type}.update() - {self.name}')
         if self.object :
             self.updateClickTimes()
 
@@ -38,6 +15,35 @@ class ClickEvent(Event.Event):
             elif self.object.doubleClickable :
                 if self.clickTime - self.lastclickTime < 1 and self.clickTime != self.lastclickTime:
                     self.proceedClick()
+
+        self.status = eventFunction.Status.RESOLVED
+
+    def __init__(self,mouse,
+        object = None,
+        name = None,
+        type = eventFunction.Type.CLICK_EVENT,
+        inherited = False
+    ):
+
+        if not object :
+            object = mouse.objectHit
+
+        Event.Event.__init__(self,object,
+            name = name,
+            type = type,
+            inherited = True
+        )
+        self.inherited = inherited
+
+        self.mouse = mouse
+        self.clickTime = self.application.timeNow
+        self.objectClicked = self.getObjectClicked()
+
+        self.execute()
+
+    def getObjectClicked(self):
+        if self.mouse.objectHitDown == self.mouse.objectHitUp :
+            return self.mouse.objectHit
 
     def updateClickTimes(self):
         self.lastclickTime = self.clickTime
@@ -48,31 +54,7 @@ class ClickEvent(Event.Event):
             pass
         if self.mouse.state == mouseFunction.State.LEFT_CLICK_UP :
             if self.objectClicked :
-                self.clickIt(self.objectClicked)
+                self.click(self.objectClicked)
 
-    def clickIt(self,object):
+    def click(self,object):
         Event.Event(object)
-
-
-def getObjectHitDebugText(mouse) :
-
-    debugText = ' -- ClickEvent:\n'
-    debugText += '''Mouse didn't hit any object\n'''
-    debugText += f'mouse.objectHit = {mouse.objectHit}\n'
-    try :
-        debugText += f'mouse.objectHit.name = {mouse.objectHit.name}\n'
-    except : pass
-    debugText += f'mouse.objectHitDown = {mouse.objectHitDown}\n'
-    try :
-        debugText += f'mouse.objectHitDown.name = {mouse.objectHitDown.name}\n'
-    except : pass
-    debugText += f'mouse.objectHitUp = {mouse.objectHitUp}\n'
-    try :
-        debugText += f'mouse.objectHitUp.name = {mouse.objectHitUp.name}\n'
-    except : pass
-    debugText += f'     Application.focus = {mouse.application.focus}\n'
-    try :
-        debugText += f'     Application.focus.name = {mouse.application.focus.name}\n'
-    except : pass
-
-    return debugText

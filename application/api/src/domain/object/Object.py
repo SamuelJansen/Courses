@@ -11,7 +11,7 @@ class Object:
 
     def __init__(self,name,position,size,scale,velocity,father,
             type = None,
-            eventFunction = None,
+            externalEvent = None,
             collidableSize = None,
             noImage = False,
             imagePath = None,
@@ -74,7 +74,7 @@ class Object:
         self.textPositionList = []
         self.font = None
 
-        self.initializeInteractiability(eventFunction)
+        self.initializeInteractiability(externalEvent)
 
         self.screen = Screen.Screen(self)
         self.handler = Handler.Handler(self)
@@ -181,35 +181,18 @@ class Object:
                 position[1] + fatherAbsoluteOriginalPosition[1]
             ]
 
-    def initializeInteractiability(self,eventFunction):
-        self.hit = False
+    def initializeInteractiability(self,externalEvent):
         self.clickable = False
-        self.eventFunction = None
+        self.externalEvent = None
         self.execute = None
         self.singleClickable = False
         self.doubleClickable = False
 
-        if eventFunction :
+        if externalEvent :
             self.clickable = True
-            self.clicked = False
-            self.eventFunction = eventFunction
-            self.singleClickable = True ###- self.eventFunction.TYPE == objectFunction.Attribute.SINGLE_CLICKABLE
-            self.doubleClickable = False ###- self.eventFunction.TYPE == objectFunction.Attribute.DOUBLE_CLICKABLE
+            self.externalEvent = externalEvent
+            self.singleClickable = True ###- self.externalEvent.TYPE == objectFunction.Attribute.SINGLE_CLICKABLE
+            self.doubleClickable = False ###- self.externalEvent.TYPE == objectFunction.Attribute.DOUBLE_CLICKABLE
 
     def handleEvent(self,event):
-        return self.eventFunction(event)
-
-    def getFunctionAttributes(self,attribute):
-        return self.handleEvent(attribute)
-
-    def updateHitStatus(self,didHit):
-        self.hit = didHit
-
-    def updateClickedStatus(self,status):
-        if self.clickable :
-            self.clicked = status
-
-    def isClicked(self):
-        if self.clickable :
-            return self.clicked
-        return False
+        return self.externalEvent(event)
