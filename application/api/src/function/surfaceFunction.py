@@ -1,4 +1,14 @@
-SQUARE = 'SQUARE'
+import numpy as np
+
+class Attribute:
+
+    NAME = 'Surface'
+
+
+class Types :
+
+    SQUARE = 'SQUARE'
+
 
 def parseSize(size,father) :
     if size :
@@ -15,15 +25,13 @@ def getFeatureSize(sizeParsed,featureSize,featureSizeIndex,size,father) :
         sizeParsed = getFeatureByPercentage(sizeParsed,featureSize,featureSizeIndex,father)
         if not sizeParsed[featureSizeIndex] :
             sizeParsed[featureSizeIndex] = featureSize
-            # print(f'error : --> getFeatureSize()')
-            # print(f'    {size}.featureSize = {featureSize}')
     else :
         sizeParsed[featureSizeIndex] = featureSize
     return sizeParsed
 
 def getFeatureByPoligono(sizeParsed,featureSize,featureSizeIndex,size,father) :
     if not sizeParsed[featureSizeIndex] :
-        if featureSize == SQUARE :
+        if featureSize == Types.SQUARE :
             if featureSizeIndex == 0 :
                 try :
                     sizeParsed[featureSizeIndex] = getFeatureSize(
@@ -42,8 +50,7 @@ def getFeatureByPercentage(sizeParsed,featureSize,featureSizeIndex,father) :
     if not sizeParsed[featureSizeIndex] :
         try :
             sizeParsed[featureSizeIndex] = int(np.round(int(featureSize[:-1])*father.size[featureSizeIndex]/100,0))
-        except :
-            pass
+        except : pass
     return sizeParsed
 
 def getSizePadded(size,padding) :
@@ -59,3 +66,14 @@ def getPositionPadded(position,padding) :
         return positionPadded
     else :
         return position
+
+def stashPadding(padding,father) :
+    if padding :
+        originalPadding = padding.copy()
+    else :
+        try :
+            originalPadding = father.padding.copy()
+        except :
+            originalPadding = [0,0]
+    padding = [0,0]
+    return padding,originalPadding

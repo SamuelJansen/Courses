@@ -1,6 +1,8 @@
 import pygame as pg
 import os
 
+import objectFunction
+
 imageLibrary = {}
 def getImage(path,size,aplication) :
     '''
@@ -26,14 +28,13 @@ def getImage(path,size,aplication) :
     return image.copy()
 
 def getNoImage(size,aplication) :
-    import Object
     path = f'{aplication.imagePath}standard_image.png'
     canonicalizedPath = path.replace('/',os.sep).replace('\\',os.sep)
     image = pg.image.load(canonicalizedPath)
     image = pg.transform.smoothscale(image,size).convert_alpha()
     for x in range(image.get_width()):
         for y in range(image.get_height()):
-            image.set_at([x,y],Object.Object.NO_IMAGE_COLOR)
+            image.set_at([x,y],objectFunction.Attribute.NO_IMAGE_COLOR)
     return image
 
 def saveImage(image,path) :
@@ -70,9 +71,8 @@ def newDisplay(size) :
     return newDisplay
 
 def newAlphaSurface(size) :
-    import Object
     screenSurface = pg.Surface(size,pg.HWSURFACE|pg.DOUBLEBUF|pg.SRCALPHA,32)
-    screenSurface.fill(Object.Object.NOT_HITTABLE_COLOR)
+    screenSurface.fill(objectFunction.Attribute.NOT_HITTABLE_COLOR)
     return screenSurface.convert_alpha()
 
 def colorFilter(threshold,image) :

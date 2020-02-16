@@ -1,3 +1,5 @@
+import pygame as pg
+
 def getSettings(path) :
     settings = {}
     with open(path,'r',encoding='utf-8') as settingsFile :

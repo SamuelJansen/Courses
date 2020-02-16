@@ -1,5 +1,5 @@
-from function import importMannanger
-pathMannanger = importMannanger.updateImportMannger()
+from domain.control import PathMannanger
+pathMannanger = PathMannanger.PathMannanger()
 
 print('glopals api')
 

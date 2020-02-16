@@ -1,6 +1,6 @@
 import Button
 
-import pathFunction
+from function import pathFunction
 
 def makeAScript(courseName,moduleName,lessonName,amountOfPagesToMake,plataform) :
     ###- Course will need some work later on

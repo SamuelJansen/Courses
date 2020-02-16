@@ -1,6 +1,8 @@
 import pygame as pg
 
-import imageFunction, pathFunction
+import imageFunction
+
+from function import pathFunction
 
 def makeSoManyPages(courseName,moduleName,lessonName,amountOfPagesToMake,plataform) :
     ###- Course will need some work later on

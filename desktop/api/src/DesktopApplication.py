@@ -1,20 +1,18 @@
-from function import importMannanger
-pathMannanger = importMannanger.updateImportMannger()
-from function import importMannanger
+from domain.control import PathMannanger
+pathMannanger = PathMannanger.PathMannanger()
 
 from model.course import Course
 from model.user import ApplicationUser
-from model import Plataform
+
+from domain import Plataform
 from function.performance_measurement import makePagesFunction, makeScriptFunction
 
 import os
-import pygame as pg
-import time as now
 import numpy as np
 import ArrowKey, Object
 import imageFunction
 
-plataformName = 'courses_plataform'
+plataformName = 'desktop'
 colors =    {
             'black' : (0,0,0),
             'white' : (255,255,255),
@@ -23,22 +21,23 @@ colors =    {
             }
 fps = 30
 aps = 30
-plataform = Plataform.Plataform(plataformName,fps,aps,colors)
+plataform = Plataform.Plataform(plataformName,fps,aps,colors,pathMannanger,
+    floor = False
+)
 
 objectName = '1'
 objectPosition = [0,0]
 objectSize = plataform.size
 objectScale = 1000
 objectVelocity = .0001
-father=None
+father = plataform
 Object.Object(
     objectName,
     objectPosition,
     objectSize,
     objectScale,
     objectVelocity,
-    plataform,
-    plataform
+    father
 )
 
 courseName = 'macro_2020_03'
@@ -51,10 +50,9 @@ makeScriptFunction.makeAScript(courseName,moduleName,lessonName,amountOfPagesToM
 coursesName = [courseName]
 aplicationUserRegistration = '000000'
 aplicationUserPassword = '123'
-aplicationUser = AplicationUser.AplicationUser(aplicationUserRegistration,aplicationUserPassword,plataform,coursesName=coursesName)
+aplicationUser = ApplicationUser.ApplicationUser(aplicationUserRegistration,aplicationUserPassword,plataform,coursesName=coursesName)
 
 arrow = ArrowKey.ArrowKey()
-mouse = Mouse.Mouse(plataform)
 move = [np.random.randint(3)-1,np.random.randint(3)-1]
 
 plataform.run(arrow)
