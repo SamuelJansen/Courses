@@ -16,7 +16,7 @@ class ItemSet(Modal.Modal):
         itemsText = None,
         itemSize = None,
         itemDirection = DOWN,
-        itemsEventFunction = None,
+        itemsExternalEvent = None,
         scale = None,
         padding = None,
         noImage = False,
@@ -45,7 +45,7 @@ class ItemSet(Modal.Modal):
         self.itemsText = itemsText
         self.itemFontSize = self.getFontSize()
 
-        self.itemsEventFunction = itemsEventFunction
+        self.itemsExternalEvent = itemsExternalEvent
 
         self.initialChildPosition = self.calculateInitialChildPosition()
 
@@ -98,8 +98,8 @@ class ItemSet(Modal.Modal):
                     self.initialChildPosition[1] + itemIndex * (self.itemSize[1] - self.padding[1])
                 ]
 
-            if self.itemsEventFunction :
-                externalEvent = self.itemsEventFunction
+            if self.itemsExternalEvent :
+                externalEvent = self.itemsExternalEvent
             else :
                 externalEvent = self.itemsName[itemIndex]
 

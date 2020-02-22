@@ -1,3 +1,6 @@
+import os
+clear = lambda: os.system('cls')
+clear()
 from domain.control import PathMannanger
 
 print('PathMannanger library imported')

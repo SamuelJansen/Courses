@@ -15,20 +15,20 @@ def openModule(event) :
     name = 'modulesItemSet'
     # position = event.object.position.copy()
     position = event.object.getAbsolutePosition()
-    itemsEventFunction = resolveModuleClick
+    itemsExternalEvent = resolveModuleClick
     father = event.object
-    event.object.application.setFocus(
-        ItemSet.ItemSet(name,position,father,
-            itemsName = modules,
-            itemsText = modules,
-            itemSize = [240,20],
-            itemDirection = ItemSet.ItemSet.DOWN,
-            itemsEventFunction = itemsEventFunction,
-            noImage = True,
-            imagePath = None,
-            soundPath = None
-        )
+    # event.object.application.setFocus(
+    ItemSet.ItemSet(name,position,father,
+        itemsName = modules,
+        itemsText = modules,
+        itemSize = [240,20],
+        itemDirection = ItemSet.ItemSet.DOWN,
+        itemsExternalEvent = itemsExternalEvent,
+        noImage = True,
+        imagePath = None,
+        soundPath = None
     )
+    # )
 
     event.status = eventFunction.Status.NOT_RESOLVED
 

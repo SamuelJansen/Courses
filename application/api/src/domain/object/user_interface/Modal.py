@@ -1,5 +1,5 @@
 import UserInterface
-import surfaceFunction
+import surfaceFunction, eventFunction
 
 print('Modal library imported')
 
@@ -16,8 +16,7 @@ class Modal(UserInterface.UserInterface):
 
         name,position,padding,originalPadding,father,tutor = self.getModalFatherAttributes(name,padding,father)
 
-        UserInterface.UserInterface.__init__(
-            self,name,position,size,father,
+        UserInterface.UserInterface.__init__(self,name,position,size,father,
             externalEvent = externalEvent,
             scale = scale,
             padding = padding,
@@ -27,6 +26,21 @@ class Modal(UserInterface.UserInterface):
         )
 
         self.setModalTutorAttributes(tutor,originalPadding)
+
+        # if eventFunction.Type.MODAL in self.handler.inheritanceTree :
+        #     try :
+        #         print(f'Modal:  name = {self.name}, position = {self.position}, originalPosition = {self.handler.originalPosition}, size = {self.size}, originalSize = {self.handler.originalSize}, padding = {self.padding}')
+        #     except :
+        #         print(f'Modal:  name = {self.name}, position = {self.position}, originalPosition = {self.handler.originalPosition}, size = {self.size}, originalSize = {self.handler.originalSize}, padding = noPadding')
+        #     try :
+        #         print(f'        father = {self.father.name}, position = {self.father.position}, originalPosition = {self.father.handler.originalPosition}, size = {self.father.size}, originalSize = {self.father.handler.originalSize}, padding = {self.father.padding}')
+        #     except :
+        #         print(f'        father = {self.father.name}, position = {self.father.position}, originalPosition = {self.father.handler.originalPosition}, size = {self.father.size}, originalSize = {self.father.handler.originalSize}, padding = noPadding')
+        #     try :
+        #         print(f'        tutor = {self.tutor.name}, position = {self.tutor.position}, originalPosition = {self.tutor.handler.originalPosition}, size = {self.tutor.size}, originalSize = {self.tutor.handler.originalSize}, padding = {self.tutor.padding}')
+        #     except :
+        #         print(f'        tutor = {self.tutor.name}, position = {self.tutor.position}, originalPosition = {self.tutor.handler.originalPosition}, size = {self.tutor.size}, originalSize = {self.tutor.handler.originalSize}, padding = noPadding')
+
 
     def getModalFatherAttributes(self,name,padding,father):
         name += f'.{father.name}'

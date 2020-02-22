@@ -5,7 +5,7 @@ print('Event library imported')
 class Event:
 
     def update(self):
-        print(f'Event() - {self.type}.update() - {getObjectFocusDebugText(self)}')
+        # print(f'Event() - {self.type}.update() - {getObjectFocusDebugText(self)}')
         self.object.handleEvent(self)
 
     def __init__(self,object,
@@ -32,34 +32,34 @@ class Event:
 
             self.status = eventFunction.Status.NOT_RESOLVED
 
-            if self.name not in self.object.tutor.handler.events :
-                print(f"Event(): {self.name} added in Event.__init__()")
-                self.object.tutor.handler.addEvent(self)
+            if self.name not in self.object.handler.events :
+                # print(f"Event(): {self.name} added in Event.__init__()")
+                self.object.handler.addEvent(self)
             else :
-                print(f'{self.type} felt in Event.update()')
-                self.object.tutor.handler.events[self.name].update()
+                # print(f'{self.type} felt in Event.update()')
+                self.object.handler.events[self.name].update()
 
             self.execute()
 
         else :
-            object.application.holdForDebug(getObjectHitDebugText(object))
+            applicationFunction.holdForDebug(getObjectHitDebugText(object))
 
     def resolve(self):
-        self.object.tutor.handler.removeEvent(self)
-        print(f'{self.type}.update() resolved -{getObjectFocusDebugText(self)}')
+        self.object.handler.removeEvent(self)
+        # print(f'{self.type}.update() resolved -{getObjectFocusDebugText(self)}')
 
     def execute(self):
         if not self.inherited :
-            print(f'{self.type}.execute()')
+            # print(f'{self.type}.execute()')
             self.update()
             if self.status == eventFunction.Status.RESOLVED :
                 self.resolve()
 
 
 def getObjectFocusDebugText(self):
-    debugText = f' {self.name}, application.focus = {id(self.object.application.focus)}'
+    debugText = f' {self.name}, application.focus = {id(self.application.focus)}-{self.application.focus}'
     try :
-        debugText += f', name = {self.object.application.focus.name}'
+        debugText += f', name = {self.application.focus.name}'
     except : pass
     return debugText
 

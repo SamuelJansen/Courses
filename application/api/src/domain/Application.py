@@ -83,7 +83,6 @@ class Application:
                 type = objectFunction.Type.APPLICATION_FLOOR
             )
 
-        self.focus = None
         self.mouse = Mouse.Mouse(self)
 
         self.running = False
@@ -98,39 +97,12 @@ class Application:
         self.selectable = True
         self.screen = Screen.Screen(self)
         self.handler = Handler.Handler(self)
-        self.hit = False
+        self.focus = None
         self.clickable = False
         self.functionKey = None
         self.handleEvent = None
         self.singleClickable = False
         self.doubleClickable = False
-
-    def setFocus(self,object):
-        print()
-        print('++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++')
-        print(f'Application.setFocus(): {object.name}')
-        if not self.focus :
-            self.focus = object.tutor
-        else :
-            debugText = 'Application already in focus\n'
-            debugText += f'     actual focus = {self.focus.name}\n'
-            debugText += f'     new focus = {object.tutor.name}\n'
-            # print(debugText)
-            self.holdForDebug(debugText)
-        print('++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++')
-        print()
-
-    def removeFocus(self):
-        print()
-        print('............................................................................................................................................................')
-        print(f'Application.removeFocus(): {self.focus.name}')
-        if self.floor :
-            self.handler.objects[applicationFunction.Attribute.FLOOR].handler.removeObjectTree(self.focus)
-        else :
-            self.handler.removeObjectTree(self.focus)
-        self.focus = None
-        print('............................................................................................................................................................')
-        print()
 
     def getPaths(self,imagePath,soundPath,settingsPath):
         self.imagePath = imagePath
@@ -190,16 +162,6 @@ class Application:
 
     def updatePosition(self,position):
         self.setPosition(position)
-
-    def updateHitStatus(self,status):
-        self.hit = status
-
-    def holdForDebug(self,debugText):
-        print(' -- DEBUGING -- ')
-        print(debugText)
-        debuging = True
-        while(debuging) :
-            pass
 
     def run(self,arrow):
         self.initialize(now.time())

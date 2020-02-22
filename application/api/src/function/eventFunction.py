@@ -12,9 +12,10 @@ class Type:
     BUTTON = buttonFunction.Attribute.NAME
 
     EVENT = eventFunction.Attribute.NAME
+    FOCUS_EVENT = 'FocusEvent'
     CLICK_EVENT = 'ClickEvent'
     FALSE_CLICK_EVENT = 'FalseClickEvent'
-    MODAL_HIT_EVENT = 'ModalHitEvent'
+    REMOVE_FOCUS_EVENT = 'RemoveFocusEvent'
 
 
 class Status:

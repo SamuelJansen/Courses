@@ -1,4 +1,4 @@
-import Event
+import Event, FocusEvent, FalseClickEvent
 import eventFunction, mouseFunction
 
 print('ClickEvent library imported')
@@ -6,7 +6,7 @@ print('ClickEvent library imported')
 class ClickEvent(Event.Event):
 
     def update(self):
-        print(f'ClickEvent() - {self.type}.update() - {self.name}')
+        # print(f'ClickEvent() - {self.type}.update() - {self.name}')
         if self.object :
             self.updateClickTimes()
 
@@ -15,6 +15,8 @@ class ClickEvent(Event.Event):
             elif self.object.doubleClickable :
                 if self.clickTime - self.lastclickTime < 1 and self.clickTime != self.lastclickTime:
                     self.proceedClick()
+            else :
+                FalseClickEvent.FalseClickEvent(self.application)
 
         self.status = eventFunction.Status.RESOLVED
 
@@ -50,11 +52,13 @@ class ClickEvent(Event.Event):
         self.clickTime = self.application.timeNow
 
     def proceedClick(self):
-        if self.mouse.state == mouseFunction.State.LEFT_CLICK_DOWN :
-            pass
-        if self.mouse.state == mouseFunction.State.LEFT_CLICK_UP :
-            if self.objectClicked :
-                self.click(self.objectClicked)
+        if self.mouse.state == mouseFunction.State.LEFT_CLICK_DOWN or self.mouse.state == mouseFunction.State.LEFT_CLICK_UP :
+            FocusEvent.FocusEvent(self.object)
+            if self.mouse.state == mouseFunction.State.LEFT_CLICK_DOWN :
+                pass
+            if self.mouse.state == mouseFunction.State.LEFT_CLICK_UP :
+                if self.objectClicked :
+                    self.click(self.objectClicked)
 
     def click(self,object):
         Event.Event(object)

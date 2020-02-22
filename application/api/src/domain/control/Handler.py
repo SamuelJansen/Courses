@@ -1,4 +1,4 @@
-import fatherFunction, eventFunction
+import fatherFunction, eventFunction, handlerFunction
 
 print('Handler library imported')
 
@@ -24,7 +24,7 @@ class Handler:
 
     def getInheritanceTree(self):
         self.inheritanceTree = []
-        self.inheritanceTree.append(self.object.__class__.__name__)
+        # self.inheritanceTree.append(self.object.__class__.__name__)
         for inheritance in self.object.__class__.mro() :
             self.inheritanceTree.append(inheritance.__name__)
 
@@ -93,28 +93,22 @@ class Handler:
 
     def removeObject(self,object):
         if object.name in self.objects :
+            object.handler.removeStudentTree()
+            object.handler.removeObjectTree()
             del self.objects[object.name]
             self.object.screen.mustUpdateNextFrame()
         else :
-            self.application.holdForDebug(
+            applicationFunction.holdForDebug(
                 f'Handler.removeObject():\n' +
                 f'      {object.name} not found in {self.object.name}.handler.objects'
             )
 
-    def removeObjectTree(self,object):
-        childrenNames = list(object.handler.objects.keys())
-        for childName in childrenNames:
-            if object.handler.objects[childName].handler.students :
-                studentSonNames = list(object.handler.objects[childName].handler.students.keys())
-                for studentSonName in studentSonNames :
-                    if studentSonName in object.handler.objects :
-                        object.handler.objects[childName].handler.deleteStudentTree(object.handler.objects[childName].handler.students[studentSonName])
-            if object.handler.objects[childName].handler.objects :
-                objectSonNames = list(object.handler.objects[childName].handler.objects.keys())
-                for objectSonName in objectSonNames :
-                    if objectSonName in object.handler.objects :
-                        object.handler.objects[childName].handler.removeObjectTree(object.handler.objects[childName].handler.objects[objectSonName])
-        self.removeObject(self.objects[object.name])
+    def removeObjectTree(self):
+        objectNames = list(self.objects.keys())
+        for objectName in objectNames :
+            self.objects[objectName].handler.removeStudentTree()
+            self.objects[objectName].handler.removeObjectTree()
+            self.removeObject(self.objects[objectName])
 
     def setTutor(self,tutor):
         self.object.tutor = tutor
@@ -142,36 +136,32 @@ class Handler:
         self.students[student.name] = student
         self.object.screen.mustUpdateNextFrame()
 
-    def deleteStudent(self,student):
+    ###- TODO samuel.jansen 2020-02-17 - refactor handlerFunction.parseStudentName()
+    def removeStudent(self,student):
         if student.name in self.students :
-            del self.students[student.name].father.handler.objects[student.name]
-            self.object.screen.mustUpdateNextFrame()
+            if student.name in self.students[student.name].father.handler.objects :
+                student.handler.removeStudentTree()
+                student.handler.removeObjectTree()
+                del self.students[student.name].father.handler.objects[student.name]
+                self.object.screen.mustUpdateNextFrame()
         else :
-            self.application.holdForDebug(
-                f'Handler.deleteStudent():\n' +
+            applicationFunction.holdForDebug(
+                f'Handler.removeStudent():\n' +
                 f'      {student.name} not found in {self.object.name}.handler.students'
             )
 
-    def deleteStudentTree(self,student):
-        studentNames = list(student.handler.students.keys())
-        for studentName in studentNames:
-            if student.handler.students[studentName].handler.students :
-                studentSonNames = list(student.handler.students[studentName].handler.students.keys())
-                for studentSonName in studentSonNames :
-                    if studentSonName in student.handler.students :
-                        student.handler.students[studentName].handler.deleteStudentTree(student.handler.students[studentName].handler.students[studentSonName])
-            if student.handler.students[studentName].handler.objects :
-                objectSonNames = list(student.handler.students[studentName].handler.objects.keys())
-                for objectSonName in objectSonNames :
-                    if objectSonName in student.handler.students :
-                        student.handler.students[studentName].handler.removeObjectTree(student.handler.students[studentName].handler.objects[objectSonName])
-        self.deleteStudent(self.students[student.name])
+    def removeStudentTree(self):
+        studentNames = list(self.students.keys())
+        for studentName in studentNames :
+            self.students[studentName].handler.removeStudentTree()
+            self.students[studentName].handler.removeObjectTree()
+            self.removeStudent(self.students[studentName])
 
     def addEvent(self,event):
         if event.name not in self.events :
             self.events[event.name] = event
         else :
-            self.application.holdForDebug(
+            applicationFunction.holdForDebug(
                 f'Handler.addEvent():\n' +
                 f'      {event.name} already exists in {self.object.name}.handler.events'
             )
@@ -180,7 +170,12 @@ class Handler:
         if event.name in self.events :
             del self.events[event.name]
         else :
-            self.application.holdForDebug(
+            applicationFunction.holdForDebug(
                 f'Handler.addEvent():\n' +
                 f'      {event.name} not found in {self.object.name}.handler.events'
             )
+
+    def removeAllEvents(self):
+        eventNames = list(self.events.keys())
+        for eventName in eventNames :
+            self.removeEvent(self.events[eventName])

@@ -1,5 +1,9 @@
 import eventFunction
 
 def resolveLessonClick(event) :
-    event.status = eventFunction.Status.NOT_RESOLVED
+    import RemoveFocusEvent
+
+    RemoveFocusEvent.RemoveFocusEvent(event.application)
+
+    event.status = eventFunction.Status.RESOLVED
     print(f'    EventFunction called: {event.object.name}.resolveLessonClick({event.object.application.name})')
