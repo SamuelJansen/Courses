@@ -28,9 +28,9 @@ class EventError(Event.Event):
         )
         self.inherited = inherited
 
-
         if not message :
             message = f'{self.name} error'
         self.message = eventFunction.buildErrorMessage(message)
+        self.event = event
 
         self.execute()

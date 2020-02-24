@@ -134,6 +134,9 @@ class Application:
             0x0001
         )
 
+    def getAbsoluteOriginalPosition(self):
+        return self.handler.getOriginalPosition()
+
     def initialize(self,timeNow):
         '''
         It's better to call this method after create all objects'''

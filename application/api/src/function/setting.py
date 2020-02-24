@@ -1,4 +1,5 @@
 import pygame as pg
+import os
 
 def getSettings(path) :
     settings = {}
@@ -22,3 +23,11 @@ def getAplicationSize(aplication) :
     else :
         size = aplication.settings['screenSize']
     return size
+
+def getItemFileNames(itemsPath,fileExtension) :
+    itemFileNames = []
+    names = os.listdir(itemsPath)
+    for name in names :
+        if fileExtension == name.split('.')[-1] :
+            itemFileNames.append(name[:-(len(fileExtension) + 1)])
+    return itemFileNames

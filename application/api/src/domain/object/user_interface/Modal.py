@@ -47,6 +47,7 @@ class Modal(UserInterface.UserInterface):
         position = father.getAbsoluteOriginalPosition()
         padding,originalPadding = surfaceFunction.stashPadding(padding,father)
         tutor = father
+        print(f'tutor.image = {tutor.image}')
         father = father.application.getFloor()
         return name,position,padding,originalPadding,father,tutor
 

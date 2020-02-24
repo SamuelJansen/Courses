@@ -36,10 +36,10 @@ class Event:
             self.status = eventFunction.Status.NOT_RESOLVED
 
             if self.name not in self.object.handler.events :
-                print(f'{self.name} event added to {self.object.name}.handler.events')
+                # print(f'{self.name} event added to {self.object.name}.handler.events')
                 self.object.handler.addEvent(self)
             elif self.object.handler.events[self.name].status == eventFunction.Status.NOT_RESOLVED :
-                print(f'{self.name} event not added to {self.object.name}.handler.events')
+                # print(f'{self.name} event not added to {self.object.name}.handler.events')
                 self.object.handler.events[self.name].update()
 
             self.execute()
@@ -57,9 +57,10 @@ class Event:
             self.resolve(*args,**kargs)
 
     def updateStatus(self,status):
+        initialStatus = self.status
         if self.status != eventFunction.Status.REMOVED :
             self.status = status
-        print(f'{self.name}.status = {self.status}')
+        print(f'{self.name}.updateStatus() from {initialStatus} to {self.status}')
 
 
 def getObjectFocusDebugText(self):

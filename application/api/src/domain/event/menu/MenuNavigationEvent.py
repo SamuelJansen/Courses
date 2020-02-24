@@ -8,7 +8,7 @@ class MenuNavigationEvent(MenuEvent.MenuEvent):
     def update(self):
         self.removeFatherPreviousMenuNavigationEvent(self.object.father)
         self.applicationScriptFile = self.getApplicationScript()
-        print(f'MenuNavigationEvent.update(): MenuNavigationEvent.applicationScriptFile = {self.applicationScriptFile}')
+        # print(f'MenuNavigationEvent.update(): MenuNavigationEvent.applicationScriptFile = {self.applicationScriptFile}')
         if self.applicationScriptFileIsValid() :
             self.object.updateExecussionFunction(self.externalFunction)
             ExecussionEvent.ExecussionEvent(self)

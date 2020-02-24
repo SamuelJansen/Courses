@@ -46,7 +46,7 @@ class Object:
 
         if imagePath :
             self.imagePath = f'{imagePath}{self.name}.png'
-            # print(f'    imagePath = {self.imagePath}')
+            print(f'    imagePath = {self.imagePath}')
         else :
             self.imagePath = f'{self.application.imagePath}{self.type}\\{self.name}.png'
 

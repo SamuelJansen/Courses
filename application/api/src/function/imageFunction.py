@@ -1,7 +1,7 @@
 import pygame as pg
 import os
 
-import objectFunction
+import objectFunction, setting
 
 imageLibrary = {}
 def getImage(path,size,aplication) :
@@ -26,6 +26,9 @@ def getImage(path,size,aplication) :
         image = pg.transform.smoothscale(image,size)#.convert_alpha()
     imageLibrary[path] = image
     return image.copy()
+
+def getImageFileNames(imagesPath,imageExtension) :
+    return setting.getItemFileNames(imagesPath,imageExtension)
 
 def getNoImage(size,aplication) :
     path = f'{aplication.imagePath}standard_image.png'

@@ -1,5 +1,5 @@
 import Application, Header
-import surfaceFunction
+import surfaceFunction, headerFunction
 
 from event.exit import *
 from event.openModule import *
@@ -20,7 +20,7 @@ class Editor(Application.Application):
 
         Application.Application.__init__(self,*args,**kargs)
 
-        headerName = 'headerSurface'
+        headerName = headerFunction.Attribute.NAME
         headerPosition  = [0,0]
         headerSize = ['100%',22]
         headerFather = self.getFloor()

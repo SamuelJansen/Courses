@@ -1,7 +1,7 @@
 import FocusEvent
 import eventFunction, mouseFunction
 
-print('FalseClickEvent library imported')
+print('RemoveFocusEvent library imported')
 
 class RemoveFocusEvent(FocusEvent.FocusEvent):
 
