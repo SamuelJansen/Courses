@@ -25,31 +25,6 @@ plataform = Plataform.Plataform(plataformName,fps,aps,colors,pathMannanger,
     floor = False
 )
 
-objectName = '1'
-objectPosition = [0,0]
-objectSize = plataform.size
-objectScale = 1000
-objectVelocity = .0001
-father = plataform
-Object.Object(
-    objectName,
-    objectPosition,
-    objectSize,
-    objectScale,
-    objectVelocity,
-    father
-)
-
-courseName = 'macro_2020_03'
-moduleName = 'assistente_administrativo'
-lessonName = 'aula_01'
-amountOfPagesToMake = 1
-makePagesFunction.makeSoManyPages(courseName,moduleName,lessonName,amountOfPagesToMake,plataform)
-makeScriptFunction.makeAScript(courseName,moduleName,lessonName,amountOfPagesToMake,plataform)
-
-coursesName = [courseName]
-aplicationUserRegistration = '000000'
-aplicationUserPassword = '123'
 aplicationUser = ApplicationUser.ApplicationUser(aplicationUserRegistration,aplicationUserPassword,plataform,coursesName=coursesName)
 
 arrow = ArrowKey.ArrowKey()

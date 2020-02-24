@@ -10,7 +10,7 @@ print('Cenario library imported')
 class OneImageCenario(Object.Object):
     def __init__(self,name,velocity,father,
             imagePath = None,
-            soundPath = None'
+            audioPath = None'
     ):
         cenarioPosition = [0,0]
         Object.Object(
@@ -22,13 +22,13 @@ class OneImageCenario(Object.Object):
             father,
             type=Object.ObjectTypes.CENARIO,
             imagePath = imagePath,
-            soundPath = soundPath'
+            audioPath = audioPath'
         )
 
 class Cenario(Object.Object):
     def __init__(self,name,longitudes,latitudes,initialCoordinate,velocity,father,
             imagePath = None,
-            soundPath = None'
+            audioPath = None'
     ):
         '''
         longitudes = columns
@@ -75,5 +75,5 @@ class Cenario(Object.Object):
                 father,
                 type=Object.ObjectTypes.CENARIO,
                 imagePath = imagePath,
-                soundPath = soundPath'
+                audioPath = audioPath'
             ).name)

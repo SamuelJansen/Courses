@@ -4,9 +4,10 @@ class Attribute:
     FLOOR = 'floor'
 
 
-def holdForDebug(debugText):
+def holdForDebug(debugText,
+    hold = True
+):
     print(' -- DEBUGING -- ')
     print(debugText)
-    debuging = True
-    while(debuging) :
+    while(hold) :
         pass

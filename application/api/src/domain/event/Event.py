@@ -5,7 +5,10 @@ print('Event library imported')
 class Event:
 
     def update(self,*args,**kargs):
-        ExecuteEvent(self.object)
+        import ErrorEvent
+        ErrorEvent.ErrorEvent(self.object,
+            message = f'{self.type}.update() method not implemented'
+        )
         self.updateStatus(eventFunction.Status.RESOLVED)
 
     def __init__(self,object,
@@ -33,10 +36,10 @@ class Event:
             self.status = eventFunction.Status.NOT_RESOLVED
 
             if self.name not in self.object.handler.events :
-                # print(f'{self.name} event added to {self.object.name}.handler.events')
+                print(f'{self.name} event added to {self.object.name}.handler.events')
                 self.object.handler.addEvent(self)
-            else :
-                # print(f'{self.name} event not added to {self.object.name}.handler.events')
+            elif self.object.handler.events[self.name].status == eventFunction.Status.NOT_RESOLVED :
+                print(f'{self.name} event not added to {self.object.name}.handler.events')
                 self.object.handler.events[self.name].update()
 
             self.execute()
@@ -57,27 +60,6 @@ class Event:
         if self.status != eventFunction.Status.REMOVED :
             self.status = status
         print(f'{self.name}.status = {self.status}')
-
-
-
-class ExecuteEvent(Event):
-
-    def update(self):
-        self.object.execute(self)
-
-    def __init__(self,object,
-        name = None,
-        type = eventFunction.Type.EXECUTE_EVENT,
-        inherited = False
-    ):
-
-        Event.__init__(self,object,
-        name = name,
-        type = type,
-        inherited = True
-        )
-        self.inherited = inherited
-        self.execute()
 
 
 def getObjectFocusDebugText(self):

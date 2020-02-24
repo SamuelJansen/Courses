@@ -9,13 +9,13 @@ class MenuAccessEvent(MenuEvent.MenuEvent):
         self.buildItems(itemSetFunction.Type.DOWN,MenuNavigationEvent.MenuNavigationEvent)
         self.updateStatus(eventFunction.Status.NOT_RESOLVED)
 
-    def __init__(self,object,apiModule,itemsPackage,itemsPathTree,
+    def __init__(self,object,apiModule,itemsPackage,itemsPathTree,externalFunction,
         name = None,
         type = eventFunction.Type.MENU_ACCESS_EVENT,
         inherited = False
     ):
 
-        MenuEvent.MenuEvent.__init__(self,object,apiModule,itemsPackage,itemsPathTree,
+        MenuEvent.MenuEvent.__init__(self,object,apiModule,itemsPackage,itemsPathTree,externalFunction,
             name = name,
             type = type,
             inherited = True

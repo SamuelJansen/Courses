@@ -127,14 +127,13 @@ class Mouse:
         # print(f'Mouse.resolveClick(): Mouse.state = {self.state}')
         if self.state==mouseFunction.State.LEFT_CLICK_DOWN or self.state==mouseFunction.State.LEFT_CLICK_UP :
             if self.objectHit :
-                # print(f'Mouse.resolveClick():   objectHit = {self.objectHit.name}')
+                # print(f'Mouse.resolveClick():   Mouse.objectHit = {self.objectHit.name}')
                 # try :
-                #     print(f'                        objectHitDown = {self.objectHitDown.name}')
+                #     print(f'                        Mouse.objectHitDown = {self.objectHitDown.name}')
                 # except : pass
                 # try :
-                #     print(f'                        objectHitUp = {self.objectHitUp.name}')
+                #     print(f'                        Mouse.objectHitUp = {self.objectHitUp.name}')
                 # except : pass
-                # print(f'                        mouse.state = {self.state}')
                 print()
                 print('============================================================================================================================================================')
                 ClickEvent.ClickEvent(self)

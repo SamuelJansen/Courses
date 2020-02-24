@@ -6,12 +6,12 @@ print('UserInterface library imported')
 class UserInterface(Surface.Surface):
 
     def __init__(self,name,position,size,father,
-        externalEvent = None,
+        externalFunction = None,
         scale = None,
         padding = None,
         noImage = False,
         imagePath = None,
-        soundPath = None
+        audioPath = None
     ):
 
         if not padding :
@@ -29,10 +29,10 @@ class UserInterface(Surface.Surface):
 
         Surface.Surface.__init__(
             self,name,position,size,father,
-            externalEvent = externalEvent,
+            externalFunction = externalFunction,
             scale = scale,
             padding = padding,
             noImage = noImage,
             imagePath = imagePath,
-            soundPath = soundPath
+            audioPath = audioPath
         )

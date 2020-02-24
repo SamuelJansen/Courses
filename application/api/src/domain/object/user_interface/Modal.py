@@ -6,23 +6,23 @@ print('Modal library imported')
 class Modal(UserInterface.UserInterface):
 
     def __init__(self,name,position,size,father,
-        externalEvent = None,
+        externalFunction = None,
         scale = None,
         padding = None,
         noImage = False,
         imagePath = None,
-        soundPath = None
+        audioPath = None
     ):
 
         name,position,padding,originalPadding,father,tutor = self.getModalFatherAttributes(name,padding,father)
 
         UserInterface.UserInterface.__init__(self,name,position,size,father,
-            externalEvent = externalEvent,
+            externalFunction = externalFunction,
             scale = scale,
             padding = padding,
             noImage = noImage,
             imagePath = imagePath,
-            soundPath = imagePath
+            audioPath = imagePath
         )
 
         self.setModalTutorAttributes(tutor,originalPadding)

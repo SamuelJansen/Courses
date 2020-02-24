@@ -6,21 +6,21 @@ class Button(UserInterface.UserInterface):
 
     def __init__(
         self,name,position,size,father,
-        externalEvent = None,
+        externalFunction = None,
         padding = None,
         imagePath = None,
-        soundPath = None
+        audioPath = None
     ):
 
         if not imagePath :
             imagePath = f'{father.application.pathMannanger.getApiModulePath(father.application.name)}resourse\\button\\image\\'
-        if not soundPath :
-            soundPath = f'{father.application.pathMannanger.getApiModulePath(father.application.name)}resourse\\button\\sound\\'
+        if not audioPath :
+            audioPath = f'{father.application.pathMannanger.getApiModulePath(father.application.name)}resourse\\button\\audio\\'
 
         UserInterface.UserInterface.__init__(
             self,name,position,size,father,
-            externalEvent = externalEvent,
+            externalFunction = externalFunction,
             padding = padding,
             imagePath = imagePath,
-            soundPath = soundPath
+            audioPath = audioPath
         )

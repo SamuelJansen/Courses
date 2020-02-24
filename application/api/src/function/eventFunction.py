@@ -1,3 +1,5 @@
+import os
+
 import buttonFunction, modalFunction, surfaceFunction, eventFunction
 
 class Attribute:
@@ -12,7 +14,7 @@ class Type:
     BUTTON = buttonFunction.Attribute.NAME
 
     EVENT = eventFunction.Attribute.NAME
-    EXECUTE_EVENT = 'ExecuteEvent'
+    EXECUSSION_EVENT = 'ExecussionEvent'
 
     FOCUS_EVENT = 'FocusEvent'
     REMOVE_FOCUS_EVENT = 'RemoveFocusEvent'
@@ -38,3 +40,28 @@ def getObjectName(event) :
 
 def getEventType(event) :
     return event.name.split('.')[0]
+
+def buildErrorMessage(message) :
+    return message
+
+def getItemNames(itemsPath) :
+    itemNames = []
+    names = os.listdir(itemsPath)
+    for name in names :
+        itemNames.append(name)
+    return itemNames
+
+def getEventNames(event) :
+    return list(event.object.handler.events.keys())
+
+def findEventByType(eventTypeList,eventList) :
+    for event in eventList :
+        eventType = getEventType(event)
+        if eventType in eventTypeList :
+            if notExecussionEvent(event) :
+                return event
+
+def notExecussionEvent(event):
+    eventNameList = event.name.split('.')
+    if len(eventNameList) > 1 :
+        return eventNameList[1] != Type.EXECUSSION_EVENT

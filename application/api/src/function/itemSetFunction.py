@@ -4,5 +4,7 @@ class Attribute:
 
 class Type:
 
+    ABOVE_LEFT = 'ABOVE_LEFT'
+
     RIGHT = 'right'
     DOWN = 'down'

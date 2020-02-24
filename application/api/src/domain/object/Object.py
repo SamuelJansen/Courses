@@ -11,24 +11,25 @@ class Object:
 
     def __init__(self,name,position,size,scale,velocity,father,
             type = None,
-            externalEvent = None,
+            externalFunction = None,
             collidableSize = None,
             noImage = False,
             imagePath = None,
-            soundPath = None
+            audioPath = None
         ):
 
         self.tutor = self.father = father
         self.application = self.father.application
 
         self.name = name
-        print(f'Object.name = {self.name}')
         if type :
             self.type = type
         else :
             self.type = objectFunction.Type.OBJECT
 
         self.blitOrder = objectFunction.getBlitOrder(self)
+
+        print(f'{self.type}.name = {self.name}, blit order = {self.blitOrder}')
 
         self.size = size.copy()
         if scale :
@@ -51,7 +52,7 @@ class Object:
 
         self.image = self.newImage(noImage)
 
-        self.soundPath = soundPath
+        self.audioPath = audioPath
 
         if collidableSize :
             self.collidableSize = collidableSize.copy()
@@ -75,7 +76,7 @@ class Object:
         self.textPositionList = []
         self.font = None
 
-        self.initializeInteractiability(externalEvent)
+        self.initializeInteractiability(externalFunction)
 
         self.screen = Screen.Screen(self)
         self.handler = Handler.Handler(self)
@@ -182,14 +183,17 @@ class Object:
                 position[1] + fatherAbsoluteOriginalPosition[1]
             ]
 
-    def initializeInteractiability(self,externalEvent):
+    def initializeInteractiability(self,externalFunction):
         self.clickable = False
         self.execute = None
         self.singleClickable = False
         self.doubleClickable = False
 
-        if externalEvent :
+        if externalFunction :
             self.clickable = True
-            self.execute = externalEvent
-            self.singleClickable = True ###- self.externalEvent.TYPE == objectFunction.Attribute.SINGLE_CLICKABLE
-            self.doubleClickable = False ###- self.externalEvent.TYPE == objectFunction.Attribute.DOUBLE_CLICKABLE
+            self.execute = externalFunction
+            self.singleClickable = True ###- self.externalFunction.TYPE == objectFunction.Attribute.SINGLE_CLICKABLE
+            self.doubleClickable = False ###- self.externalFunction.TYPE == objectFunction.Attribute.DOUBLE_CLICKABLE
+
+    def updateExecussionFunction(self,externalFunction):
+        self.execute = externalFunction

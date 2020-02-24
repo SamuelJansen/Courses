@@ -1,5 +1,6 @@
 import MenuAccessEvent
 import eventFunction
+from event.pageSelection import *
 
 def openModule(event) :
 
@@ -7,11 +8,13 @@ def openModule(event) :
     apiModule = 'course'
     itemsPackage = 'resourse\\'
     itemsPathTree = 'modules\\'
-    
+    externalFunction = pageSelection
+
     MenuAccessEvent.MenuAccessEvent(
         object,
         apiModule,
         itemsPackage,
-        itemsPathTree
+        itemsPathTree,
+        externalFunction
     )
     print(f'    EventFunction called: {event.object.name}.openModule()')

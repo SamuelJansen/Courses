@@ -75,7 +75,7 @@ class Application:
         self.floor = floor
         if self.floor :
             Object.Object(
-                applicationFunction.Attribute.FLOOR,
+                f'{self.name}.{applicationFunction.Attribute.FLOOR}',
                 [0,0],
                 self.size,
                 self.scaleRange,
@@ -118,7 +118,7 @@ class Application:
 
     def getFloor(self):
         if self.floor :
-            return self.handler.objects[applicationFunction.Attribute.FLOOR]
+            return self.handler.objects[f'{self.name}.{applicationFunction.Attribute.FLOOR}']
         else :
             return self
 
@@ -165,7 +165,7 @@ class Application:
         self.setPosition(position)
 
     def run(self,arrow):
-        
+
         self.initialize(now.time())
 
         while self.running :

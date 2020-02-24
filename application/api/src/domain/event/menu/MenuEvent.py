@@ -1,5 +1,3 @@
-import os
-
 import ItemSet, Event
 import eventFunction, itemSetFunction
 
@@ -10,7 +8,7 @@ class MenuEvent(Event.Event):
     def update(self):
         self.updateStatus(eventFunction.Status.RESOLVED)
 
-    def __init__(self,object,apiModule,itemsPackage,itemsPathTree,
+    def __init__(self,object,apiModule,itemsPackage,itemsPathTree,externalFunction,
         name = None,
         type = eventFunction.Type.MENU_EVENT,
         inherited = False
@@ -26,10 +24,11 @@ class MenuEvent(Event.Event):
         self.apiModule = apiModule
         self.itemsPackage = f'{itemsPackage}'
         self.itemsPathTree = itemsPathTree
+        self.externalFunction = externalFunction
         self.itemsPathTreePointer = self.getItemsPathTreePointer()
         self.itemsPath = self.getItemsPath()
         self.itemNamesFilePath = self.getItemNamesFilePath()
-        self.itemNames = self.getItemNames()
+        self.itemNames = eventFunction.getItemNames(self.itemsPath)
 
         self.execute()
 
@@ -48,14 +47,7 @@ class MenuEvent(Event.Event):
         BACK_SLASH = self.application.pathMannanger.backSlash
         return f'{self.getItemsPath()}{self.getItemsPath()[:-1].split(BACK_SLASH)[-1]}.{self.application.extension}'
 
-    def getItemNames(self):
-        itemNames = []
-        names = os.listdir(self.itemsPath)
-        for name in names :
-            itemNames.append(name)
-        return itemNames
-
-    def buildItems(self,itemDirection,itemsExternalEvent):
+    def buildItems(self,itemDirection,itemsExternalFunction):
         itemSetName = f'{itemSetFunction.Attribute.NAME}'
         itemSetPosition = self.object.getAbsolutePosition()
         itemSetFather = self.object
@@ -64,8 +56,8 @@ class MenuEvent(Event.Event):
             itemsName = self.itemNames,
             itemsText = self.itemNames,
             itemDirection = itemDirection,
-            itemsExternalEvent = itemsExternalEvent,
+            itemsExternalFunction = itemsExternalFunction,
             noImage = True,
             imagePath = None,
-            soundPath = None
+            audioPath = None
         )

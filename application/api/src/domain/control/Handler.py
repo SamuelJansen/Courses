@@ -170,7 +170,7 @@ class Handler:
 
     def removeEvent(self,event):
         if event.name in self.events :
-            event.status = eventFunction.Status.REMOVED
+            event.updateStatus(eventFunction.Status.REMOVED)
             del self.events[event.name]
         else :
             applicationFunction.holdForDebug(

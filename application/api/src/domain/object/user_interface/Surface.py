@@ -6,12 +6,12 @@ print('UserInterfaceSurface library imported')
 class Surface(Object.Object):
 
     def __init__(self,name,position,size,father,
-        externalEvent = None,
+        externalFunction = None,
         scale = None,
         padding = None,
         noImage = False,
         imagePath = None,
-        soundPath = None
+        audioPath = None
     ):
 
         size = surfaceFunction.parseSize(size,father)
@@ -26,10 +26,10 @@ class Surface(Object.Object):
             velocity,
             father,
             type = objectFunction.Type.USER_INTERFACE,
-            externalEvent = externalEvent,
+            externalFunction = externalFunction,
             noImage = noImage,
             imagePath = imagePath,
-            soundPath = soundPath
+            audioPath = audioPath
         )
 
         if padding :

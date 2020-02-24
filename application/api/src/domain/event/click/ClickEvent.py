@@ -1,4 +1,4 @@
-import Event, FocusEvent, FalseClickEvent
+import Event, FocusEvent, FalseClickEvent, ExecussionEvent
 import eventFunction, mouseFunction
 
 print('ClickEvent library imported')
@@ -58,7 +58,7 @@ class ClickEvent(Event.Event):
                 pass
             if self.mouse.state == mouseFunction.State.LEFT_CLICK_UP :
                 if self.objectClicked :
-                    self.click(self.objectClicked)
+                    self.click()
 
-    def click(self,object):
-        Event.ExecuteEvent(object)
+    def click(self):
+        ExecussionEvent.ExecussionEvent(self)

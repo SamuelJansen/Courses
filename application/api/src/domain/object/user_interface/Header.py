@@ -7,7 +7,7 @@ class Header(UserInterface.UserInterface):
 
     def __init__(self,name,position,size,father,
         itemsName = None,
-        itemsEventFunction = None,
+        itemsExternalFunction = None,
         itemSize = None,
         padding = None
     ):
@@ -20,7 +20,7 @@ class Header(UserInterface.UserInterface):
 
         self.padding = originalPadding
         self.itemsName = itemsName
-        self.itemsEventFunction = itemsEventFunction
+        self.itemsExternalFunction = itemsExternalFunction
         itemFather = self
         self.itemSize = surfaceFunction.parseSize(itemSize,itemFather)
         self.initialChildPosition = [0,0]
@@ -32,31 +32,30 @@ class Header(UserInterface.UserInterface):
         for itemIndex in range(len(self.itemsName)) :
             itemPosition = self.getItemPosition(itemIndex)
             itemName = self.itemsName[itemIndex]
-            itemEvent = self.itemsEventFunction[itemIndex]
-            itemFunctionKey = self.itemsName[itemIndex]
+            itemExternalFunction = self.itemsExternalFunction[itemIndex]
 
             Button.Button(
                 itemName,
                 itemPosition,
                 self.itemSize,
                 itemFather,
-                externalEvent = itemEvent
+                externalFunction = itemExternalFunction
             )
 
-    def addButton(self,name,size):
-        father = self
-        size = surfaceFunction.parseSize(size,father)
-        itemIndex = len(self.handler.objects)
-        position = self.getItemPosition(itemIndex)
-        externalEvent = name
-
-        mewButton = Button.Button(
-            name,
-            position,
-            size,
-            father,
-            externalEvent = externalEvent
-        )
+    # def addButton(self,name,size):
+    #     father = self
+    #     size = surfaceFunction.parseSize(size,father)
+    #     itemIndex = len(self.handler.objects)
+    #     position = self.getItemPosition(itemIndex)
+    #     externalFunction = name
+    #
+    #     mewButton = Button.Button(
+    #         name,
+    #         position,
+    #         size,
+    #         father,
+    #         externalFunction = externalFunction
+    #     )
 
     def resetButtonsPosition(self):
         self.screen.reset()

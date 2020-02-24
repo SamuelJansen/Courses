@@ -5,20 +5,18 @@ print('ItemSet library imported')
 
 class ItemSet(Modal.Modal):
 
-    ABOVE_LEFT = 'ABOVE_LEFT'
-
     def __init__(self,name,position,father,
-        externalEvent = None,
+        externalFunction = None,
         itemsName = None,
         itemsText = None,
         itemSize = None,
         itemDirection = itemSetFunction.Type.DOWN,
-        itemsExternalEvent = None,
+        itemsExternalFunction = None,
         scale = None,
         padding = None,
         noImage = False,
         imagePath = None,
-        soundPath = None
+        audioPath = None
     ):
 
         if not itemSize :
@@ -28,12 +26,12 @@ class ItemSet(Modal.Modal):
 
         Modal.Modal.__init__(
             self,name,position,size,father,
-            externalEvent = externalEvent,
+            externalFunction = externalFunction,
             scale = scale,
             padding = padding,
             noImage = noImage,
             imagePath = imagePath,
-            soundPath = imagePath
+            audioPath = imagePath
         )
 
         self.selectable = False
@@ -45,7 +43,7 @@ class ItemSet(Modal.Modal):
         self.itemsText = itemsText
         self.itemFontSize = self.getFontSize()
 
-        self.itemsExternalEvent = itemsExternalEvent
+        self.itemsExternalFunction = itemsExternalFunction
 
         self.initialChildPosition = self.calculateInitialChildPosition()
 
@@ -111,17 +109,17 @@ class ItemSet(Modal.Modal):
                     self.initialChildPosition[1] + itemIndex * (self.itemSize[1] - self.padding[1])
                 ]
 
-            if self.itemsExternalEvent :
-                externalEvent = self.itemsExternalEvent
+            if self.itemsExternalFunction :
+                externalFunction = self.itemsExternalFunction
             else :
-                externalEvent = self.itemsName[itemIndex]
+                externalFunction = self.itemsName[itemIndex]
 
             newItem = Button.Button(
                 self.itemsName[itemIndex],
                 itemPosition,
                 self.itemSize.copy(),
                 itemsFather,
-                externalEvent = externalEvent
+                externalFunction = externalFunction
             )
 
             if self.itemsText :
