@@ -12,10 +12,17 @@ class Type:
     BUTTON = buttonFunction.Attribute.NAME
 
     EVENT = eventFunction.Attribute.NAME
+    EXECUTE_EVENT = 'ExecuteEvent'
+
     FOCUS_EVENT = 'FocusEvent'
+    REMOVE_FOCUS_EVENT = 'RemoveFocusEvent'
+
     CLICK_EVENT = 'ClickEvent'
     FALSE_CLICK_EVENT = 'FalseClickEvent'
-    REMOVE_FOCUS_EVENT = 'RemoveFocusEvent'
+
+    MENU_EVENT = 'MenuEvent'
+    MENU_ACCESS_EVENT = 'MenuAccessEvent'
+    MENU_NAVIGATION_EVENT = 'MenuNavigationEvent'
 
 
 class Status:
@@ -23,3 +30,11 @@ class Status:
     RESOLVED = 'RESOLVED'
     NOT_RESOLVED = 'NOT_RESOLVED'
     REMOVED = 'REMOVED'
+
+
+
+def getObjectName(event) :
+    return event.name.split('.')[-1]
+
+def getEventType(event) :
+    return event.name.split('.')[0]

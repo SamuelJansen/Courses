@@ -4,7 +4,7 @@ class Attribute:
     FLOOR = 'floor'
 
 
-def holdForDebug(self,debugText):
+def holdForDebug(debugText):
     print(' -- DEBUGING -- ')
     print(debugText)
     debuging = True

@@ -4,9 +4,9 @@ print('Event library imported')
 
 class Event:
 
-    def update(self):
-        # print(f'Event() - {self.type}.update() - {getObjectFocusDebugText(self)}')
-        self.object.handleEvent(self)
+    def update(self,*args,**kargs):
+        ExecuteEvent(self.object)
+        self.updateStatus(eventFunction.Status.RESOLVED)
 
     def __init__(self,object,
         name = None,
@@ -33,10 +33,10 @@ class Event:
             self.status = eventFunction.Status.NOT_RESOLVED
 
             if self.name not in self.object.handler.events :
-                # print(f"Event(): {self.name} added in Event.__init__()")
+                # print(f'{self.name} event added to {self.object.name}.handler.events')
                 self.object.handler.addEvent(self)
             else :
-                # print(f'{self.type} felt in Event.update()')
+                # print(f'{self.name} event not added to {self.object.name}.handler.events')
                 self.object.handler.events[self.name].update()
 
             self.execute()
@@ -44,16 +44,40 @@ class Event:
         else :
             applicationFunction.holdForDebug(getObjectHitDebugText(object))
 
-    def resolve(self):
-        self.object.handler.removeEvent(self)
-        # print(f'{self.type}.update() resolved -{getObjectFocusDebugText(self)}')
+    def resolve(self,*args,**kargs):
+        if self.status == eventFunction.Status.RESOLVED :
+            self.object.handler.removeEvent(self)
 
-    def execute(self):
+    def execute(self,*args,**kargs):
         if not self.inherited :
-            # print(f'{self.type}.execute()')
-            self.update()
-            if self.status == eventFunction.Status.RESOLVED :
-                self.resolve()
+            self.update(*args,**kargs)
+            self.resolve(*args,**kargs)
+
+    def updateStatus(self,status):
+        if self.status != eventFunction.Status.REMOVED :
+            self.status = status
+        print(f'{self.name}.status = {self.status}')
+
+
+
+class ExecuteEvent(Event):
+
+    def update(self):
+        self.object.execute(self)
+
+    def __init__(self,object,
+        name = None,
+        type = eventFunction.Type.EXECUTE_EVENT,
+        inherited = False
+    ):
+
+        Event.__init__(self,object,
+        name = name,
+        type = type,
+        inherited = True
+        )
+        self.inherited = inherited
+        self.execute()
 
 
 def getObjectFocusDebugText(self):

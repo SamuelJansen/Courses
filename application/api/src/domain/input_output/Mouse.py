@@ -234,7 +234,7 @@ def printObjectEvents(object) :
     for objectSon in object.handler.objects.values() :
         printObjectEvents(objectSon)
     for event in object.handler.events.values() :
-        print(f'object.name = {object.name}, event.name = {event.name}')
+        print(f'{object.type}.name = {object.name}, {event.type}.name = {event.name}')
 
 # A little black cross. Mouse cursor is 8*8 Pixel, hotspot is at (4, 4).
 # the cross is (Read Binary):

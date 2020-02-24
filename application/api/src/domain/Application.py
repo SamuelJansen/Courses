@@ -27,6 +27,7 @@ class Application:
 
         self.application = self.tutor = self.father = fatherFunction.absoluteFather(self)
         self.pathMannanger = pathMannanger
+        self.extension = self.pathMannanger.getExtension()
 
         self.name = name
         self.type = objectFunction.Type.APPLICATION
@@ -164,9 +165,10 @@ class Application:
         self.setPosition(position)
 
     def run(self,arrow):
+        
         self.initialize(now.time())
-        while self.running :
 
+        while self.running :
             if self.frame.apfNew :
                 for pgEvent in pg.event.get() :
                     if pgEvent.type == pg.QUIT :

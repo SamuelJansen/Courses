@@ -7,7 +7,7 @@ class RemoveFocusEvent(FocusEvent.FocusEvent):
 
     def update(self):
         self.removeFocus()
-        self.status = eventFunction.Status.RESOLVED
+        self.updateStatus(eventFunction.Status.RESOLVED)
 
     def __init__(self,application,
         name = None,

@@ -18,7 +18,7 @@ class ClickEvent(Event.Event):
             else :
                 FalseClickEvent.FalseClickEvent(self.application)
 
-        self.status = eventFunction.Status.RESOLVED
+        self.updateStatus(eventFunction.Status.RESOLVED)
 
     def __init__(self,mouse,
         object = None,
@@ -61,4 +61,4 @@ class ClickEvent(Event.Event):
                     self.click(self.objectClicked)
 
     def click(self,object):
-        Event.Event(object)
+        Event.ExecuteEvent(object)

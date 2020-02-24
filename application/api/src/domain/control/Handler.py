@@ -1,4 +1,4 @@
-import fatherFunction, eventFunction, handlerFunction
+import fatherFunction, eventFunction, handlerFunction, applicationFunction
 
 print('Handler library imported')
 
@@ -93,6 +93,7 @@ class Handler:
 
     def removeObject(self,object):
         if object.name in self.objects :
+            object.handler.removeAllEvents()
             object.handler.removeStudentTree()
             object.handler.removeObjectTree()
             del self.objects[object.name]
@@ -140,6 +141,7 @@ class Handler:
     def removeStudent(self,student):
         if student.name in self.students :
             if student.name in self.students[student.name].father.handler.objects :
+                student.handler.removeAllEvents()
                 student.handler.removeStudentTree()
                 student.handler.removeObjectTree()
                 del self.students[student.name].father.handler.objects[student.name]
@@ -168,10 +170,11 @@ class Handler:
 
     def removeEvent(self,event):
         if event.name in self.events :
+            event.status = eventFunction.Status.REMOVED
             del self.events[event.name]
         else :
             applicationFunction.holdForDebug(
-                f'Handler.addEvent():\n' +
+                f'Handler.removeEvent():\n' +
                 f'      {event.name} not found in {self.object.name}.handler.events'
             )
 

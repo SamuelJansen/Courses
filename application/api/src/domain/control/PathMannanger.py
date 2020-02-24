@@ -8,6 +8,7 @@ print('PathMannanger library imported')
 class PathMannanger:
     BASE_API_PATH = 'api\\src\\'
     API_NAME = 'Courses'
+    EXTENSION = 'ht'
     GLOBALS = 'globals'
     COURSE = 'course'
     APPLICATION = 'application'
@@ -20,6 +21,8 @@ class PathMannanger:
         DESKTOP,
         EDITOR
     ]
+
+    BACK_SLASH = '\\'
 
     def __init__(self):
 
@@ -36,6 +39,8 @@ class PathMannanger:
         self.importMannangerRootInsideBaseApiPath = 'domain\\control\\PathMannanger.py'
         self.globalsModule = PathMannanger.GLOBALS
         self.globalsModulePath = f'{self.getApiModulePath(self.globalsModule)}{self.importMannangerRootInsideBaseApiPath}'
+
+        self.backSlash = PathMannanger.BACK_SLASH
 
         self.update()
         self.newApplicationHandler()
@@ -79,6 +84,9 @@ class PathMannanger:
         for path in applicationPathList :
             print(f'new path: {apiModulePath}{path}')
             sys.path.append(f'{apiModulePath}{path}')
+
+    def getExtension(self):
+        return PathMannanger.EXTENSION
 
     def newApplicationHandler(self):
         import ApplicationHandler

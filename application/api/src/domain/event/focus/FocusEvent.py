@@ -23,7 +23,7 @@ class FocusEvent(Event.Event):
         else :
             self.removeFocus()
 
-        self.status = eventFunction.Status.RESOLVED
+        self.updateStatus(eventFunction.Status.RESOLVED)
 
     def __init__(self,object,
         name = None,

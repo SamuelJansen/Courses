@@ -22,6 +22,7 @@ class Object:
         self.application = self.father.application
 
         self.name = name
+        print(f'Object.name = {self.name}')
         if type :
             self.type = type
         else :
@@ -183,16 +184,12 @@ class Object:
 
     def initializeInteractiability(self,externalEvent):
         self.clickable = False
-        self.externalEvent = None
         self.execute = None
         self.singleClickable = False
         self.doubleClickable = False
 
         if externalEvent :
             self.clickable = True
-            self.externalEvent = externalEvent
+            self.execute = externalEvent
             self.singleClickable = True ###- self.externalEvent.TYPE == objectFunction.Attribute.SINGLE_CLICKABLE
             self.doubleClickable = False ###- self.externalEvent.TYPE == objectFunction.Attribute.DOUBLE_CLICKABLE
-
-    def handleEvent(self,event):
-        return self.externalEvent(event)

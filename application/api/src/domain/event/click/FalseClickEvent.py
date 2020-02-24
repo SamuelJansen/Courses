@@ -7,7 +7,7 @@ class FalseClickEvent(Event.Event):
 
     def update(self):
         RemoveFocusEvent.RemoveFocusEvent(self.object)
-        self.status = eventFunction.Status.RESOLVED
+        self.updateStatus(eventFunction.Status.RESOLVED)
 
     def __init__(self,application,
         name = None,
