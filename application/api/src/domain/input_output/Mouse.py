@@ -1,6 +1,6 @@
 import pygame as pg
 
-import ClickEvent, FalseClickEvent, FocusEvent, Handler
+import ClickEvent, FalseClickEvent
 import objectFunction, mouseFunction, applicationFunction
 
 print('Mouse library imported')
@@ -134,12 +134,12 @@ class Mouse:
                 # try :
                 #     print(f'                        Mouse.objectHitUp = {self.objectHitUp.name}')
                 # except : pass
-                print()
-                print('============================================================================================================================================================')
+                # print()
+                # print('============================================================================================================================================================')
                 ClickEvent.ClickEvent(self)
-                print('============================================================================================================================================================')
-                print()
-                printAllObjectEvents(self.application)
+                # print('============================================================================================================================================================')
+                # print()
+                # printAllObjectEvents(self.application)
 
             else :
                 FalseClickEvent.FalseClickEvent(self.application)

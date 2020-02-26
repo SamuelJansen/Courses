@@ -18,7 +18,7 @@ class Application:
     def __init__(
         self,name,fps,aps,colors,pathMannanger,
         position = [0,0],
-        floor = False,
+        floor = True,
         scaleRange = 1000,
         imagePath = None,
         soundPath = None,
@@ -85,6 +85,8 @@ class Application:
             )
 
         self.mouse = Mouse.Mouse(self)
+
+        self.session = None
 
         self.running = False
 

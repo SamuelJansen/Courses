@@ -49,10 +49,9 @@ class MenuEvent(Event.Event):
 
     def buildItems(self,itemDirection,itemsExternalFunction):
         itemSetName = f'{itemSetFunction.Attribute.NAME}'
-        itemSetPosition = self.object.getAbsolutePosition()
         itemSetFather = self.object
 
-        ItemSet.ItemSet(itemSetName,itemSetPosition,itemSetFather,
+        ItemSet.ItemSet(itemSetName,itemSetFather,
             itemsName = self.itemNames,
             itemsText = self.itemNames,
             itemDirection = itemDirection,

@@ -1,14 +1,15 @@
 import MenuAccessEvent
 import eventFunction
-from event.pageSelection import *
+
+import selectionPage
+
 
 def openModule(event) :
-
     object = event.object
     apiModule = 'course'
     itemsPackage = 'resourse\\'
     itemsPathTree = 'modules\\'
-    externalFunction = pageSelection
+    externalFunction = selectionPage.selectionPage
 
     MenuAccessEvent.MenuAccessEvent(
         object,

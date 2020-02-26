@@ -29,7 +29,7 @@ class Object:
 
         self.blitOrder = objectFunction.getBlitOrder(self)
 
-        print(f'{self.type}.name = {self.name}, blit order = {self.blitOrder}')
+        # print(f'{self.type}.name = {self.name}, blit order = {self.blitOrder}')
 
         self.size = size.copy()
         if scale :
@@ -46,7 +46,7 @@ class Object:
 
         if imagePath :
             self.imagePath = f'{imagePath}{self.name}.png'
-            print(f'    imagePath = {self.imagePath}')
+            # print(f'    imagePath = {self.imagePath}')
         else :
             self.imagePath = f'{self.application.imagePath}{self.type}\\{self.name}.png'
 

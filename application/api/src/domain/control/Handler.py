@@ -9,7 +9,7 @@ class Handler:
 
     def __init__(self,object):
         self.object = object
-        self.getInheritanceTree()
+        self.inheritanceTree = self.getInheritanceTree()
         self.application = self.object.application
         self.objects = {}
         self.students = {}
@@ -23,10 +23,10 @@ class Handler:
             self.object.father.handler.addObject(self.object)
 
     def getInheritanceTree(self):
-        self.inheritanceTree = []
-        # self.inheritanceTree.append(self.object.__class__.__name__)
+        inheritanceTree = []
         for inheritance in self.object.__class__.mro() :
-            self.inheritanceTree.append(inheritance.__name__)
+            inheritanceTree.append(inheritance.__name__)
+        return inheritanceTree
 
     def updateObjectOriginalAttributes(self):
         self.originalPosition = self.object.position.copy()

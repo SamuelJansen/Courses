@@ -6,9 +6,8 @@ print('ExecussionEvent library imported')
 class ExecussionEvent(Event.Event):
 
     def update(self):
-        # print(f'{self.name}.update(): {self.name}.object.name = {self.object.name}')
         self.object.execute(self.event)
-        # self.updateStatus(eventFunction.Status.RESOLVED)
+        self.updateStatus(eventFunction.Status.RESOLVED)
 
     def __init__(self,event,
         name = None,

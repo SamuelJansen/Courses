@@ -3,7 +3,7 @@ import pygame as pg
 import TimeErrorControl
 
 class Frame:
-    
+
     def update(self):
         #- dealling with frame control
         self.new = False
@@ -40,7 +40,7 @@ class Frame:
         else :
             self.apfNew = False
         #- Dealling with time erros
-        self.correction.checkTimeError(mustPrint=False)
+        self.correction.checkTimeError(mustPrint = False)
         if self.newSecond :
             self.fpsCounter = 0
             self.apsCounter = 0

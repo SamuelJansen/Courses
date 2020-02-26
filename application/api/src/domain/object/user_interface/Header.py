@@ -9,6 +9,8 @@ class Header(UserInterface.UserInterface):
         itemsName = None,
         itemsExternalFunction = None,
         itemSize = None,
+        itemsImagePath = None,
+        itemsAudioPath = None,
         padding = None
     ):
 
@@ -24,6 +26,8 @@ class Header(UserInterface.UserInterface):
         itemFather = self
         self.itemSize = surfaceFunction.parseSize(itemSize,itemFather)
         self.initialChildPosition = [0,0]
+        self.itemsImagePath = itemsImagePath
+        self.itemsAudioPath = itemsAudioPath
 
         self.buildItems()
 
@@ -39,23 +43,10 @@ class Header(UserInterface.UserInterface):
                 itemPosition,
                 self.itemSize,
                 itemFather,
-                externalFunction = itemExternalFunction
+                externalFunction = itemExternalFunction,
+                imagePath = self.itemsImagePath,
+                audioPath = self.itemsAudioPath
             )
-
-    # def addButton(self,name,size):
-    #     father = self
-    #     size = surfaceFunction.parseSize(size,father)
-    #     itemIndex = len(self.handler.objects)
-    #     position = self.getItemPosition(itemIndex)
-    #     externalFunction = name
-    #
-    #     mewButton = Button.Button(
-    #         name,
-    #         position,
-    #         size,
-    #         father,
-    #         externalFunction = externalFunction
-    #     )
 
     def resetButtonsPosition(self):
         self.screen.reset()

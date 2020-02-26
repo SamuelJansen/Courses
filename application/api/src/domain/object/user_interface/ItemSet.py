@@ -5,7 +5,8 @@ print('ItemSet library imported')
 
 class ItemSet(Modal.Modal):
 
-    def __init__(self,name,position,father,
+    def __init__(self,name,father,
+        position = None,
         externalFunction = None,
         itemsName = None,
         itemsText = None,
@@ -25,7 +26,8 @@ class ItemSet(Modal.Modal):
         size = self.calculateSize(itemDirection,itemSize,itemsName,father)
 
         Modal.Modal.__init__(
-            self,name,position,size,father,
+            self,name,size,father,
+            position = position,
             externalFunction = externalFunction,
             scale = scale,
             padding = padding,

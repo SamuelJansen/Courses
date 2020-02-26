@@ -3,9 +3,8 @@ pathMannanger = PathMannanger.PathMannanger()
 
 import ArrowKey
 
-from domain import Editor
-from model.user import ApplicationUser
-from model.course import Course
+import Editor
+import Course, ApplicationUser
 
 import numpy as np
 

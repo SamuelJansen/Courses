@@ -15,12 +15,14 @@ class Type:
 
     EVENT = eventFunction.Attribute.NAME
     EXECUSSION_EVENT = 'ExecussionEvent'
+    SESSION_EVENT = 'SessionEvent'
 
     FOCUS_EVENT = 'FocusEvent'
     REMOVE_FOCUS_EVENT = 'RemoveFocusEvent'
 
     CLICK_EVENT = 'ClickEvent'
     FALSE_CLICK_EVENT = 'FalseClickEvent'
+    MODAL_CLICK_EVENT = 'ModalClickEvent'
 
     MENU_EVENT = 'MenuEvent'
     MENU_ACCESS_EVENT = 'MenuAccessEvent'
@@ -32,7 +34,6 @@ class Status:
     RESOLVED = 'RESOLVED'
     NOT_RESOLVED = 'NOT_RESOLVED'
     REMOVED = 'REMOVED'
-
 
 
 def getObjectName(event) :

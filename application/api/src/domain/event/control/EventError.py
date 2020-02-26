@@ -1,11 +1,11 @@
 import os
 
-import Modal, Event
+import Modal, ExecussionEvent
 import eventFunction
 
 print('EventError library imported')
 
-class EventError(Event.Event):
+class EventError(ExecussionEvent.ExecussionEvent):
 
     def update(self):
         print(f'ErrorEvent.update(): error message = {self.message}')
@@ -18,10 +18,7 @@ class EventError(Event.Event):
         inherited = False
     ):
 
-        object = event.object
-        name = f'{event.type}.{type}.{event.object.name}'
-
-        Event.Event.__init__(self,object,
+        ExecussionEvent.ExecussionEvent.__init__(self,event,
             name = name,
             type = type,
             inherited = True

@@ -60,7 +60,7 @@ class Event:
         initialStatus = self.status
         if self.status != eventFunction.Status.REMOVED :
             self.status = status
-        print(f'{self.name}.updateStatus() from {initialStatus} to {self.status}')
+        # print(f'{self.name}.updateStatus() from {initialStatus} to {self.status}')
 
 
 def getObjectFocusDebugText(self):

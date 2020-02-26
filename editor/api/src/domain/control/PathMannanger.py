@@ -6,6 +6,7 @@ from domain.control import PathMannanger
 print('PathMannanger library imported')
 
 class PathMannanger:
+
     BASE_API_PATH = 'api\\src\\'
     API_NAME = 'Courses'
     EXTENSION = 'ht'
@@ -14,12 +15,20 @@ class PathMannanger:
     APPLICATION = 'application'
     DESKTOP = 'desktop'
     EDITOR = 'editor'
+
     API_MODULES = [
         GLOBALS,
         COURSE,
         APPLICATION,
         DESKTOP,
         EDITOR
+    ]
+
+    NODE_IGNORE = [
+        'resourse',
+        '__pycache__',
+        '__init__',
+        '__main__'
     ]
 
     BACK_SLASH = '\\'
@@ -68,22 +77,28 @@ class PathMannanger:
 
     def makeAplicationLibrariesAvaliable(self) :
 
+        self.modulesNodeTree = []
+        for moduleName in PathMannanger.API_MODULES :
+            self.modulesNodeTree.append(self.makeLibraryPathTreeAvaliable(self.getApiModulePath(moduleName)))
+        print(f'PathMannanger.modulesNodeTree = {self.modulesNodeTree}')
+
+    def makeLibraryPathTreeAvaliable(self,path):
+
         import sys
         # https://stackoverflow.com/questions/3430372/how-do-i-get-the-full-path-of-the-current-files-directory
-        from pathlib import Path
+        # from pathlib import Path
 
-        for apiModule in self.apiModules :
-            if apiModule != self.globalsModule :
-                apiModulePath = f'{self.apiPath}{apiModule}\\{self.baseApiPath}'
-                print(f'new path: {apiModulePath}')
-                sys.path.append(apiModulePath)
-
-        from function import applicationPathFunction
-        applicationPathList = applicationPathFunction.getPathList()
-        apiModulePath = self.getApiModulePath(PathMannanger.APPLICATION)
-        for path in applicationPathList :
-            print(f'new path: {apiModulePath}{path}')
-            sys.path.append(f'{apiModulePath}{path}')
+        node = {}
+        nodeSons = os.listdir(path)
+        for nodeSon in  nodeSons :
+            if len(nodeSon.split('__')) == 1 :
+                if nodeSon not in PathMannanger.NODE_IGNORE :
+                    nodeSonPath = f'{path}\\{nodeSon}'
+                    try :
+                        node[nodeSon] = self.makeLibraryPathTreeAvaliable(nodeSonPath)
+                    except : pass
+        sys.path.append(path)
+        return node
 
     def getExtension(self):
         return PathMannanger.EXTENSION

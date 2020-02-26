@@ -5,7 +5,8 @@ print('Modal library imported')
 
 class Modal(UserInterface.UserInterface):
 
-    def __init__(self,name,position,size,father,
+    def __init__(self,name,size,father,
+        position = None,
         externalFunction = None,
         scale = None,
         padding = None,
@@ -14,7 +15,7 @@ class Modal(UserInterface.UserInterface):
         audioPath = None
     ):
 
-        name,position,padding,originalPadding,father,tutor = self.getModalFatherAttributes(name,padding,father)
+        name,position,padding,originalPadding,keepFatherImage,father,tutor = self.getModalFatherAttributes(name,position,padding,father)
 
         UserInterface.UserInterface.__init__(self,name,position,size,father,
             externalFunction = externalFunction,
@@ -25,7 +26,7 @@ class Modal(UserInterface.UserInterface):
             audioPath = imagePath
         )
 
-        self.setModalTutorAttributes(tutor,originalPadding)
+        self.setModalTutorAttributes(originalPadding,keepFatherImage,tutor)
 
         # if eventFunction.Type.MODAL in self.handler.inheritanceTree :
         #     try :
@@ -42,16 +43,20 @@ class Modal(UserInterface.UserInterface):
         #         print(f'        tutor = {self.tutor.name}, position = {self.tutor.position}, originalPosition = {self.tutor.handler.originalPosition}, size = {self.tutor.size}, originalSize = {self.tutor.handler.originalSize}, padding = noPadding')
 
 
-    def getModalFatherAttributes(self,name,padding,father):
+    def getModalFatherAttributes(self,name,position,padding,father):
         name += f'.{father.name}'
-        position = father.getAbsoluteOriginalPosition()
+        if not position :
+            position = father.getAbsoluteOriginalPosition()
+            keepFatherImage = True
+        else :
+            keepFatherImage = False
         padding,originalPadding = surfaceFunction.stashPadding(padding,father)
         tutor = father
-        print(f'tutor.image = {tutor.image}')
         father = father.application.getFloor()
-        return name,position,padding,originalPadding,father,tutor
+        return name,position,padding,originalPadding,keepFatherImage,father,tutor
 
-    def setModalTutorAttributes(self,tutor,originalPadding):
+    def setModalTutorAttributes(self,originalPadding,keepFatherImage,tutor):
         self.padding = originalPadding
         self.handler.setTutor(tutor)
-        self.handler.addTutorImage(self.tutor,surfaceFunction.getPositionPadded([0,0],self.padding))
+        if keepFatherImage :
+            self.handler.addTutorImage(self.tutor,surfaceFunction.getPositionPadded([0,0],self.padding))

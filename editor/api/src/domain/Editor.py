@@ -1,16 +1,7 @@
 import Application, Header
 import surfaceFunction, headerFunction
 
-from event.exit import *
-from event.openModule import *
-from event.close import *
-from event.save import *
-from event.add import *
-from event.launch import *
-from event.update import *
-from event.unlaunch import *
-
-from model.course import Module
+import exit, openModule, close, save, add, launch, update, unlaunch
 
 print('Editor library imported')
 
@@ -31,7 +22,18 @@ class Editor(Application.Application):
             headerSize,
             headerFather,
             itemsName = ['exit','openModule','close','save','add','launch','update','unlaunch'],
-            itemsExternalFunction = [exit,openModule,close,save,add,launch,update,unlaunch],
+            itemsExternalFunction = [
+                exit.exit,
+                openModule.openModule,
+                close.close,
+                save.save,
+                add.add,
+                launch.launch,
+                update.update,
+                unlaunch.unlaunch
+            ],
             itemSize = [surfaceFunction.Types.SQUARE,'100%'],
+            itemsImagePath = f'{self.application.pathMannanger.getApiModulePath(self.application.name)}resourse\\button\\image\\',
+            itemsAudioPath = f'{self.application.pathMannanger.getApiModulePath(self.application.name)}resourse\\button\\audio\\',
             padding = [2,2]
         )

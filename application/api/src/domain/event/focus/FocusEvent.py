@@ -6,7 +6,6 @@ print('FocusEvent library imported')
 class FocusEvent(Event.Event):
 
     def update(self):
-        # print('FocusEvent().update(): ')
         if self.application.mouse.state == mouseFunction.State.LEFT_CLICK_DOWN :
             if self.inFocusTree(self.object) :
                 self.updateFocus()
@@ -47,8 +46,8 @@ class FocusEvent(Event.Event):
         return self.inFocusTree(object.tutor)
 
     def setFocus(self):
-        print()
-        print('............................................................................................................................................................')
+        # print()
+        # print('............................................................................................................................................................')
         # print(f'FocusEvent.setFocus(): {self.object.name}')
         if not self.application.focus :
             self.application.focus = self.object
@@ -57,16 +56,16 @@ class FocusEvent(Event.Event):
             debugText += f'     actual focus = {self.application.focus.name}\n'
             debugText += f'     new focus = {self.object.name}'
             self.application.holdForDebug(debugText)
-        print('............................................................................................................................................................')
-        print()
+        # print('............................................................................................................................................................')
+        # print()
 
     def updateFocus(self):
         ###- Just that simple for now
         pass
 
     def removeFocus(self):
-        print()
-        print('............................................................................................................................................................')
+        # print()
+        # print('............................................................................................................................................................')
         # print(f'FocusEvent.removeFocus():',end='')
         if self.application.focus :
             # print(f' {self.application.focus.name}')
@@ -79,5 +78,5 @@ class FocusEvent(Event.Event):
         else :
             # print()
             pass
-        print('............................................................................................................................................................')
-        print()
+        # print('............................................................................................................................................................')
+        # print()

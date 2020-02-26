@@ -13,7 +13,9 @@ class TimeErrorControl:
         self.before = self.aplication.timeNow
         self.innerLoops = 0
 
-    def checkTimeError(self,mustPrint=False):
+    def checkTimeError(self,
+        mustPrint = False
+    ):
         '''
         It checks any time errors each frame.fps frames
         TimeError.checkErrors(aplication,frame)'''

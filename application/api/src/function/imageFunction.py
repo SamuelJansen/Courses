@@ -30,15 +30,20 @@ def getImage(path,size,aplication) :
 def getImageFileNames(imagesPath,imageExtension) :
     return setting.getItemFileNames(imagesPath,imageExtension)
 
-def getNoImage(size,aplication) :
+def getNoImage(size,aplication,
+    color = objectFunction.Attribute.NO_IMAGE_COLOR
+) :
     path = f'{aplication.imagePath}standard_image.png'
     canonicalizedPath = path.replace('/',os.sep).replace('\\',os.sep)
     image = pg.image.load(canonicalizedPath)
     image = pg.transform.smoothscale(image,size).convert_alpha()
+    image.fill(color)
+    return image
+
+def workWithSpecificPixels(image) :
     for x in range(image.get_width()):
         for y in range(image.get_height()):
             image.set_at([x,y],objectFunction.Attribute.NO_IMAGE_COLOR)
-    return image
 
 def saveImage(image,path) :
     global imageLibrary

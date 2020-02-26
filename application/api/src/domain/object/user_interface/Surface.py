@@ -37,7 +37,14 @@ class Surface(Object.Object):
         else :
             self.padding = [0,0]
 
-        self.userInterfaceSurface = self
+        self.userInterfaceSurface = None
+        if self.tutor.type == objectFunction.Type.USER_INTERFACE :
+            if self.tutor.userInterfaceSurface :
+                self.userInterfaceSurface = self.tutor.userInterfaceSurface
+            else :
+                self.userInterfaceSurface = self
+        else :
+            self.userInterfaceSurface = self
 
         self.handler.fixOriginalPosition()
         self.handler.fixOriginalSize()
