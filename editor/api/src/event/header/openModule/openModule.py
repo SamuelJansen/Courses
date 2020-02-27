@@ -1,8 +1,6 @@
 import MenuAccessEvent
-import eventFunction
 
 import selectionPage
-
 
 def openModule(event) :
     object = event.object
@@ -18,4 +16,4 @@ def openModule(event) :
         itemsPathTree,
         externalFunction
     )
-    print(f'    EventFunction called: {event.object.name}.openModule()')
+    print(f'{event.name}.openModule()')

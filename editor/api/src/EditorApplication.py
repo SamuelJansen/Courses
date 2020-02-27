@@ -20,8 +20,12 @@ colors =    {
 }
 fps = 30
 aps = 30
+# editor = Editor.Editor(editorName,fps,aps,colors,pathMannanger,
+#     position = [960,0],
+#     floor = True
+# )
 editor = Editor.Editor(editorName,fps,aps,colors,pathMannanger,
-    position = [960,0],
+    position = [0,0],
     floor = True
 )
 

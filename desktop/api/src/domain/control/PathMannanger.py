@@ -1,6 +1,6 @@
 import os
 clear = lambda: os.system('cls')
-clear()
+clear() # or simply os.system('cls')
 from domain.control import PathMannanger
 
 print('PathMannanger library imported')
@@ -31,7 +31,7 @@ class PathMannanger:
         '__main__'
     ]
 
-    BACK_SLASH = '\\'
+    BACK_SLASH = '\\' ### there ar moduler where backslash is not much wellcome
 
     def __init__(self):
 

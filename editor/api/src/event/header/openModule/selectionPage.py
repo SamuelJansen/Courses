@@ -1,6 +1,6 @@
 import os
 
-import ItemSessionDto
+import ItemDto
 import imageFunction, selectedPage
 
 def selectionPage(event) :
@@ -8,19 +8,17 @@ def selectionPage(event) :
     imagePath = f'{event.itemsPath}image\\'
     itemNames = imageFunction.getImageFileNames(imagePath,'png')
     father = event.application.session.desk
-    initialPosition = [2,2]
-    size = [55,40]
+    imagePath = imagePath
+    audioPath = None
 
     deskItems = []
     for index in range(len(itemNames)) :
-        name = itemNames[index]
-        externalFunction = selectedPage.selectedPage
-        imagePath = imagePath
-        audioPath = None
-        session = ItemSessionDto.ItemSessionDto(name,size,father,externalFunction,imagePath,audioPath)
-        deskItems.append(session)
+        deskItems.append(ItemDto.ItemDto(
+            itemNames[index],
+            selectedPage.selectedPage
+        ))
 
-    event.application.session.addAllDeskItem(deskItems)
+    event.application.session.addAllDeskItem(deskItems,father,imagePath,audioPath)
 
     print(f'event.application.session.name = {event.application.session.name}')
 

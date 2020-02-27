@@ -1,6 +1,6 @@
 import pygame as pg
 
-import Frame, Object, Handler, Mouse, Screen
+import Frame, Object, Handler, Mouse, Screen, Session
 import applicationFunction, setting, fatherFunction, objectFunction
 
 import time as now
@@ -87,6 +87,11 @@ class Application:
         self.mouse = Mouse.Mouse(self)
 
         self.session = None
+        self.objectClass = None
+        self.newObjectsAttributes = []
+        self.newObjectAttibuteIndex = 0
+        self.deliveryObjects = None ###- Dictionary
+        self.newObjectsLifeCycle = False
 
         self.running = False
 
@@ -150,21 +155,62 @@ class Application:
         self.updateScreen()
         self.running = True
 
+    def newObjects(self,objectsAttributes,objectClass,
+        deliveryObjects = None
+    ):
+        self.objectClass = objectClass
+        self.newObjectsAttributes = objectsAttributes
+        self.newObjectAttibuteIndex = 0
+        self.deliveryObjects = deliveryObjects
+        self.newObjectsLifeCycle = True
+
+    def newObject(self):
+        newObject = self.objectClass(
+            *self.newObjectsAttributes[self.newObjectAttibuteIndex][0],
+            **self.newObjectsAttributes[self.newObjectAttibuteIndex][1]
+        )
+        if self.deliveryObjects :
+            self.deliveryObjects[newObject.name] = newObject
+
+    def procesingMannangement(self):
+        if self.frame.timeNext - self.timeNow < self.frame.width - self.frame.timeError / self.application.fps :
+            self.updateObjects()
+
+    def newSession(self,desk,path):
+        self.session = Session.Session(desk,path)
+
+    def removeSession(self):
+        if self.session :
+            self.session.removeDesk()
+            self.session = None
+
     def updateFrame(self):
         self.frame.update()
         if self.frame.new :
-            self.updateMouse()
             self.updateScreen()
-
-    def updateMouse(self):
-        self.mouse.update()
+            self.updateMouse()
+        else :
+            self.procesingMannangement()
 
     def updateScreen(self):
         if self.screen.mustUpdate :
             self.screen.surface.fill(self.color['backgroundColor'])
             self.screen.update()
-        # self.updatePosition(self.position)
+        ###- keep it below
+        ###- self.updatePosition(self.position)
         pg.display.update(self.screen.blitRect)
+
+    def updateMouse(self):
+        self.mouse.update()
+
+    def updateObjects(self):
+        if self.newObjectsLifeCycle :
+            self.newObject()
+            self.newObjectAttibuteIndex += 1
+            if self.newObjectAttibuteIndex >= len(self.newObjectsAttributes) :
+                if self.deliveryObjects :
+                    self.deliveryObjects = self.deliveryObjects.copy()
+                self.newObjectsLifeCycle = False
 
     def updatePosition(self,position):
         self.setPosition(position)
@@ -194,3 +240,7 @@ class Application:
             self.update(now.time())
         pg.quit()
         #sys.exit()
+
+    def close(self):
+        self.removeSession()
+        self.running = False

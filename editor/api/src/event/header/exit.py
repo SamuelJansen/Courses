@@ -1,6 +1,5 @@
 import eventFunction
 
 def exit(event) :
-    event.object.application.running = False
-    print(f'    EventFunction called: exit({event.object.application.name})')
-    event.status = eventFunction.Status.RESOLVED
+    event.application.close()
+    print(f'{event.name}.exit()')

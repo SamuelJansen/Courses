@@ -21,3 +21,6 @@ def parseName(name) :
         name = 'nameNotParsed'
         indice = 'indiceNotParsed'
     return name + ' ' + indice
+
+def getLessonScriptName(lessonPath):
+    return '.'.join(lessonPath.split('\\')[-3:-1])

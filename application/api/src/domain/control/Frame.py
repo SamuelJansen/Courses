@@ -8,7 +8,7 @@ class Frame:
         #- dealling with frame control
         self.new = False
         self.newSecond = False
-        if self.aplication.timeNow>self.timeNext :
+        if self.aplication.timeNow > self.timeNext :
             self.new = True
             self.timeError += self.correctionFactor * (self.aplication.timeNow - self.timeNext - self.timeError)
             if self.timeError<0 :
@@ -24,7 +24,7 @@ class Frame:
             self.timeNext = self.aplication.timeNow + self.width - error
             self.fpsCounter += 1
         #- Dealling with apf's time erros
-        if self.aplication.timeNow>self.apfTimeNext :
+        if self.aplication.timeNow > self.apfTimeNext :
             self.apfNew = True
             self.apsCounter += 1
             self.apfTimeError += self.correctionFactor * (self.aplication.timeNow - self.apfTimeNext - self.apfTimeError)
@@ -32,7 +32,7 @@ class Frame:
                 self.apfTimeError = 0
             elif self.apfTimeError > 1 :
                 self.apfTimeError = .95
-            if self.apfCounter<self.apf-1 :
+            if self.apfCounter < self.apf-1 :
                 self.apfCounter += 1
             else :
                 self.apfCounter = 0

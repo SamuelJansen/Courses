@@ -1,4 +1,4 @@
-import MenuEvent, EventError, ExecussionEvent, RemoveFocusEvent, SessionEvent
+import MenuEvent, EventError, ExecussionEvent, RemoveFocusEvent, NewSessionEvent
 import eventFunction, itemSetFunction
 
 print('MenuNavigationEvent library imported')
@@ -10,7 +10,7 @@ class MenuNavigationEvent(MenuEvent.MenuEvent):
         self.applicationScriptFile = self.getApplicationScript()
         if self.applicationScriptFileIsValid() :
             self.object.updateExecussionFunction(self.externalFunction)
-            SessionEvent.SessionEvent(self)
+            NewSessionEvent.NewSessionEvent(self)
             ExecussionEvent.ExecussionEvent(self)
             self.updateStatus(eventFunction.Status.RESOLVED)
             RemoveFocusEvent.RemoveFocusEvent(self.application)

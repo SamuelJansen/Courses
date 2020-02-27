@@ -28,7 +28,7 @@ def getImage(path,size,aplication) :
     return image.copy()
 
 def getImageFileNames(imagesPath,imageExtension) :
-    return setting.getItemFileNames(imagesPath,imageExtension)
+    return setting.getFileNames(imagesPath,imageExtension)
 
 def getNoImage(size,aplication,
     color = objectFunction.Attribute.NO_IMAGE_COLOR

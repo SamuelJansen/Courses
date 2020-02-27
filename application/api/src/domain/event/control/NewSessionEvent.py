@@ -1,18 +1,18 @@
-import ExecussionEvent, Desk, Session
+import ExecussionEvent, Desk
 import eventFunction, headerFunction
 
-print('SessionEvent library imported')
+print('NewSessionEvent library imported')
 
-class SessionEvent(ExecussionEvent.ExecussionEvent):
+class NewSessionEvent(ExecussionEvent.ExecussionEvent):
 
     DESK_NAME = 'Desk'
 
     def update(self):
 
         if self.desk :
-            self.application.session.close()
+            self.application.session.removeDesk()
 
-        name = f'{SessionEvent.DESK_NAME}.{self.event.name}'
+        name = f'{NewSessionEvent.DESK_NAME}.{self.event.name}'
         position = [0,self.header.size[1] + 1]
         size = [self.application.size[0],self.application.size[1] - self.header.size[1]]
         itemsPerLine = 7
@@ -26,7 +26,7 @@ class SessionEvent(ExecussionEvent.ExecussionEvent):
 
         path = self.event.itemsPath
         application = self.application
-        self.application.session = Session.Session(self.desk,path)
+        self.application.newSession(self.desk,path)
 
         self.updateStatus(eventFunction.Status.RESOLVED)
 
@@ -51,5 +51,5 @@ class SessionEvent(ExecussionEvent.ExecussionEvent):
 
     def getDesk(self):
         for objectName in self.application.getFloor().handler.objects.keys() :
-            if SessionEvent.DESK_NAME in objectName.split('.')[0] :
+            if NewSessionEvent.DESK_NAME in objectName.split('.')[0] :
                 return self.application.getFloor().handler.objects[objectName]

@@ -1,16 +1,14 @@
 from domain.control import PathMannanger
 pathMannanger = PathMannanger.PathMannanger()
 
-from model.course import Course
-from model.user import ApplicationUser
-
-from domain import Plataform
-from function.performance_measurement import makePagesFunction, makeScriptFunction
-
 import os
 import numpy as np
-import ArrowKey, Object
-import imageFunction
+
+import Course, ApplicationUser
+
+import Plataform
+
+import ArrowKey
 
 plataformName = 'desktop'
 colors =    {

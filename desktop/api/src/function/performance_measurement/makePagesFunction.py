@@ -2,14 +2,14 @@ import pygame as pg
 
 import imageFunction
 
-from function import pathFunction
+import coursePathFunction
 
 def makeSoManyPages(courseName,moduleName,lessonName,amountOfPagesToMake,plataform) :
     ###- Course will need some work later on
-    courseNameParsed = pathFunction.parseName(courseName)
+    courseNameParsed = coursePathFunction.parseName(courseName)
 
-    moduleNameParsed = pathFunction.parseName(moduleName)
-    lessonNameParsed = pathFunction.parseName(lessonName)
+    moduleNameParsed = coursePathFunction.parseName(moduleName)
+    lessonNameParsed = coursePathFunction.parseName(lessonName)
     pagesPath = plataform.pathMannanger.getApiModulePath('course')+'resourse/modules/'+moduleNameParsed+'/'+lessonNameParsed+'/image/'
     basePageImage = imageFunction.getImage(pagesPath+'performance_measurement.png',plataform.size,plataform)
 

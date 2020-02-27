@@ -1,5 +1,5 @@
-screenSize 0x0
+# screenSize 0x0
 # screenSize 960x680
 # screenSize 1200x890
-
 # screenSize 430x200
+screenSize 1200x780

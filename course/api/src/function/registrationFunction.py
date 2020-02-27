@@ -1,10 +1,10 @@
-from function import pathFunction
-from model.course import Course, Module
+import Course, Module
+import coursePathFunction
 
 def getCourses(coursesName,plataform) :
     courses = {}
     for courseName in coursesName :
-        courseNameParsed = pathFunction.parseName(courseName)
+        courseNameParsed = coursePathFunction.parseName(courseName)
         coursePath = plataform.pathMannanger.getApiModulePath('course')+'resourse/courses/'+courseNameParsed+'/'+courseNameParsed+'.ht'
         ###- print(f'coursePath = {coursePath}')
         try :
@@ -27,7 +27,7 @@ def getCourses(coursesName,plataform) :
 def getModules(modulesName,plataform) :
     modules = {}
     for moduleName in modulesName :
-        moduleNameParsed = pathFunction.parseName(moduleName)
+        moduleNameParsed = coursePathFunction.parseName(moduleName)
         modulePath = plataform.pathMannanger.getApiModulePath('course')+'resourse/modules/'+moduleNameParsed+'/'+moduleNameParsed+'.ht'
         try :
             with open(modulePath,"r",encoding="utf-8") as moduleFile :

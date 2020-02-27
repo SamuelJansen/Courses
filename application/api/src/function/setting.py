@@ -24,10 +24,41 @@ def getAplicationSize(aplication) :
         size = aplication.settings['screenSize']
     return size
 
-def getItemFileNames(itemsPath,fileExtension) :
-    itemFileNames = []
-    names = os.listdir(itemsPath)
+def getFileNames(path,fileExtension) :
+    fileNames = []
+    names = os.listdir(path)
     for name in names :
         if fileExtension == name.split('.')[-1] :
-            itemFileNames.append(name[:-(len(fileExtension) + 1)])
-    return itemFileNames
+            fileNames.append(name[:-(len(fileExtension) + 1)])
+
+    sortedFileNamesWhichAreNumbers = sorted(numberfyIt(fileNames))
+    sortedFileNames = stringfyIt(sortedFileNamesWhichAreNumbers,fileNames)
+    return sortedFileNames
+
+def numberfyIt(numersAsStrings) :
+    numbers = []
+    for index in range(len(numersAsStrings)) :
+        ###- '4'
+        ###- '4_1'
+        ###- '4_2'
+        try :
+            numberAsString = numersAsStrings[index]
+            splitedNumberAsString = numberAsString.split('-')
+            if len(splitedNumberAsString) == 1 :
+                number = int(splitedNumberAsString[0])
+                numbers.append(number)
+        except : pass
+    return numbers
+
+def stringfyIt(sortedNumbers,numbersAsStrings) :
+    sortedNumbersAsStrings = []
+    for index in range(len(sortedNumbers)) :
+        ###- 4
+        ###- 4.1
+        ###- 4.2
+        sortedNumberAsString = str(sortedNumbers[index]).replace('.','_')
+        sortedNumbersAsStrings.append(sortedNumberAsString)
+    for numberAsString in numbersAsStrings :
+        if numberAsString not in sortedNumbersAsStrings :
+            sortedNumbersAsStrings.append(numberAsString)
+    return sortedNumbersAsStrings

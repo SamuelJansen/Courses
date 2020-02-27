@@ -6,8 +6,7 @@ print('Header library imported')
 class Header(UserInterface.UserInterface):
 
     def __init__(self,name,position,size,father,
-        itemsName = None,
-        itemsExternalFunction = None,
+        items = None,
         itemSize = None,
         itemsImagePath = None,
         itemsAudioPath = None,
@@ -21,8 +20,8 @@ class Header(UserInterface.UserInterface):
         )
 
         self.padding = originalPadding
-        self.itemsName = itemsName
-        self.itemsExternalFunction = itemsExternalFunction
+
+        self.items = items
         itemFather = self
         self.itemSize = surfaceFunction.parseSize(itemSize,itemFather)
         self.initialChildPosition = [0,0]
@@ -32,32 +31,33 @@ class Header(UserInterface.UserInterface):
         self.buildItems()
 
     def buildItems(self):
+        itemsAttributes = []
         itemFather = self
-        for itemIndex in range(len(self.itemsName)) :
-            itemPosition = self.getItemPosition(itemIndex)
-            itemName = self.itemsName[itemIndex]
-            itemExternalFunction = self.itemsExternalFunction[itemIndex]
-
-            Button.Button(
-                itemName,
-                itemPosition,
-                self.itemSize,
+        for index in range(len(self.items)) :
+            itemPosition = self.getItemPosition(index)
+            itemsAttributes.append([[
+                self.items[index].name,
+                itemPosition.copy(),
+                self.itemSize.copy(),
                 itemFather,
-                externalFunction = itemExternalFunction,
-                imagePath = self.itemsImagePath,
-                audioPath = self.itemsAudioPath
-            )
+            ],
+            {
+                'externalFunction' : self.items[index].externalFunction,
+                'imagePath' : self.itemsImagePath,
+                'audioPath' : self.itemsAudioPath
+            }])
+        self.application.newObjects(itemsAttributes,Button.Button)
 
     def resetButtonsPosition(self):
         self.screen.reset()
         itemsList = list(self.handler.objects.values())
-        for itemIndex in range(len(itemsList)) :
-            itemPosition = surfaceFunction.getPositionPadded(self.getItemPosition(itemIndex),self.padding)
-            button = itemsList[itemIndex]
+        for index in range(len(itemsList)) :
+            itemPosition = surfaceFunction.getPositionPadded(self.getItemPosition(index),self.padding)
+            button = itemsList[index]
             button.setPosition(itemPosition)
 
-    def getItemPosition(self,itemIndex):
+    def getItemPosition(self,index):
         return [
-            itemIndex * (self.itemSize[0] - self.padding[0]) + self.initialChildPosition[0],
+            index * (self.itemSize[0] - self.padding[0]) + self.initialChildPosition[0],
             self.initialChildPosition[1]
-        ].copy()
+        ]
