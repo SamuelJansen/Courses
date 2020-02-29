@@ -171,6 +171,7 @@ class Application:
         )
         if self.deliveryObjects :
             self.deliveryObjects[newObject.name] = newObject
+        self.newObjectAttibuteIndex += 1
 
     def procesingMannangement(self):
         if self.frame.timeNext - self.timeNow < self.frame.width - self.frame.timeError / self.application.fps :
@@ -191,6 +192,7 @@ class Application:
             self.updateMouse()
         else :
             self.procesingMannangement()
+            self.screen.mustUpdateNextFrame()
 
     def updateScreen(self):
         if self.screen.mustUpdate :
@@ -206,7 +208,6 @@ class Application:
     def updateObjects(self):
         if self.newObjectsLifeCycle :
             self.newObject()
-            self.newObjectAttibuteIndex += 1
             if self.newObjectAttibuteIndex >= len(self.newObjectsAttributes) :
                 if self.deliveryObjects :
                     self.deliveryObjects = self.deliveryObjects.copy()

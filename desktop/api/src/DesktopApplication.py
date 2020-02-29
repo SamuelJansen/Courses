@@ -23,7 +23,17 @@ plataform = Plataform.Plataform(plataformName,fps,aps,colors,pathMannanger,
     floor = False
 )
 
-aplicationUser = ApplicationUser.ApplicationUser(aplicationUserRegistration,aplicationUserPassword,plataform,coursesName=coursesName)
+registration = '000001'
+password = 'abcd1234'
+courseNames = ['macro_2020_03 1']
+
+# aplicationUser = ApplicationUser.ApplicationUser(registration,password,plataform,
+#     courseNames = courseNames
+# )
+plataform.setApplicationUser(registration,password)
+plataform.buildPage()
+
+
 
 arrow = ArrowKey.ArrowKey()
 move = [np.random.randint(3)-1,np.random.randint(3)-1]

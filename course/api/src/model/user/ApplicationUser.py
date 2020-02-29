@@ -1,24 +1,18 @@
-from function import registrationFunction
+import CourseRepository
 
 class ApplicationUser:
 
-    def __init__(self,registration,password,plataform,coursesName=None):
+    def __init__(self,registration,password,application,
+        courseNames = None
+    ):
         self.registration = registration
         self.password = password
-        self.courses = []
-        if coursesName :
-            self.courses = registrationFunction.getCourses(coursesName,plataform)
-        self.presentCourse = None
-        self.presentModule = None
-        self.presentLesson = None
+        self.application = application
+        self.courses = {}
+        self.allPageNames = None
 
-    def addCourse(self,course):
-        self.courses.append(course)
+    def getPageName(self,pageNameData):
+        return pageNameData.split()[1]
 
-    def getLessonPath(plataform):
-        ###- this method needs some function later on
-        self.presentCourse = 'macro_2020_03'
-        self.presentModule = 'assistente_administrativo'
-        self.presentLesson = 'aula1'
-        presentLessonPath = plataform.pathMannanger.getApiModulePath('course')+'resourse/modules/'+self.presentModule+'/'+self.presentLesson+'/script.ht'
-        return presentLessonPath
+    def getAllPageNames(self,moduleName,lessonName):
+        return self.application.repository.getAllPageNames(moduleName,lessonName)

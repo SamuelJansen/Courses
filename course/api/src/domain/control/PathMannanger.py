@@ -1,4 +1,5 @@
-import os
+import os, sys
+from pathlib import Path
 clear = lambda: os.system('cls')
 clear() # or simply os.system('cls')
 from domain.control import PathMannanger
@@ -35,8 +36,6 @@ class PathMannanger:
 
     def __init__(self):
 
-        from pathlib import Path
-
         self.currentPath = str(Path(__file__).parent.absolute())
         self.localPath = f'{str(Path.home())}\\'
 
@@ -58,7 +57,8 @@ class PathMannanger:
         return f'{self.apiPath}{apiModuleName}\\{self.baseApiPath}'
 
     def update(self) :
-
+        # https://stackoverflow.com/questions/3430372/how-do-i-get-the-full-path-of-the-current-files-directory
+        # from pathlib import Path
         globalsScript = []
         with open(self.globalsModulePath,"r",encoding="utf-8") as globalsFile :
             for line in globalsFile :
@@ -83,14 +83,9 @@ class PathMannanger:
         print(f'PathMannanger.modulesNodeTree = {self.modulesNodeTree}')
 
     def makeLibraryPathTreeAvaliable(self,path):
-
-        import sys
-        # https://stackoverflow.com/questions/3430372/how-do-i-get-the-full-path-of-the-current-files-directory
-        # from pathlib import Path
-
         node = {}
         nodeSons = os.listdir(path)
-        for nodeSon in  nodeSons :
+        for nodeSon in nodeSons :
             if len(nodeSon.split('__')) == 1 :
                 if nodeSon not in PathMannanger.NODE_IGNORE :
                     nodeSonPath = f'{path}\\{nodeSon}'

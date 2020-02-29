@@ -2,4 +2,5 @@
 # screenSize 960x680
 # screenSize 1200x890
 # screenSize 430x200
-screenSize 1200x780
+# screenSize 1200x780
+screenSize 1920x1080

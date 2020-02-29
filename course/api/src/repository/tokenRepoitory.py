@@ -1,0 +1,7 @@
+REGISTRATION = '__registration__'
+PASSWORD = '__password__'
+COURSES = '__courses__'
+NOTHING = '__nothing__'
+PAGE_DATA_SEPARATOR = '__#__'
+COMA = '__,__'
+COLON = '__:__'

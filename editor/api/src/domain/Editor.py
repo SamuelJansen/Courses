@@ -28,7 +28,7 @@ class Editor(Application.Application):
             ItemDto.ItemDto('unlaunch',unlaunch.unlaunch)
         ]
 
-        header = Header.Header(
+        Header.Header(
             headerName,
             headerPosition,
             headerSize,

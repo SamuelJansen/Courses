@@ -124,8 +124,8 @@ class Mouse:
         return not notHit
 
     def resolveClick(self):
-        # print(f'Mouse.resolveClick(): Mouse.state = {self.state}')
         if self.state==mouseFunction.State.LEFT_CLICK_DOWN or self.state==mouseFunction.State.LEFT_CLICK_UP :
+            print(f'Mouse.resolveClick(): Mouse.state = {self.state}, Mouse.scripArea = {self.scripArea}')
             if self.objectHit :
                 # print(f'Mouse.resolveClick():   Mouse.objectHit = {self.objectHit.name}')
                 # try :

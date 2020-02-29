@@ -26,7 +26,7 @@ class TimeErrorControl:
             self.before = self.now
             self.now = self.aplication.timeNow
             self.frame.timeOveralError += self.frame.correctionFactor * ( self.now - self.before - 1 - self.frame.timeOveralError )
-            if self.frame.timeOveralError<0 :
+            if self.frame.timeOveralError < 0 :
                 self.frame.timeOveralError = 0
 
             if mustPrint :

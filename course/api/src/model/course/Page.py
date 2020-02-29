@@ -1,6 +1,4 @@
-from function import importMannanger
-pathMannanger = importMannanger.makeAplicationLibrariesAvaliable()
-from model import Object
+import Object
 
 class Page(Object.Object):
     def __init__(self,name,lessonName,objects,plataform):
