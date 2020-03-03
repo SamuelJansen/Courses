@@ -1,3 +1,4 @@
+import ErrorEvent
 import fatherFunction, eventFunction, handlerFunction, applicationFunction
 
 print('Handler library imported')
@@ -80,11 +81,8 @@ class Handler:
         return False
 
     def updateCollidableObjects(self):
-        self.collidableObjects = {object.name:object for object in sorted(self.objects.values(),key=self.renderOrder) if object.collides}
+        self.collidableObjects = {object.name:object for object in sorted(self.objects.values(),key=handlerFunction.renderOrder) if object.collides}
         self.collidableObjectsRect = [object.collidableRect for object in self.collidableObjects.values()]
-
-    def renderOrder(self,object):
-        return object.blitOrder,object.collidableRect.bottom
 
     def addObject(self,object):
         self.object.father.screen.reset()
@@ -96,19 +94,20 @@ class Handler:
             object.handler.removeAllEvents()
             object.handler.removeStudentTree()
             object.handler.removeObjectTree()
+            object.screen.remove()
+            print(f'{object.name} removed')
             del self.objects[object.name]
             self.object.screen.mustUpdateNextFrame()
         else :
-            applicationFunction.holdForDebug(
-                f'Handler.removeObject():\n' +
+            ErrorEvent.ErrorEvent(None,
+                message = f'Handler.removeObject():\n' +
                 f'      {object.name} not found in {self.object.name}.handler.objects'
             )
 
     def removeObjectTree(self):
+        self.removeStudentTree()
         objectNames = list(self.objects.keys())
         for objectName in objectNames :
-            self.objects[objectName].handler.removeStudentTree()
-            self.objects[objectName].handler.removeObjectTree()
             self.removeObject(self.objects[objectName])
 
     def setTutor(self,tutor):
@@ -147,24 +146,22 @@ class Handler:
                 del self.students[student.name].father.handler.objects[student.name]
                 self.object.screen.mustUpdateNextFrame()
         else :
-            applicationFunction.holdForDebug(
-                f'Handler.removeStudent():\n' +
+            ErrorEvent.ErrorEvent(None,
+                message = f'Handler.removeStudent():\n' +
                 f'      {student.name} not found in {self.object.name}.handler.students'
             )
 
     def removeStudentTree(self):
         studentNames = list(self.students.keys())
         for studentName in studentNames :
-            self.students[studentName].handler.removeStudentTree()
-            self.students[studentName].handler.removeObjectTree()
             self.removeStudent(self.students[studentName])
 
     def addEvent(self,event):
         if event.name not in self.events :
             self.events[event.name] = event
         else :
-            applicationFunction.holdForDebug(
-                f'Handler.addEvent():\n' +
+            ErrorEvent.ErrorEvent(None,
+                message = f'Handler.addEvent():\n' +
                 f'      {event.name} already exists in {self.object.name}.handler.events'
             )
 
@@ -173,8 +170,8 @@ class Handler:
             event.updateStatus(eventFunction.Status.REMOVED)
             del self.events[event.name]
         else :
-            applicationFunction.holdForDebug(
-                f'Handler.removeEvent():\n' +
+            ErrorEvent.ErrorEvent(None,
+                message = f'Handler.removeEvent():\n' +
                 f'      {event.name} not found in {self.object.name}.handler.events'
             )
 

@@ -12,8 +12,8 @@ def getImage(path,size,aplication) :
     It works on mac and windows
     getImage(path)'''
     global imageLibrary
-    image = imageLibrary.get(path)
-    if image==None :
+    image = imageLibrary.get(path) ###- image = imageLibrary[path]
+    if not image :
         try :
             canonicalizedPath = path.replace('/',os.sep).replace('\\',os.sep)
             image = pg.image.load(canonicalizedPath)#.convert_alpha()
@@ -22,10 +22,10 @@ def getImage(path,size,aplication) :
             path = f'{aplication.imagePath}standard_image.png'
             canonicalizedPath = path.replace('/',os.sep).replace('\\',os.sep)
             # print(f'importing image: {canonicalizedPath}')
-            image = pg.image.load(canonicalizedPath)#.convert_alpha()
-        image = pg.transform.smoothscale(image,size)#.convert_alpha()
+            image = pg.image.load(canonicalizedPath)
+        image = pg.transform.smoothscale(image,size)
     imageLibrary[path] = image
-    return image.copy()
+    return image
 
 def getImageFileNames(imagesPath,imageExtension) :
     return setting.getFileNames(imagesPath,imageExtension)
@@ -51,8 +51,8 @@ def saveImage(image,path) :
     imageLibrary[path] = image
     return image
 
-def newImageSurface(image,size) :
-    screenSurface = pg.Surface(size,pg.HWSURFACE|pg.DOUBLEBUF|pg.SRCALPHA,32)
+def newImageSurface(object) :
+    screenSurface = pg.Surface(object.size,pg.HWSURFACE|pg.DOUBLEBUF|pg.SRCALPHA,32)
     # imageSurface = pg.Surface(size,pg.HWSURFACE|pg.SRCALPHA,32)
     # imageSurface = pg.Surface(size,pg.SRCALPHA,32)
     # imageSurface = pg.Surface(size,pg.HWSURFACE|pg.DOUBLEBUF|pg.SRCALPHA)
@@ -62,7 +62,7 @@ def newImageSurface(image,size) :
     # imageSurface = pg.Surface(size,pg.HWSURFACE)
     # imageSurface = pg.Surface(size,pg.DOUBLEBUF)
     # imageSurface = pg.Surface(size)
-    screenSurface.blit(image,[0,0])
+    screenSurface.blit(object.image,[0,0])
     return screenSurface
 
 def newDisplay(size) :
@@ -78,10 +78,13 @@ def newDisplay(size) :
     # self.screenSurface = pg.display.set_mode(self.size)
     return newDisplay
 
-def newAlphaSurface(size) :
-    screenSurface = pg.Surface(size,pg.HWSURFACE|pg.DOUBLEBUF|pg.SRCALPHA,32)
+def newAlphaSurface(object) :
+    screenSurface = pg.Surface(object.size,pg.HWSURFACE|pg.DOUBLEBUF|pg.SRCALPHA,32)
     screenSurface.fill(objectFunction.Attribute.NOT_HITTABLE_COLOR)
-    return screenSurface.convert_alpha()
+    return screenSurface
+
+def removeObjectImageAndSurface(object) :
+    pass
 
 def colorFilter(threshold,image) :
     # threshold = (0,0,0)

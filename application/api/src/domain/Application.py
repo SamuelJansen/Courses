@@ -1,6 +1,6 @@
 import pygame as pg
 
-import Frame, Object, Handler, Mouse, Screen, Session
+import Frame, Object, Handler, Mouse, Screen, Session, MemoryOptimizer
 import applicationFunction, setting, fatherFunction, objectFunction
 
 import time as now
@@ -11,8 +11,8 @@ print('Aplication library imported')
 
 class Application:
 
-    def update(self,timeNow):
-        self.timeNow = timeNow
+    def update(self):
+        self.timeNow = now.time()
         self.updateFrame()
 
     def __init__(
@@ -87,11 +87,8 @@ class Application:
         self.mouse = Mouse.Mouse(self)
 
         self.session = None
-        self.objectClass = None
-        self.newObjectsAttributes = []
-        self.newObjectAttibuteIndex = 0
-        self.deliveryObjects = None ###- Dictionary
-        self.newObjectsLifeCycle = False
+
+        self.memoryOptimizer = MemoryOptimizer.MemoryOptimizer(self)
 
         self.running = False
 
@@ -155,27 +152,9 @@ class Application:
         self.updateScreen()
         self.running = True
 
-    def newObjects(self,objectsAttributes,objectClass,
-        deliveryObjects = None
-    ):
-        self.objectClass = objectClass
-        self.newObjectsAttributes = objectsAttributes
-        self.newObjectAttibuteIndex = 0
-        self.deliveryObjects = deliveryObjects
-        self.newObjectsLifeCycle = True
-
-    def newObject(self):
-        newObject = self.objectClass(
-            *self.newObjectsAttributes[self.newObjectAttibuteIndex][0],
-            **self.newObjectsAttributes[self.newObjectAttibuteIndex][1]
-        )
-        if self.deliveryObjects :
-            self.deliveryObjects[newObject.name] = newObject
-        self.newObjectAttibuteIndex += 1
-
-    def procesingMannangement(self):
-        if self.frame.timeNext - self.timeNow < self.frame.width - self.frame.timeError / self.application.fps :
-            self.updateObjects()
+    def optimizeMemory(self):
+        if self.frame.timeNext - self.timeNow > (1 / self.fps) * (2 / 10) :
+            self.memoryOptimizer.update()
 
     def newSession(self,desk,path):
         self.session = Session.Session(desk,path)
@@ -184,6 +163,7 @@ class Application:
         if self.session :
             self.session.removeDesk()
             self.session = None
+            self.memoryOptimizer.reset()
 
     def updateFrame(self):
         self.frame.update()
@@ -191,8 +171,7 @@ class Application:
             self.updateScreen()
             self.updateMouse()
         else :
-            self.procesingMannangement()
-            self.screen.mustUpdateNextFrame()
+            self.optimizeMemory()
 
     def updateScreen(self):
         if self.screen.mustUpdate :
@@ -204,14 +183,6 @@ class Application:
 
     def updateMouse(self):
         self.mouse.update()
-
-    def updateObjects(self):
-        if self.newObjectsLifeCycle :
-            self.newObject()
-            if self.newObjectAttibuteIndex >= len(self.newObjectsAttributes) :
-                if self.deliveryObjects :
-                    self.deliveryObjects = self.deliveryObjects.copy()
-                self.newObjectsLifeCycle = False
 
     def updatePosition(self,position):
         self.setPosition(position)
@@ -238,7 +209,7 @@ class Application:
                         gl.playSound(leftSound)
                     #"""
 
-            self.update(now.time())
+            self.update()
         pg.quit()
         #sys.exit()
 

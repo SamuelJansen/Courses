@@ -7,10 +7,14 @@ class Desk(Modal.Modal):
 
     def __init__(self,name,size,itemsPerLine,father,
         position = None,
-        externalFunction = None,
+        text = None,
+        textPosition = None,
+        fontSize = None,
         scale = None,
         padding = None,
         noImage = False,
+        onLeftClick = None,
+        onMenuResolve = None,
         imagePath = None,
         audioPath = None
     ):
@@ -20,7 +24,11 @@ class Desk(Modal.Modal):
         Modal.Modal.__init__(
             self,name,size,father,
             position = position,
-            externalFunction = externalFunction,
+            onLeftClick = onLeftClick,
+            onMenuResolve = onMenuResolve,
+            text = text,
+            textPosition = textPosition,
+            fontSize = fontSize,
             scale = scale,
             padding = deskPaddingInConstructionTime,
             noImage = noImage,
@@ -30,5 +38,3 @@ class Desk(Modal.Modal):
 
         self.itemsPerLine = self.size[0] // 80
         self.padding = padding
-
-        print(f'Desk.name = {self.name}, Desk.userInterfaceSurface.name = {self.userInterfaceSurface.name}, Desk.userInterfaceSurface.padding = {self.userInterfaceSurface.padding}')

@@ -45,7 +45,10 @@ class Event:
             self.execute()
 
         else :
-            applicationFunction.holdForDebug(getObjectHitDebugText(object))
+            import ErrorEvent
+            ErrorEvent.ErrorEvent(None,
+                message = getObjectHitDebugText(object)
+            )
 
     def resolve(self,*args,**kargs):
         if self.status == eventFunction.Status.RESOLVED :

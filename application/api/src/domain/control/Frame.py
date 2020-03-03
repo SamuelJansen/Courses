@@ -40,7 +40,7 @@ class Frame:
         else :
             self.apfNew = False
         #- Dealling with time erros
-        self.correction.checkTimeError()
+        self.timeErrorControl.checkTimeError()
         if self.newSecond :
             self.fpsCounter = 0
             self.apsCounter = 0
@@ -68,4 +68,4 @@ class Frame:
         self.timeOveralError = 0
         self.correctionFactor = .6
         #- External time corrector
-        self.correction = TimeErrorControl.TimeErrorControl(self,self.aplication)
+        self.timeErrorControl = TimeErrorControl.TimeErrorControl(self,self.aplication)

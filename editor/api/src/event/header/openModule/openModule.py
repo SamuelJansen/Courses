@@ -1,19 +1,19 @@
-import MenuAccessEvent
+import MenuAccessEvent, MenuNavigationEvent
 
-import selectionPage
+import pageSelection
 
 def openModule(event) :
     object = event.object
     apiModule = 'course'
     itemsPackage = 'resourse\\'
     itemsPathTree = 'modules\\'
-    externalFunction = selectionPage.selectionPage
 
     MenuAccessEvent.MenuAccessEvent(
         object,
         apiModule,
         itemsPackage,
         itemsPathTree,
-        externalFunction
+        onLeftClick = MenuNavigationEvent.MenuNavigationEvent,
+        onMenuResolve = pageSelection.pageSelection
     )
     print(f'{event.name}.openModule()')

@@ -1,12 +1,19 @@
-import Event
-import eventFunction
+import Event, ErrorEvent
+import eventFunction, applicationFunction
 
 print('ExecussionEvent library imported')
 
 class ExecussionEvent(Event.Event):
 
     def update(self):
-        self.object.execute(self.event)
+        if self.event.type == eventFunction.Type.CLICK_EVENT :
+            self.object.onLeftClick(self.event)
+        elif self.event.type == eventFunction.Type.MENU_NAVIGATION_EVENT :
+            self.object.onMenuResolve(self.event)
+        else :
+            ErrorEvent.ErrorEvent(self.event,
+                message = f'{self.name}.update(): {self.object.type} funcion handler not implemented'
+            )
         self.updateStatus(eventFunction.Status.RESOLVED)
 
     def __init__(self,event,
@@ -14,7 +21,6 @@ class ExecussionEvent(Event.Event):
         type = eventFunction.Type.EXECUSSION_EVENT,
         inherited = False
     ):
-
         object = event.object
         name = f'{event.type}.{type}.{event.object.name}'
 

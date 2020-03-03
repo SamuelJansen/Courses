@@ -5,14 +5,22 @@ print('Button library imported')
 class Button(UserInterface.UserInterface):
 
     def __init__(self,name,position,size,father,
-        externalFunction = None,
+        text = None,
+        textPosition = None,
+        fontSize = None,
         padding = None,
+        onLeftClick = None,
+        onMenuResolve = None,
         imagePath = None,
         audioPath = None
     ):
 
         UserInterface.UserInterface.__init__(self,name,position,size,father,
-            externalFunction = externalFunction,
+            onLeftClick = onLeftClick,
+            onMenuResolve = onMenuResolve,
+            text = text,
+            textPosition = textPosition,
+            fontSize = fontSize,
             padding = padding,
             imagePath = imagePath,
             audioPath = audioPath

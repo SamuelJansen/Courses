@@ -6,10 +6,6 @@ def isNotAplication(object) :
 def absoluteFather(application):
     return application
 
-def fatherMustUpdateNextFrame(object) :
-    if isNotAplication(object) and not object.father.screen.mustUpdate :
-        object.father.screen.mustUpdateNextFrame()
-
 def getAbsoluteFather(application):
     if application.floor :
         return application.floor

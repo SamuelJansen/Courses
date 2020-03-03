@@ -22,16 +22,20 @@ class Type:
     OBJECT = 'OBJECT'
     USER_INTERFACE = 'USER_INTERFACE'
 
+    DRAG_AND_DROP = 'DRAG_AND_DROP'
+    MESSAGE = 'MESSAGE'
+
     types = {
         0 : APPLICATION,
         10 : APPLICATION_FLOOR,
         100 : CENARIO,
         1000 : OBJECT,
-        10000 : USER_INTERFACE
+        10000 : USER_INTERFACE,
+        1000000000000 : DRAG_AND_DROP,
+        10000000000000 : MESSAGE
     }
 
     blitOrder = ( lambda types=types : { types[key]:key for key in types.keys() } )()
-    # print(f'blitOrder = {(lambda types=types : { types[key]:key for key in types.keys() })()}')
 
 
 def getType(index):
@@ -39,8 +43,6 @@ def getType(index):
 
 def getBlitOrder(object):
     if object.type == object.father.type :
-        blitOrder = object.father.blitOrder + 1
+        return object.father.blitOrder + 1
     else :
-        # blitOrder = list(ObjectType.types.keys())[list(ObjectType.types.values()).index(object.type)]
-        blitOrder = Type.blitOrder[object.type] + Type.blitOrder[object.father.type]
-    return blitOrder
+        return Type.blitOrder[object.type] + Type.blitOrder[object.father.type]

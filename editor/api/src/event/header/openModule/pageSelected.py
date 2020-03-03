@@ -1,2 +1,2 @@
-def selectedPage(event):
+def pageSelected(event):
     print(f'event.name = {event.name}')

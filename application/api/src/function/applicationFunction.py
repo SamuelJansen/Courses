@@ -4,10 +4,25 @@ class Attribute:
     FLOOR = 'floor'
 
 
-def holdForDebug(debugText,
-    hold = True
-):
-    print(' -- DEBUGING -- ')
-    print(debugText)
-    while(hold) :
-        pass
+class Priority:
+
+    NO_PRIORITY = 0
+    LOW = 1
+    MEDIUM = 3
+    HIGHT = 5
+
+
+class Key:
+
+    ON_LEFT_CLICK = 'onLeftClick'
+    ON_MENU_RESOLVE = 'onMenuResolve'
+    TEXT = 'text'
+    TEXT_POSITION = 'textPosition'
+    FONT_SIZE = 'fontSize'
+    IMAGE_PATH = 'imagePath'
+    AUDIO_PATH = 'audioPath'
+    PRIORITY = 'priority'
+
+def priorityOrder(memoryPackage):
+    # return memoryPackage.newObjectsDto
+    return 0

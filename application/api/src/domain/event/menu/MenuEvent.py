@@ -1,5 +1,5 @@
-import ItemSet, Event
-import eventFunction, itemSetFunction
+import ItemSet, ItemDto, Event
+import eventFunction, itemSetFunction, applicationFunction
 
 print('MenuEvent library imported')
 
@@ -8,7 +8,7 @@ class MenuEvent(Event.Event):
     def update(self):
         self.updateStatus(eventFunction.Status.RESOLVED)
 
-    def __init__(self,object,apiModule,itemsPackage,itemsPathTree,externalFunction,
+    def __init__(self,object,apiModule,itemsPackage,itemsPathTree,onLeftClick,onMenuResolve,
         name = None,
         type = eventFunction.Type.MENU_EVENT,
         inherited = False
@@ -22,13 +22,20 @@ class MenuEvent(Event.Event):
         self.inherited = inherited
 
         self.apiModule = apiModule
-        self.itemsPackage = f'{itemsPackage}'
+        self.itemsPackage = itemsPackage
         self.itemsPathTree = itemsPathTree
-        self.externalFunction = externalFunction
         self.itemsPathTreePointer = self.getItemsPathTreePointer()
         self.itemsPath = self.getItemsPath()
         self.itemNamesFilePath = self.getItemNamesFilePath()
         self.itemNames = eventFunction.getItemNames(self.itemsPath)
+        self.itemsDto = []
+        for index in range(len(self.itemNames)) :
+            self.itemsDto.append(ItemDto.ItemDto(
+                self.itemNames[index],
+                text = self.itemNames[index],
+                onLeftClick = onLeftClick,
+                onMenuResolve = onMenuResolve
+            ))
 
         self.execute()
 
@@ -47,16 +54,13 @@ class MenuEvent(Event.Event):
         BACK_SLASH = self.application.pathMannanger.backSlash
         return f'{self.getItemsPath()}{self.getItemsPath()[:-1].split(BACK_SLASH)[-1]}.{self.application.extension}'
 
-    def buildItems(self,itemDirection,itemsExternalFunction):
+    def buildItems(self,itemsDirection):
         itemSetName = f'{itemSetFunction.Attribute.NAME}'
         itemSetFather = self.object
 
         ItemSet.ItemSet(itemSetName,itemSetFather,
-            itemsName = self.itemNames,
-            itemsText = self.itemNames,
-            itemDirection = itemDirection,
-            itemsExternalFunction = itemsExternalFunction,
+            itemsDto = self.itemsDto,
+            itemsDirection = itemsDirection,
+            itemsPriority = applicationFunction.Priority.HIGHT,
             noImage = True,
-            imagePath = None,
-            audioPath = None
         )

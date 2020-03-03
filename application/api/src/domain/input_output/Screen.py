@@ -1,6 +1,7 @@
 import pygame as pg
 
-import imageFunction, fatherFunction
+import ErrorEvent
+import imageFunction, fatherFunction, applicationFunction
 
 print('Screen library imported')
 
@@ -18,12 +19,13 @@ class Screen:
             self.blitText()
             self.surface.blits(self.blitList)
         self.didUpdate()
-        
+
     def __init__(self,object):
         '''
         It blits all objects on the screen.surface'''
 
         self.object = object
+        # self.object.handler = None
 
         self.surface = self.newSurface()
         self.blitRect = self.getBlitRect()
@@ -31,13 +33,16 @@ class Screen:
 
         self.mustUpdateNextFrame()
 
+    def reset(self):
+        if fatherFunction.isNotAplication(self.object) :
+            self.surface = self.object.handler.originalSurface.copy()
+
     def newSurface(self):
         if fatherFunction.isNotAplication(self.object) :
             if self.object.noImage :
-                # print(f'Screen.object.name = {self.object.name}')
-                return imageFunction.newAlphaSurface(self.object.size)
+                return imageFunction.newAlphaSurface(self.object)
             else :
-                return imageFunction.newImageSurface(self.object.image,self.object.size)
+                return imageFunction.newImageSurface(self.object)
         else :
             return imageFunction.newDisplay(self.object.size)
 
@@ -53,14 +58,17 @@ class Screen:
         return [
             (object.screen.surface,object.rect)
             for object in self.object.handler.objects.values()
-            if self.blitRect.colliderect(object.rect)
+            if self.blitRect.colliderect(object.rect) and object.visible
         ]
 
     def mustUpdateNextFrame(self):
-        # print(f' -- !! -- !! -- Screen.mustUpdateNextFrame() --> name = {self.object.name}')
+        print(f'{self.object.name} mustUpdate')
         self.mustUpdate = True
-        fatherFunction.fatherMustUpdateNextFrame(self.object)
-        # print('     END OF Screen.mustUpdateNextFrame()')
+        self.fatherMustUpdateNextFrame(self.object)
+
+    def fatherMustUpdateNextFrame(self,object) :
+        if fatherFunction.isNotAplication(object) and not object.father.screen.mustUpdate :
+            object.father.screen.mustUpdateNextFrame()
 
     def didUpdate(self):
         self.mustUpdate = False
@@ -71,15 +79,29 @@ class Screen:
     def updateBlitList(self):
         self.blitList = self.getBlitList()
 
-    def reset(self):
-        if fatherFunction.isNotAplication(self.object) :
-            self.surface = self.object.handler.originalSurface.copy()
-
     def blitText(self):
-        # print(f'Screen.object.name = {self.object.name}')
         if self.object.textList :
             for textIndex in range(len(self.object.textList)) :
                 self.surface.blit(
                     self.object.textList[textIndex],
                     self.object.textPositionList[textIndex],
                 )
+
+    def revealObjects(self,objectNames):
+        if objectNames :
+            for objectName in objectNames :
+                if objectName in self.object.handler.objects :
+                    self.object.handler.objects[objectName].visible = True
+                else :
+                    ErrorEvent.ErrorEvent(None,
+                        message = f'{objectName} not found in {self.object.name}.handler.objects'
+                    )
+            self.object.screen.mustUpdateNextFrame()
+
+    def hideAllObjects(self):
+        for object in self.object.handler.objects.values() :
+            object.visible = False
+        self.object.screen.mustUpdateNextFrame()
+
+    def remove(self):
+        imageFunction.removeObjectImageAndSurface(self.object)

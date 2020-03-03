@@ -30,10 +30,11 @@ def getFileNames(path,fileExtension) :
     for name in names :
         if fileExtension == name.split('.')[-1] :
             fileNames.append(name[:-(len(fileExtension) + 1)])
+    return sortItNumerically(fileNames)
 
+def sortItNumerically(fileNames) :
     sortedFileNamesWhichAreNumbers = sorted(numberfyIt(fileNames))
-    sortedFileNames = stringfyIt(sortedFileNamesWhichAreNumbers,fileNames)
-    return sortedFileNames
+    return stringfyIt(sortedFileNamesWhichAreNumbers,fileNames)
 
 def numberfyIt(numersAsStrings) :
     numbers = []

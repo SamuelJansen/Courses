@@ -7,10 +7,14 @@ class Modal(UserInterface.UserInterface):
 
     def __init__(self,name,size,father,
         position = None,
-        externalFunction = None,
+        text = None,
+        textPosition = None,
+        fontSize = None,
         scale = None,
         padding = None,
         noImage = False,
+        onLeftClick = None,
+        onMenuResolve = None,
         imagePath = None,
         audioPath = None
     ):
@@ -18,15 +22,23 @@ class Modal(UserInterface.UserInterface):
         name,position,padding,originalPadding,keepFatherImage,father,tutor = self.getModalFatherAttributes(name,position,padding,father)
 
         UserInterface.UserInterface.__init__(self,name,position,size,father,
-            externalFunction = externalFunction,
+            text = text,
+            textPosition = textPosition,
+            fontSize = fontSize,
             scale = scale,
             padding = padding,
             noImage = noImage,
+            onLeftClick = onLeftClick,
+            onMenuResolve = onMenuResolve,
             imagePath = imagePath,
             audioPath = imagePath
         )
 
         self.setModalTutorAttributes(originalPadding,keepFatherImage,tutor)
+
+        ###-
+        print(f'{self.name} created, father = {self.father.name}, tutor = {self.tutor.name}, type = {self.type}, blit order = {self.blitOrder}')
+
 
         # if eventFunction.Type.MODAL in self.handler.inheritanceTree :
         #     try :

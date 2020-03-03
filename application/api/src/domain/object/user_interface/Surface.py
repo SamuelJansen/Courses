@@ -1,21 +1,25 @@
 import Object
 import surfaceFunction, objectFunction, eventFunction
 
-print('UserInterfaceSurface library imported')
+print('Surface library imported')
 
 class Surface(Object.Object):
 
     def __init__(self,name,position,size,father,
-        externalFunction = None,
+        text = None,
+        textPosition = None,
+        fontSize = None,
         scale = None,
         padding = None,
         noImage = False,
+        onLeftClick = None,
+        onMenuResolve = None,
         imagePath = None,
         audioPath = None
     ):
 
         size = surfaceFunction.parseSize(size,father)
-        velocity = 0.00001
+        velocity = 10
 
         Object.Object.__init__(
             self,
@@ -26,8 +30,12 @@ class Surface(Object.Object):
             velocity,
             father,
             type = objectFunction.Type.USER_INTERFACE,
-            externalFunction = externalFunction,
+            text = text,
+            textPosition = textPosition,
+            fontSize = fontSize,
             noImage = noImage,
+            onLeftClick = onLeftClick,
+            onMenuResolve = onMenuResolve,
             imagePath = imagePath,
             audioPath = audioPath
         )

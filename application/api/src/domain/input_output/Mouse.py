@@ -1,6 +1,6 @@
 import pygame as pg
 
-import ClickEvent, FalseClickEvent
+import ClickEvent, FalseClickEvent, ErrorEvent
 import objectFunction, mouseFunction, applicationFunction
 
 print('Mouse library imported')
@@ -125,7 +125,7 @@ class Mouse:
 
     def resolveClick(self):
         if self.state==mouseFunction.State.LEFT_CLICK_DOWN or self.state==mouseFunction.State.LEFT_CLICK_UP :
-            print(f'Mouse.resolveClick(): Mouse.state = {self.state}, Mouse.scripArea = {self.scripArea}')
+            # print(f'Mouse.resolveClick(): Mouse.state = {self.state}, Mouse.scripArea = {self.scripArea}')
             if self.objectHit :
                 # print(f'Mouse.resolveClick():   Mouse.objectHit = {self.objectHit.name}')
                 # try :
@@ -135,9 +135,17 @@ class Mouse:
                 #     print(f'                        Mouse.objectHitUp = {self.objectHitUp.name}')
                 # except : pass
                 # print()
-                # print('============================================================================================================================================================')
+                print('============================================================================================================================================================')
                 ClickEvent.ClickEvent(self)
-                # print('============================================================================================================================================================')
+                for memoryPackageKey in self.application.memoryOptimizer.memoryPackageTree.keys() :
+                    print(f'memoryPackageKey = {memoryPackageKey}')
+                    for pageKey in self.application.memoryOptimizer.memoryPackageTree[memoryPackageKey].keys() :
+                         print(f'   pageKey = {pageKey}')
+                         for memoryPackage in self.application.memoryOptimizer.memoryPackageTree[memoryPackageKey][pageKey] :
+                             for objectDto in memoryPackage.newObjectsDto :
+                                 print(f'       objectDto.name = {objectDto[0][0]}')
+
+                print('============================================================================================================================================================')
                 # print()
                 # printAllObjectEvents(self.application)
 
@@ -185,7 +193,9 @@ class Mouse:
                 debugText += f'Mouse.lastBusyState = {self.lastBusyState}\n'
                 debugText += f'Mouse.state = {self.state}\n'
                 debugText += f'{mouseFunction.State.INVALID_STATE}\n'
-                applicationFunction.holdForDebug(debugText)
+                ErrorEvent.ErrorEvent(None,
+                    message = debugText
+                )
 
 
         if not self.inLifeCicle :
@@ -194,7 +204,9 @@ class Mouse:
                 debugText += f'Mouse.lastBusyState = {self.lastBusyState}\n'
                 debugText += f'Mouse.state = {self.state}\n'
                 debugText += f'{mouseFunction.State.INVALID_STATE}\n'
-                applicationFunction.holdForDebug(debugText)
+                ErrorEvent.ErrorEvent(None,
+                    message = debugText
+                )
 
     def nextState(self,state):
 

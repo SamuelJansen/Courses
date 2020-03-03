@@ -1,5 +1,5 @@
 import UserInterface, Button
-import surfaceFunction
+import surfaceFunction, applicationFunction
 
 print('Header library imported')
 
@@ -10,12 +10,18 @@ class Header(UserInterface.UserInterface):
         itemSize = None,
         itemsImagePath = None,
         itemsAudioPath = None,
+        text = None,
+        textPosition = None,
+        fontSize = None,
         padding = None
     ):
 
         padding,originalPadding = surfaceFunction.stashPadding(padding,father)
 
         UserInterface.UserInterface.__init__(self,name,position,size,father,
+            text = text,
+            textPosition = textPosition,
+            fontSize = fontSize,
             padding = padding
         )
 
@@ -35,18 +41,25 @@ class Header(UserInterface.UserInterface):
         itemFather = self
         for index in range(len(self.items)) :
             itemPosition = self.getItemPosition(index)
-            itemsAttributes.append([[
-                self.items[index].name,
-                itemPosition.copy(),
-                self.itemSize.copy(),
-                itemFather,
-            ],
-            {
-                'externalFunction' : self.items[index].externalFunction,
-                'imagePath' : self.itemsImagePath,
-                'audioPath' : self.itemsAudioPath
-            }])
-        self.application.newObjects(itemsAttributes,Button.Button)
+            itemsAttributes.append([
+                [
+                    self.items[index].name,
+                    itemPosition.copy(),
+                    self.itemSize.copy(),
+                    itemFather,
+                ],
+                {
+                    applicationFunction.Key.ON_LEFT_CLICK : self.items[index].onLeftClick,
+                    applicationFunction.Key.IMAGE_PATH : self.itemsImagePath,
+                    applicationFunction.Key.AUDIO_PATH : self.itemsAudioPath
+                },
+                {
+                    applicationFunction.Key.PRIORITY : applicationFunction.Priority.HIGHT
+                }
+            ])
+        self.application.memoryOptimizer.newObjects(itemsAttributes,Button.Button,
+            priority = applicationFunction.Priority.HIGHT
+        )
 
     def resetButtonsPosition(self):
         self.screen.reset()

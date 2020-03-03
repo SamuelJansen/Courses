@@ -1,5 +1,5 @@
 import Modal, Button
-import surfaceFunction, itemSetFunction
+import surfaceFunction, itemSetFunction, imageFunction, applicationFunction
 
 print('ItemSet library imported')
 
@@ -7,28 +7,34 @@ class ItemSet(Modal.Modal):
 
     def __init__(self,name,father,
         position = None,
-        externalFunction = None,
-        itemsName = None,
-        itemsText = None,
+        itemsDto = None,
         itemSize = None,
-        itemDirection = itemSetFunction.Type.DOWN,
-        itemsExternalFunction = None,
+        itemsDirection = itemSetFunction.Type.DOWN,
+        itemsPriority = applicationFunction.Priority.NO_PRIORITY,
+        text = None,
+        textPosition = None,
+        fontSize = None,
         scale = None,
         padding = None,
         noImage = False,
+        onLeftClick = None,
+        onMenuResolve = None,
         imagePath = None,
         audioPath = None
     ):
 
         if not itemSize :
-            itemSize = self.calculateItemSize(itemsText,father)
+            itemSize = self.calculateItemSize(itemsDto,father)
 
-        size = self.calculateSize(itemDirection,itemSize,itemsName,father)
+        size = self.calculateSize(itemsDirection,itemSize,itemsDto,father)
 
-        Modal.Modal.__init__(
-            self,name,size,father,
+        Modal.Modal.__init__(self,name,size,father,
             position = position,
-            externalFunction = externalFunction,
+            onLeftClick = onLeftClick,
+            onMenuResolve = onMenuResolve,
+            text = text,
+            textPosition = textPosition,
+            fontSize = fontSize,
             scale = scale,
             padding = padding,
             noImage = noImage,
@@ -38,25 +44,22 @@ class ItemSet(Modal.Modal):
 
         self.selectable = False
 
-        self.itemsName = itemsName
-        self.itemDirection = itemDirection
+        self.itemsDto = itemsDto
+        self.itemsName = self.getItemsName()
+        self.itemsDirection = itemsDirection
+        self.itemsPriority = itemsPriority
         self.itemSize = surfaceFunction.parseSize(itemSize,father)
-
-        self.itemsText = itemsText
-        self.itemFontSize = self.getFontSize()
-
-        self.itemsExternalFunction = itemsExternalFunction
-
+        self.itemFontSize = self.calculateFontSize()
         self.initialChildPosition = self.calculateInitialChildPosition()
 
         self.buildItems()
 
-    def calculateItemSize(self,itemsText,father):
-        if itemsText :
+    def calculateItemSize(self,itemsDto,father):
+        if itemsDto[0].text :
             largerItemText = 0
-            for itemText in itemsText :
-                if len(itemText) > largerItemText :
-                    largerItemText = len(itemText)
+            for itemDto in itemsDto :
+                if len(itemDto.text) > largerItemText :
+                    largerItemText = len(itemDto.text)
             return [
                 int(father.handler.originalSize[1] / 2 * largerItemText),
                 father.handler.originalSize[1]
@@ -64,71 +67,77 @@ class ItemSet(Modal.Modal):
         else :
             return father.tutor.size
 
-    def calculateSize(self,itemDirection,itemSize,itemsName,father):
-        if itemDirection == itemSetFunction.Type.DOWN :
+    def calculateSize(self,itemsDirection,itemSize,itemsDto,father):
+        if itemsDirection == itemSetFunction.Type.DOWN :
             return [
                 itemSize[0],
-                (itemSize[1] - father.padding[1]) * len(itemsName) + father.handler.originalSize[1]
+                (itemSize[1] - father.padding[1]) * len(itemsDto) + father.handler.originalSize[1]
             ]
-        elif itemDirection == itemSetFunction.Type.RIGHT :
+        elif itemsDirection == itemSetFunction.Type.RIGHT :
             return [
                 itemSize[0] + father.handler.originalSize[0] - father.padding[0],
-                (itemSize[1] - father.padding[1]) * len(itemsName) + father.padding[1]
+                (itemSize[1] - father.padding[1]) * len(itemsDto) + father.padding[1]
             ]
-        return None
 
-    def getFontSize(self):
-        if self.itemsText :
+    def calculateFontSize(self):
+        if self.itemsDto :
             return surfaceFunction.getSizePadded(self.itemSize,self.padding)[1]
         else :
             return 0
 
     def calculateInitialChildPosition(self):
-        if self.itemDirection == itemSetFunction.Type.DOWN :
+        if self.itemsDirection == itemSetFunction.Type.DOWN :
             return [
                 0,
                 self.tutor.handler.getOriginalSize()[1] - self.padding[1]
             ]
-        elif self.itemDirection == itemSetFunction.Type.RIGHT :
+        elif self.itemsDirection == itemSetFunction.Type.RIGHT :
             return [
                 self.tutor.handler.getOriginalSize()[0] - self.padding[0],
                 0
             ]
-        return None
 
     def buildItems(self):
+        itemsMemoryOptimizationDto = []
         itemsFather = self
-
-        for itemIndex in range(len(self.itemsName)) :
-            if self.itemDirection == itemSetFunction.Type.DOWN :
+        for index in range(len(self.itemsDto)) :
+            if self.itemsDirection == itemSetFunction.Type.DOWN :
                 itemPosition = [
                     self.initialChildPosition[0],
-                    self.initialChildPosition[1] + itemIndex * (self.itemSize[1] - self.padding[1])
+                    self.initialChildPosition[1] + index * (self.itemSize[1] - self.padding[1])
                 ]
-            elif self.itemDirection == itemSetFunction.Type.RIGHT :
+            elif self.itemsDirection == itemSetFunction.Type.RIGHT :
                 itemPosition = [
                     self.initialChildPosition[0],
-                    self.initialChildPosition[1] + itemIndex * (self.itemSize[1] - self.padding[1])
+                    self.initialChildPosition[1] + index * (self.itemSize[1] - self.padding[1])
                 ]
+            itemsMemoryOptimizationDto.append([
+                [
+                    self.itemsDto[index].name,
+                    itemPosition.copy(),
+                    self.itemSize.copy(),
+                    itemsFather,
+                ],
+                {
+                    applicationFunction.Key.ON_LEFT_CLICK : self.itemsDto[index].onLeftClick,
+                    applicationFunction.Key.ON_MENU_RESOLVE : self.itemsDto[index].onMenuResolve,
+                    applicationFunction.Key.TEXT : self.itemsDto[index].text,
+                    applicationFunction.Key.TEXT_POSITION : [surfaceFunction.getPositionPadded([0],self.padding)[0],surfaceFunction.getPositionPadded([0],self.padding)[0]],
+                    applicationFunction.Key.FONT_SIZE : self.itemFontSize,
+                    applicationFunction.Key.IMAGE_PATH : None,
+                    applicationFunction.Key.AUDIO_PATH : None
+                },
+                {
+                    applicationFunction.Key.PRIORITY : self.itemsPriority
+                }
+            ])
 
-            if self.itemsExternalFunction :
-                externalFunction = self.itemsExternalFunction
-            else :
-                externalFunction = self.itemsName[itemIndex]
+        self.application.memoryOptimizer.newObjects(itemsMemoryOptimizationDto,Button.Button,
+            priority = self.itemsPriority
+        )
 
-            newItem = Button.Button(
-                self.itemsName[itemIndex],
-                itemPosition,
-                self.itemSize.copy(),
-                itemsFather,
-                externalFunction = externalFunction
-            )
+    def getItemsName(self):
+        return [itemDto.name for itemDto in self.itemsDto]
 
-            if self.itemsText :
-                newItem.addText(
-                    self.itemsText[itemIndex],
-                    [surfaceFunction.getPositionPadded([0],self.padding)[0],surfaceFunction.getPositionPadded([0],self.padding)[0]],
-                    self.itemFontSize
-                )
-
-        self.handler.addTutorImage(self.tutor,surfaceFunction.getPositionPadded([0,0],self.padding))
+    def getItemsText(self):
+        return [itemDto.text for itemDto in self.itemsDto]

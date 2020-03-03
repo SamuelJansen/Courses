@@ -8,12 +8,10 @@ def add(event) :
         forwardButton = '[1393x761 1500x844]'
         audioNames = setting.getFileNames(f'{event.application.session.path}audio\\',audioExtension)
         imageNames = setting.getFileNames(f'{event.application.session.path}image\\',imageExtension)
-        print(f'audioNames = {audioNames}')
-        print(f'imageNames = {imageNames}')
         lessonScriptList = []
         for index in range(len(imageNames)) :
             scriptList = []
-            if str(index) in audioNames :
+            if f'{index}' in audioNames :
                 scriptList.append(f'audio:{index}')
             script = '['
             for instruction in scriptList :

@@ -11,9 +11,13 @@ class Object:
 
     def __init__(self,name,position,size,scale,velocity,father,
             type = None,
-            externalFunction = None,
+            text = None,
+            textPosition = None,
+            fontSize = None,
             collidableSize = None,
             noImage = False,
+            onLeftClick = None,
+            onMenuResolve = None,
             imagePath = None,
             audioPath = None
         ):
@@ -28,7 +32,6 @@ class Object:
             self.type = objectFunction.Type.OBJECT
 
         self.blitOrder = objectFunction.getBlitOrder(self)
-
         # print(f'{self.type}.name = {self.name}, blit order = {self.blitOrder}')
 
         self.size = size.copy()
@@ -46,7 +49,7 @@ class Object:
 
         if imagePath :
             self.imagePath = f'{imagePath}{self.name}.png'
-            print(f'{self.name}.__init__(): imagePath = {self.imagePath}')
+            # print(f'{self.name}.__init__(): imagePath = {self.imagePath}')
         else :
             self.imagePath = f'{self.application.imagePath}{self.type}\\{self.name}.png'
 
@@ -68,15 +71,21 @@ class Object:
             self.collidableSize[0],
             self.collidableSize[1]
         )
+        self.visible = True
 
         self.velocity = velocity * self.application.velocityControl
 
-        self.textPosition = None
+        self.text = text
+        self.textPosition = textPosition
+        self.fontSize = fontSize
         self.textList = []
         self.textPositionList = []
         self.font = None
+        self.addText(self.text,self.textPosition,self.fontSize,
+            fontStyle = None
+        )
 
-        self.initializeInteractiability(externalFunction)
+        self.initializeInteractiability(onLeftClick,onMenuResolve)
 
         self.screen = Screen.Screen(self)
         self.handler = Handler.Handler(self)
@@ -85,7 +94,8 @@ class Object:
 
         self.father.handler.addObject(self)
 
-        ###- print(f'{self.name} created successfully')
+        ###-
+        print(f'{self.name} created, father = {self.father.name}, tutor = {self.tutor.name}, type = {self.type}, blit order = {self.blitOrder}')
 
     def newImage(self,noImage):
         self.noImage = noImage
@@ -97,21 +107,22 @@ class Object:
     def addText(self,text,position,fontSize,
         fontStyle = None
     ):
-        textPositionErrorCompensation = self.getTextPositionError()
-        if not fontStyle :
-            fontStyle = self.application.fontStyle
-            # print(f'Object.application.fontStyle = {self.application.fontStyle}')
-        try :
-            pg.font.init()
-            self.font = pg.font.SysFont(fontStyle,fontSize)
-            self.textList.append(self.font.render(text,False,(0, 0, 0)))
-            self.textPositionList.append([
-                position[0] + textPositionErrorCompensation[0],
-                position[1] + textPositionErrorCompensation[1]
-            ])
-        except :
-            print("TextFont module not initialized")
-            self.deleteText()
+        if text :
+            textPositionErrorCompensation = self.getTextPositionError()
+            if not fontStyle :
+                fontStyle = self.application.fontStyle
+                # print(f'Object.application.fontStyle = {self.application.fontStyle}')
+            try :
+                pg.font.init()
+                self.font = pg.font.SysFont(fontStyle,fontSize)
+                self.textList.append(self.font.render(text,False,(0, 0, 0)))
+                self.textPositionList.append([
+                    position[0] + textPositionErrorCompensation[0],
+                    position[1] + textPositionErrorCompensation[1]
+                ])
+            except :
+                print("TextFont module not initialized")
+                self.deleteText()
 
     def getTextPositionError(self):
         return[0,-6]
@@ -183,17 +194,23 @@ class Object:
                 position[1] + fatherAbsoluteOriginalPosition[1]
             ]
 
-    def initializeInteractiability(self,externalFunction):
+    def initializeInteractiability(self,onLeftClick,onMenuResolve):
         self.clickable = False
-        self.execute = None
+        self.onLeftClick = None
+        self.onMenuResolve = None
         self.singleClickable = False
         self.doubleClickable = False
 
-        if externalFunction :
-            self.clickable = True
-            self.execute = externalFunction
-            self.singleClickable = True ###- self.externalFunction.TYPE == objectFunction.Attribute.SINGLE_CLICKABLE
-            self.doubleClickable = False ###- self.externalFunction.TYPE == objectFunction.Attribute.DOUBLE_CLICKABLE
+        self.updateOnLeftClick(onLeftClick)
+        self.updateOnMenuResolve(onMenuResolve)
 
-    def updateExecussionFunction(self,externalFunction):
-        self.execute = externalFunction
+    def updateOnLeftClick(self,onLeftClick):
+        self.onLeftClick = onLeftClick
+        if self.onLeftClick :
+            self.clickable = True
+            self.singleClickable = True
+        else :
+            self.singleClickable = False
+
+    def updateOnMenuResolve(self,onMenuResolve):
+        self.onMenuResolve = onMenuResolve

@@ -1,4 +1,4 @@
-import MenuEvent, EventError, ExecussionEvent, RemoveFocusEvent, NewSessionEvent
+import MenuEvent, ErrorEvent, ExecussionEvent, RemoveFocusEvent, NewSessionEvent
 import eventFunction, itemSetFunction
 
 print('MenuNavigationEvent library imported')
@@ -9,13 +9,12 @@ class MenuNavigationEvent(MenuEvent.MenuEvent):
         self.removeFatherPreviousMenuNavigationEvent(self.object.father)
         self.applicationScriptFile = self.getApplicationScript()
         if self.applicationScriptFileIsValid() :
-            self.object.updateExecussionFunction(self.externalFunction)
             NewSessionEvent.NewSessionEvent(self)
             ExecussionEvent.ExecussionEvent(self)
             self.updateStatus(eventFunction.Status.RESOLVED)
             RemoveFocusEvent.RemoveFocusEvent(self.application)
         else :
-            self.buildItems(itemSetFunction.Type.RIGHT,MenuNavigationEvent)
+            self.buildItems(itemSetFunction.Type.RIGHT)
             self.updateStatus(eventFunction.Status.NOT_RESOLVED)
 
     def __init__(self,event,
@@ -28,14 +27,13 @@ class MenuNavigationEvent(MenuEvent.MenuEvent):
 
         fatherTutorEventType = self.getFatherTutorEventType(event)
         fatherTutorMenuNavigationEvent = event.object.father.tutor.handler.events[f'{fatherTutorEventType}.{event.object.father.tutor.name }']
-        externalFunction = self.getExecussionFunction(fatherTutorMenuNavigationEvent)
 
         object = event.object
         apiModule = fatherTutorMenuNavigationEvent.apiModule
         itemsPackage = fatherTutorMenuNavigationEvent.itemsPackage
         itemsPathTree = f'{fatherTutorMenuNavigationEvent.itemsPathTree}{eventFunction.getObjectName(event)}\\'
 
-        MenuEvent.MenuEvent.__init__(self,object,apiModule,itemsPackage,itemsPathTree,externalFunction,
+        MenuEvent.MenuEvent.__init__(self,object,apiModule,itemsPackage,itemsPathTree,object.onLeftClick,object.onMenuResolve,
             name = None,
             type = type,
             inherited = True
@@ -63,10 +61,7 @@ class MenuNavigationEvent(MenuEvent.MenuEvent):
         if self.applicationScriptFile :
             applicationScriptFileIsValid = (self.applicationScriptFile == f'{self.object.father.tutor.name}.{self.object.name}.{self.application.extension}')
             if not applicationScriptFileIsValid :
-                EventError.EventError(self,
+                ErrorEvent.ErrorEvent(self,
                     message = 'errorMessage'
                 )
             return applicationScriptFileIsValid
-
-    def getExecussionFunction(self,fatherTutorMenuNavigationEvent):
-        return fatherTutorMenuNavigationEvent.externalFunction

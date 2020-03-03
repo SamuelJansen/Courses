@@ -15,6 +15,9 @@ class Type:
 
     EVENT = eventFunction.Attribute.NAME
     EXECUSSION_EVENT = 'ExecussionEvent'
+    MESSAGE_EVENT = 'MessageEvent'
+    ERROR_EVENT = 'ErrorEvent'
+
     SESSION_EVENT = 'SessionEvent'
 
     FOCUS_EVENT = 'FocusEvent'
@@ -41,9 +44,6 @@ def getObjectName(event) :
 
 def getEventType(event) :
     return event.name.split('.')[0]
-
-def buildErrorMessage(message) :
-    return message
 
 def getItemNames(itemsPath) :
     itemNames = []
