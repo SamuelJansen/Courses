@@ -95,7 +95,6 @@ class Handler:
             object.handler.removeStudentTree()
             object.handler.removeObjectTree()
             object.screen.remove()
-            print(f'{object.name} removed')
             del self.objects[object.name]
             self.object.screen.mustUpdateNextFrame()
         else :

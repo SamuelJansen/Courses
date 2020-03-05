@@ -49,11 +49,13 @@ class Object:
 
         if imagePath :
             self.imagePath = f'{imagePath}{self.name}.png'
-            # print(f'{self.name}.__init__(): imagePath = {self.imagePath}')
         else :
             self.imagePath = f'{self.application.imagePath}{self.type}\\{self.name}.png'
 
         self.image = self.newImage(noImage)
+        # print(f'{self.name}.newImage():')
+        # print(f'        imagePath = {self.imagePath}')
+        # print(f'        image = self.image = {self.image}')
 
         self.audioPath = audioPath
 
@@ -85,17 +87,15 @@ class Object:
             fontStyle = None
         )
 
-        self.initializeInteractiability(onLeftClick,onMenuResolve)
-
         self.screen = Screen.Screen(self)
         self.handler = Handler.Handler(self)
 
+        self.initializeInteractiability(onLeftClick,onMenuResolve)
         self.focus = None
 
         self.father.handler.addObject(self)
 
-        ###-
-        print(f'{self.name} created, father = {self.father.name}, tutor = {self.tutor.name}, type = {self.type}, blit order = {self.blitOrder}')
+        ###- print(f'{self.name} created, father = {self.father.name}, tutor = {self.tutor.name}, type = {self.type}, blit order = {self.blitOrder}')
 
     def newImage(self,noImage):
         self.noImage = noImage

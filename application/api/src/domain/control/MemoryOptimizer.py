@@ -3,7 +3,7 @@ import applicationFunction
 class MemoryOptimizer:
 
     FAST_NEW_OBJECT_RANGE = 20
-    OBJECT_DEPLOY_RATE = 2
+    OBJECT_DEPLOY_RATE = 1
     FIRST_MEMORY_PACKAGE = 0
     FIRST_NEW_OBJECT_DTO = 0
 
@@ -11,8 +11,8 @@ class MemoryOptimizer:
         memoryPackageTree = self.getMemoryPackageTree()
         if memoryPackageTree :
             memoryPackage = memoryPackageTree[MemoryOptimizer.FIRST_MEMORY_PACKAGE]
-            self.newObject(memoryPackage)
-            if not memoryPackage.newObjectsDto :
+            self.buildObjects(memoryPackage)
+            if not memoryPackage.objectsDto :
                 del memoryPackageTree[MemoryOptimizer.FIRST_MEMORY_PACKAGE]
 
     def __init__(self,application):
@@ -28,32 +28,39 @@ class MemoryOptimizer:
         }
         self.application.sessionPage = self.application.name
 
-    def newObject(self,memoryPackage):
-        self.fastNewObject(memoryPackage.newObjectsDto[:MemoryOptimizer.OBJECT_DEPLOY_RATE],memoryPackage.objectClass)
-        del memoryPackage.newObjectsDto[:MemoryOptimizer.OBJECT_DEPLOY_RATE]
-
-    def fastNewObject(self,newObjectsDto,objectClass):
-        while newObjectsDto :
-            objectClass(
-                *newObjectsDto[MemoryOptimizer.FIRST_NEW_OBJECT_DTO][0],
-                **newObjectsDto[MemoryOptimizer.FIRST_NEW_OBJECT_DTO][1]
-            )
-            del newObjectsDto[MemoryOptimizer.FIRST_NEW_OBJECT_DTO]
-
-    def newObjects(self,newObjectsDto,objectClass,
+    def newObjects(self,objectsDto,objectClass,
         priority = applicationFunction.Priority.NO_PRIORITY
     ):
-        if len(newObjectsDto) < MemoryOptimizer.FAST_NEW_OBJECT_RANGE :
-            self.fastNewObject(newObjectsDto,objectClass)
+        if len(objectsDto) < MemoryOptimizer.FAST_NEW_OBJECT_RANGE :
+            self.instantlyBuildObjects(objectsDto,objectClass)
         else :
             self.application.sessionPage = self.getSessionPage()
             self.updateMemoryPackageTree(priority)
             self.memoryPackageTree[priority][self.application.sessionPage].append(
-                MemoryPackage(newObjectsDto,objectClass,
+                MemoryPackage(objectsDto,objectClass,
                     priority = priority
                 )
             )
             ###- TODO - sort by item priority too
+
+    def buildObjects(self,memoryPackage):
+        self.instantlyBuildObjects(memoryPackage.objectsDto[:MemoryOptimizer.OBJECT_DEPLOY_RATE],memoryPackage.objectClass)
+        del memoryPackage.objectsDto[:MemoryOptimizer.OBJECT_DEPLOY_RATE]
+
+    def instantlyBuildObjects(self,objectsDto,objectClass):
+        # print(f'+++++++++++++++++++++++++++++{self.application.name}.memoryOptimizer.instantlyBuildObjects() method call++++++++++++++++')
+        while objectsDto :
+            object = objectClass(
+            # objectClass(
+                *objectsDto[MemoryOptimizer.FIRST_NEW_OBJECT_DTO][0],
+                **objectsDto[MemoryOptimizer.FIRST_NEW_OBJECT_DTO][1]
+            )
+            # print(f'{object.name}.father.name = {object.father.name}, {object.name}.tutor.name = {object.tutor.name}')
+            # object.tutor.screen.mustUpdateNextFrame()
+            # object.father.screen.mustUpdateNextFrame()
+            # object.father.tutor.screen.mustUpdateNextFrame()
+            del objectsDto[MemoryOptimizer.FIRST_NEW_OBJECT_DTO]
+        # print(f'+++++++++++++++++++++++++++++{self.application.name}.memoryOptimizer.instantlyBuildObjects() method resolve++++++++++++++++')
 
     def getMemoryPackageTree(self):
         for priorityKey in sorted(self.memoryPackageTree.keys(),reverse=True) :
@@ -82,9 +89,9 @@ class MemoryOptimizer:
 
 class MemoryPackage:
 
-    def __init__(self,newObjectsDto,objectClass,
+    def __init__(self,objectsDto,objectClass,
         priority = applicationFunction.Priority.NO_PRIORITY
     ):
         self.objectClass = objectClass
-        self.newObjectsDto = newObjectsDto
+        self.objectsDto = objectsDto
         self.priority = priority

@@ -4,15 +4,13 @@ import eventFunction
 def exit(event) :
 
     cancelButtonDto = ItemDto.ItemDto('cancel',
-        position = [40,100],
-        size = [80,40],
+        size = [55,24],
         text = 'Cancel',
         textPosition = [0,0],
         onLeftClick = cancel
     )
     okButtonDto = ItemDto.ItemDto('ok',
-        position = [120,100],
-        size = [80,40],
+        size = [55,24],
         text = 'Ok',
         textPosition = [0,0],
         onLeftClick = ok

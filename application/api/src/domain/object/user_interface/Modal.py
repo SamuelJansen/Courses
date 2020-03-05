@@ -12,7 +12,7 @@ class Modal(UserInterface.UserInterface):
         fontSize = None,
         scale = None,
         padding = None,
-        noImage = False,
+        noImage = True,
         onLeftClick = None,
         onMenuResolve = None,
         imagePath = None,
@@ -36,9 +36,7 @@ class Modal(UserInterface.UserInterface):
 
         self.setModalTutorAttributes(originalPadding,keepFatherImage,tutor)
 
-        ###-
-        print(f'{self.name} created, father = {self.father.name}, tutor = {self.tutor.name}, type = {self.type}, blit order = {self.blitOrder}')
-
+        ###- print(f'{self.name} created, father = {self.father.name}, tutor = {self.tutor.name}, type = {self.type}, blit order = {self.blitOrder}')
 
         # if eventFunction.Type.MODAL in self.handler.inheritanceTree :
         #     try :
@@ -72,3 +70,4 @@ class Modal(UserInterface.UserInterface):
         self.handler.setTutor(tutor)
         if keepFatherImage :
             self.handler.addTutorImage(self.tutor,surfaceFunction.getPositionPadded([0,0],self.padding))
+        # self.father.screen.mustUpdateNextFrame()

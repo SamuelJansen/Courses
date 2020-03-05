@@ -75,7 +75,7 @@ class Application:
         self.floor = floor
         if self.floor :
             Object.Object(
-                f'{self.name}.{applicationFunction.Attribute.FLOOR}',
+                applicationFunction.getFloorName(self),
                 [0,0],
                 self.size,
                 self.scaleRange,
@@ -122,7 +122,7 @@ class Application:
 
     def getFloor(self):
         if self.floor :
-            return self.handler.objects[f'{self.name}.{applicationFunction.Attribute.FLOOR}']
+            return self.handler.objects[applicationFunction.getFloorName(self)]
         else :
             return self
 
@@ -141,10 +141,10 @@ class Application:
     def getAbsoluteOriginalPosition(self):
         return self.handler.getOriginalPosition()
 
-    def initialize(self,timeNow):
+    def initialize(self):
         '''
         It's better to call this method after create all objects'''
-        self.timeNow = timeNow
+        self.timeNow = now.time()
         if self.frame :
             print('Frame already created')
         else :
@@ -188,8 +188,7 @@ class Application:
         self.setPosition(position)
 
     def run(self,arrow):
-
-        self.initialize(now.time())
+        self.initialize()
 
         while self.running :
             if self.frame.apfNew :
@@ -210,9 +209,17 @@ class Application:
                     #"""
 
             self.update()
+            forcedObjectsUpdate(self)
+
         pg.quit()
         #sys.exit()
 
     def close(self):
         self.removeSession()
         self.running = False
+
+
+def forcedObjectsUpdate(object) :
+    object.mustUpdate = True
+    for objectSon in object.handler.objects.values() :
+        forcedObjectsUpdate(objectSon)

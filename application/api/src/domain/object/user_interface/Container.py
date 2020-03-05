@@ -1,5 +1,5 @@
 import UserInterface, Button
-import applicationFunction
+import applicationFunction, containerFunction
 
 class Container(UserInterface.UserInterface):
 
@@ -11,7 +11,8 @@ class Container(UserInterface.UserInterface):
         audioPath = None
     ):
 
-        name = f'Container.{father.name}'
+        name = f'{containerFunction.Attribute.NAME}.{father.name}'
+        position = containerFunction.parsePosition(position,size,father)
 
         UserInterface.UserInterface.__init__(self,name,position,size,father,
             fontSize = fontSize,
@@ -22,21 +23,31 @@ class Container(UserInterface.UserInterface):
             audioPath = audioPath
         )
 
-        itemsMemoryOptimizationDto = []
         itemsFather = self
+        if not itemsDto[0].position :
+            for itemDto in itemsDto :
+                itemDto.position = [
+                    containerFunction.Attribute.FILL,
+                    containerFunction.Attribute.CENTER
+                ]
+        itemsDto = containerFunction.parseItemsDtoPosition(itemsFather,
+            itemsDto = itemsDto
+        )
+
+        itemsMemoryOptimizationDto = []
         for itemDto in itemsDto :
             itemsMemoryOptimizationDto.append([
                 [
                     itemDto.name,
                     itemDto.position.copy(),
                     itemDto.size.copy(),
-                    itemsFather,
+                    itemsFather
                 ],
                 {
-                    applicationFunction.Key.ON_LEFT_CLICK : itemDto.onLeftClick,
                     applicationFunction.Key.TEXT : itemDto.text,
                     applicationFunction.Key.TEXT_POSITION : itemDto.textPosition,
                     applicationFunction.Key.FONT_SIZE : self.fontSize,
+                    applicationFunction.Key.ON_LEFT_CLICK : itemDto.onLeftClick,
                     applicationFunction.Key.IMAGE_PATH : self.imagePath,
                     applicationFunction.Key.AUDIO_PATH : self.audioPath
                 },

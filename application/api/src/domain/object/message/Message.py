@@ -1,5 +1,5 @@
 import Modal, Container, Button
-import surfaceFunction, objectFunction, eventFunction, applicationFunction
+import surfaceFunction, objectFunction, eventFunction, applicationFunction, containerFunction
 
 print('Message library imported')
 
@@ -34,34 +34,9 @@ class Message(Modal.Modal):
 
         self.message = message
 
-        # itemsMemoryOptimizationDto = []
-        # for optionDto in optionsDto :
-        #     itemsMemoryOptimizationDto.append([
-        #         [
-        #             optionDto.name,
-        #             optionDto.position.copy(),
-        #             optionDto.size.copy(),
-        #             self,
-        #         ],
-        #         {
-        #             applicationFunction.Key.ON_LEFT_CLICK : optionDto.onLeftClick,
-        #             applicationFunction.Key.TEXT : optionDto.text,
-        #             applicationFunction.Key.TEXT_POSITION : optionDto.textPosition,
-        #             applicationFunction.Key.FONT_SIZE : self.fontSize,
-        #             applicationFunction.Key.IMAGE_PATH : self.imagePath,
-        #             applicationFunction.Key.AUDIO_PATH : self.audioPath
-        #         },
-        #         {
-        #             applicationFunction.Key.PRIORITY : applicationFunction.Priority.HIGHT
-        #         }
-        #     ])
-        # self.application.memoryOptimizer.newObjects(itemsMemoryOptimizationDto,Button.Button,
-        #     priority = applicationFunction.Priority.HIGHT
-        # )
-
         containerFather = self
-        containerPosition = [0,50]
-        containerSize = [300,100]
+        containerPosition = [0,containerFunction.Attribute.BOTTOM]
+        containerSize = ['100%',30]
         Container.Container(containerPosition,containerSize,containerFather,
             itemsDto = optionsDto,
             fontSize = self.fontSize,

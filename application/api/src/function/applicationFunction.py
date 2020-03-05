@@ -26,3 +26,6 @@ class Key:
 def priorityOrder(memoryPackage):
     # return memoryPackage.newObjectsDto
     return 0
+
+def getFloorName(application):
+    return f'{application.name}.{Attribute.FLOOR}'

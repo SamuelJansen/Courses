@@ -7,7 +7,6 @@ def pageSelection(event) :
 
     imagePath = f'{event.itemsPath}image\\'
     itemNames = imageFunction.getImageFileNames(imagePath,'png')
-    imagePath = imagePath
     audioPath = None
 
     deskItems = []

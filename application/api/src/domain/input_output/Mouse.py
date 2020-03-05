@@ -1,7 +1,7 @@
 import pygame as pg
 
 import ClickEvent, FalseClickEvent, ErrorEvent
-import objectFunction, mouseFunction, applicationFunction
+import objectFunction, mouseFunction, applicationFunction, fatherFunction
 
 print('Mouse library imported')
 
@@ -134,20 +134,14 @@ class Mouse:
                 # try :
                 #     print(f'                        Mouse.objectHitUp = {self.objectHitUp.name}')
                 # except : pass
-                # print()
+                print()
                 print('============================================================================================================================================================')
                 ClickEvent.ClickEvent(self)
-                for memoryPackageKey in self.application.memoryOptimizer.memoryPackageTree.keys() :
-                    print(f'memoryPackageKey = {memoryPackageKey}')
-                    for pageKey in self.application.memoryOptimizer.memoryPackageTree[memoryPackageKey].keys() :
-                         print(f'   pageKey = {pageKey}')
-                         for memoryPackage in self.application.memoryOptimizer.memoryPackageTree[memoryPackageKey][pageKey] :
-                             for objectDto in memoryPackage.newObjectsDto :
-                                 print(f'       objectDto.name = {objectDto[0][0]}')
-
+                # printMemoryOptimizationTree(self)
                 print('============================================================================================================================================================')
-                # print()
-                # printAllObjectEvents(self.application)
+                print()
+                # printAllObjectEvents(fatherFunction.getAbsoluteFather(self.application))
+                # updateAllObjectsNextFrame(self.application)
 
             else :
                 FalseClickEvent.FalseClickEvent(self.application)
@@ -242,10 +236,34 @@ def printAllObjectEvents(object) :
     print()
 
 def printObjectEvents(object) :
+    print(object)
+    print(object.name)
     for objectSon in object.handler.objects.values() :
         printObjectEvents(objectSon)
     for event in object.handler.events.values() :
         print(f'{object.type}.name = {object.name}, {event.type}.name = {event.name}')
+
+def updateAllObjectsNextFrame(object) :
+    print()
+    print('////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////')
+    updateObjectsNextFrame(object)
+    print('////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////')
+    print()
+
+def updateObjectsNextFrame(object) :
+    object.mustUpdate = True
+    print(f'object.name = {object.name}, father.name = {object.father.name}, position = {object.position}, size = {object.size}, blitOrder = {object.blitOrder}')
+    for objectSon in object.handler.objects.values() :
+        updateObjectsNextFrame(objectSon)
+
+def printMemoryOptimizationTree(mouse) :
+    for memoryPackageKey in mouse.application.memoryOptimizer.memoryPackageTree.keys() :
+        print(f'memoryPackageKey = {memoryPackageKey}')
+        for pageKey in mouse.application.memoryOptimizer.memoryPackageTree[memoryPackageKey].keys() :
+             print(f'   pageKey = {pageKey}')
+             for memoryPackage in mouse.application.memoryOptimizer.memoryPackageTree[memoryPackageKey][pageKey] :
+                 for objectDto in memoryPackage.objectsDto :
+                     print(f'       objectDto.name = {objectDto[0][0]}')
 
 # A little black cross. Mouse cursor is 8*8 Pixel, hotspot is at (4, 4).
 # the cross is (Read Binary):
