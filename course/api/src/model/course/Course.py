@@ -1,5 +1,9 @@
 class Course:
-    def __init__(self,name,coursePath,modules):
+    def __init__(self,name,plataform):
+
+        self.plataform = plataform
+
         self.name = name
-        self.coursePath = coursePath
-        self.modules = modules
+
+        # self.coursePath = coursePath
+        # self.modules = modules

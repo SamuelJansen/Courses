@@ -3,6 +3,8 @@ import pygame as pg
 import Frame, Object, Handler, Mouse, Screen, Session, MemoryOptimizer
 import applicationFunction, setting, fatherFunction, objectFunction
 
+import CourseRepository
+
 import time as now
 import os
 import ctypes
@@ -28,6 +30,8 @@ class Application:
         self.application = self.tutor = self.father = fatherFunction.absoluteFather(self)
         self.pathMannanger = pathMannanger
         self.extension = self.pathMannanger.getExtension()
+
+        self.repository = CourseRepository.CourseRepository(self)
 
         self.name = name
         self.type = objectFunction.Type.APPLICATION
@@ -67,6 +71,10 @@ class Application:
             print("Mixer module not initialized")
 
         self.fontStyle = 'Comic Sans MS'
+        self.fontStyle = 'Times New Roman'
+        self.fontStyle = 'Calibri'
+        self.fontStyle = 'Corbel'
+
 
         self.frame = None ###- Aplication.initialize() must be called
 
@@ -209,7 +217,7 @@ class Application:
                     #"""
 
             self.update()
-            forcedObjectsUpdate(self)
+            # forceObjectsUpdate(self)
 
         pg.quit()
         #sys.exit()
@@ -218,8 +226,19 @@ class Application:
         self.removeSession()
         self.running = False
 
+    def findObjectByName(self,name):
+        return self.findObjectByNameInObjectTree(name,self)
 
-def forcedObjectsUpdate(object) :
+    def findObjectByNameInObjectTree(self,name,object):
+        for objectSon in object.handler.objects.values() :
+            if objectSon.getName() == name :
+                return objectSon
+            objectFound = self.findObjectByNameInObjectTree(name,objectSon)
+            if objectFound :
+                return objectFound
+
+
+def forceObjectsUpdate(object) :
     object.mustUpdate = True
     for objectSon in object.handler.objects.values() :
-        forcedObjectsUpdate(objectSon)
+        forceObjectsUpdate(objectSon)

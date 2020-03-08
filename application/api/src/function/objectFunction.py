@@ -2,7 +2,7 @@ class Attribute:
 
     NAME = 'Object'
 
-    '''
+    #'''
     NOT_HITTABLE_COLOR = [0,0,0,0]
     NO_IMAGE_COLOR = [0,0,0,0]
     '''
@@ -16,14 +16,14 @@ class Attribute:
 
 class Type:
 
-    APPLICATION = 'APPLICATION'
-    APPLICATION_FLOOR = 'APPLICATION_FLOOR'
-    CENARIO = 'CENARIO'
-    OBJECT = 'OBJECT'
-    USER_INTERFACE = 'USER_INTERFACE'
+    APPLICATION = 'application'
+    APPLICATION_FLOOR = 'application floor'
+    CENARIO = 'cenario'
+    OBJECT = 'object'
+    USER_INTERFACE = 'user interface'
 
-    DRAG_AND_DROP = 'DRAG_AND_DROP'
-    MESSAGE = 'MESSAGE'
+    DRAG_AND_DROP = 'drag and drop'
+    MESSAGE = 'message'
 
     types = {
         0 : APPLICATION,

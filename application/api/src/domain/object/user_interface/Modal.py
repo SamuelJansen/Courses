@@ -71,3 +71,6 @@ class Modal(UserInterface.UserInterface):
         if keepFatherImage :
             self.handler.addTutorImage(self.tutor,surfaceFunction.getPositionPadded([0,0],self.padding))
         # self.father.screen.mustUpdateNextFrame()
+
+    def getName(self):
+        return self.name.split('.')[0]

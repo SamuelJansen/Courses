@@ -9,9 +9,7 @@ class Plataform(Application.Application):
     def __init__(self,*args,**kargs):
 
         Application.Application.__init__(self,*args,**kargs)
-
-        self.repository = CourseRepository.CourseRepository(self)
-
+        
         self.applicatonUser = None
 
     def setApplicationUser(self,registration,password):

@@ -36,10 +36,5 @@ class Editor(Application.Application):
             headerFather,
             items = headerItems,
             itemSize = [surfaceFunction.Types.SQUARE,'100%'],
-            itemsImagePath = f'{self.application.pathMannanger.getApiModulePath(self.application.name)}resourse\\header\\image\\',
-            itemsAudioPath = f'{self.application.pathMannanger.getApiModulePath(self.application.name)}resourse\\header\\audio\\',
-            padding = [2,2]
+            padding = [0,0]
         )
-
-    def getHeaderNames(self):
-        return setting.getFileNames(f'{self.application.pathMannanger.getApiModulePath(self.application.name)}event\\header\\','py')

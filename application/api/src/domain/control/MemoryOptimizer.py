@@ -80,7 +80,9 @@ class MemoryOptimizer:
             self.deletePresentMemoryPackage()
 
     def deletePresentMemoryPackage(self):
-        del self.getMemoryPackageTree()[0]
+        memoryPackageTree = self.getMemoryPackageTree()
+        if memoryPackageTree :
+            del memoryPackageTree[0]
 
     def updateMemoryPackageTree(self,priorityKey):
         if self.application.sessionPage not in self.memoryPackageTree[priorityKey].keys() :

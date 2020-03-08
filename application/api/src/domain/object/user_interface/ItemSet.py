@@ -1,5 +1,5 @@
 import Modal, Button
-import surfaceFunction, itemSetFunction, imageFunction, applicationFunction
+import surfaceFunction, itemSetFunction, imageFunction, applicationFunction, textFunction
 
 print('ItemSet library imported')
 
@@ -23,8 +23,7 @@ class ItemSet(Modal.Modal):
         audioPath = None
     ):
 
-        if not itemSize :
-            itemSize = self.calculateItemSize(itemsDto,father)
+        itemSize = self.parseItemSize(itemSize,itemsDto,father)
 
         size = self.calculateSize(itemsDirection,itemSize,itemsDto,father)
 
@@ -50,22 +49,28 @@ class ItemSet(Modal.Modal):
         self.itemsPriority = itemsPriority
         self.itemSize = surfaceFunction.parseSize(itemSize,father)
         self.itemFontSize = self.calculateFontSize()
+        self.itemTextPosition = textFunction.calculateTextPositionPaddedOnMenu(self.itemSize,self.padding,self.itemFontSize)
         self.initialChildPosition = self.calculateInitialChildPosition()
 
         self.buildItems()
 
-    def calculateItemSize(self,itemsDto,father):
-        if itemsDto[0].text :
-            largerItemText = 0
-            for itemDto in itemsDto :
-                if len(itemDto.text) > largerItemText :
-                    largerItemText = len(itemDto.text)
-            return [
-                int(father.handler.originalSize[1] / 2 * largerItemText),
-                father.handler.originalSize[1]
-            ]
-        else :
-            return father.tutor.size
+    def parseItemSize(self,itemSize,itemsDto,father):
+        if itemSize :
+            if itemSize[0] == textFunction.Attribute.WORD_WIDTH :
+                if itemsDto[0].text :
+                    largerItemText = 0
+                    for itemDto in itemsDto :
+                        if len(itemDto.text) > largerItemText :
+                            largerItemText = len(itemDto.text)
+                    # return [
+                    #     int(father.handler.originalSize[1] / 2 * largerItemText),
+                    #     father.handler.originalSize[1]
+                    # ]
+                    return [
+                        int(father.handler.originalSize[1] / 2 * largerItemText),
+                        itemSize[1]
+                    ]
+        return father.tutor.size
 
     def calculateSize(self,itemsDirection,itemSize,itemsDto,father):
         if itemsDirection == itemSetFunction.Type.DOWN :
@@ -81,7 +86,7 @@ class ItemSet(Modal.Modal):
 
     def calculateFontSize(self):
         if self.itemsDto :
-            return surfaceFunction.getSizePadded(self.itemSize,self.padding)[1]
+            return textFunction.calculateFontSize(self.itemSize,self.padding)
         else :
             return 0
 
@@ -122,7 +127,7 @@ class ItemSet(Modal.Modal):
                     applicationFunction.Key.ON_LEFT_CLICK : self.itemsDto[index].onLeftClick,
                     applicationFunction.Key.ON_MENU_RESOLVE : self.itemsDto[index].onMenuResolve,
                     applicationFunction.Key.TEXT : self.itemsDto[index].text,
-                    applicationFunction.Key.TEXT_POSITION : [surfaceFunction.getPositionPadded([0],self.padding)[0],surfaceFunction.getPositionPadded([0],self.padding)[0]],
+                    applicationFunction.Key.TEXT_POSITION : self.itemTextPosition,
                     applicationFunction.Key.FONT_SIZE : self.itemFontSize,
                     applicationFunction.Key.IMAGE_PATH : None,
                     applicationFunction.Key.AUDIO_PATH : None

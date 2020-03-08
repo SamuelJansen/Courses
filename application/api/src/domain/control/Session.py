@@ -19,6 +19,8 @@ class Session:
         ]
         self.page = sessionFunction.Page.HOME
 
+        self.itemNames = {}
+
     def updateDeskItems(self,itemsSessionDtoList,itemsImagePath,itemsAudioPath):
         self.desk.handler.removeObjectTree()
         itemsMemoryOptimizationDto = []
@@ -49,9 +51,27 @@ class Session:
                     applicationFunction.Key.PRIORITY : applicationFunction.Priority.HIGHT
                 }
             ])
+            self.addItemName(item)
         self.application.memoryOptimizer.newObjects(itemsMemoryOptimizationDto,Button.Button,
             priority = applicationFunction.Priority.MEDIUM
         )
+
+    def addItemName(self,item):
+        if self.page not in self.itemNames :
+            self.itemNames[self.page] = []
+        if item.name not in self.itemNames[self.page] :
+            self.itemNames[self.page].append(item.name)
+
+    def removeItemNames(self,itemNames):
+        for itemName in itemNames :
+            for page in self.itemNames :
+                pageItemNames = self.itemNames[page].copy()
+                if itemName in pageItemNames :
+                    self.itemNames[page].remove(itemName)
+
+    def removeItemNamesFromPage(self,page):
+        if page in self.itemNames :
+            del self.itemNames[page]
 
     def revealDeskItems(self,itemNames):
         self.desk.screen.reveaObjects(itemNames)
@@ -63,7 +83,9 @@ class Session:
         self.application.getFloor().handler.removeObject(self.desk)
 
     def save(self):
-        Message.Message(self.desk,f'{self.name}.save()')
+        Message.Message(self.desk,f'{self.name}.save()',
+            fontSize = 16
+        )
 
     def getNamesFromItemsDto(self,itemsSessionDtoList):
         return [itemDto.name for itemDto in itemsSessionDtoList]

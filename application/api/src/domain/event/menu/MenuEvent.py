@@ -40,21 +40,18 @@ class MenuEvent(Event.Event):
         self.execute()
 
     def getItemsPathTreePointer(self):
-        BACK_SLASH = self.application.pathMannanger.backSlash
-        return len(self.itemsPathTree[:-1].split(BACK_SLASH)) - 1
+        return len(self.itemsPathTree[:-1].split(self.application.pathMannanger.backSlash)) - 1
 
     def getItemsPath(self):
         itemsPath = ''
-        BACK_SLASH = self.application.pathMannanger.backSlash
         for itemNameIndex in range(self.itemsPathTreePointer+1) :
-            itemsPath += f'{self.itemsPathTree[:-1].split(BACK_SLASH)[itemNameIndex]}{BACK_SLASH}'
+            itemsPath += f'{self.itemsPathTree[:-1].split(self.application.pathMannanger.backSlash)[itemNameIndex]}{self.application.pathMannanger.backSlash}'
         return f'{self.object.application.pathMannanger.getApiModulePath(self.apiModule)}{self.itemsPackage}{itemsPath}'
 
     def getItemNamesFilePath(self):
-        BACK_SLASH = self.application.pathMannanger.backSlash
-        return f'{self.getItemsPath()}{self.getItemsPath()[:-1].split(BACK_SLASH)[-1]}.{self.application.extension}'
+        return f'{self.getItemsPath()}{self.getItemsPath()[:-1].split(self.application.pathMannanger.backSlash)[-1]}.{self.application.extension}'
 
-    def buildItems(self,itemsDirection):
+    def buildItems(self,itemSize,itemsDirection):
         itemSetName = f'{itemSetFunction.Attribute.NAME}'
         itemSetFather = self.object
 
@@ -62,5 +59,6 @@ class MenuEvent(Event.Event):
             itemsDto = self.itemsDto,
             itemsDirection = itemsDirection,
             itemsPriority = applicationFunction.Priority.HIGHT,
+            itemSize = itemSize,
             noImage = True,
         )

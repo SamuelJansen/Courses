@@ -1,0 +1,17 @@
+REGISTRATION = '__registration__'
+PASSWORD = '__password__'
+COURSES = '__courses__'
+NOTHING = '__nothing__'
+PAGE_DATA_SEPARATOR = '__#__'
+COMA = '__,__'
+COLON = '__:__'
+
+
+PAGE = '__page__'
+IMAGE = '__image__'
+AUDIO = '__audio__'
+FOWARD_BUTTON = '__FowardButton__'
+BACKWARD_BUTTON = '__BackwardButton__'
+PAGE_SCRIPT = '__pageScript__'
+OPEN_SQUARE_BRACKETS = '__[__'
+CLOSE_SQUARE_BRACKETS = '__]__'

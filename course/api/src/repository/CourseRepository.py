@@ -1,17 +1,18 @@
 import os
 
-from tokenRepoitory import *
+from tokenRepository import *
 
-import imageFunction
+import imageFunction, setting
 
-import ApplicationUser
+import ApplicationUser, Course, Lesson, Page
 import coursePathFunction
 
 class CourseRepository:
 
     def __init__(self,application):
         self.application = application
-        applicationUserFilePath = f'''{self.application.pathMannanger.getApiModulePath('course')}resourse\\application_users\\application_users.{self.application.extension}'''
+        self.pathMannanger = self.application.pathMannanger
+        applicationUserFilePath = f'''{self.pathMannanger.getApiModulePath('course')}resourse\\application_users\\application_users.{self.application.extension}'''
         with open(applicationUserFilePath,"r",encoding="utf-8") as applicationUserFile :
             applicationUsers = ''.join(applicationUserFile).strip().split(f'{REGISTRATION}{COLON}')
         self.applicationUsers = applicationUsers
@@ -65,14 +66,14 @@ class CourseRepository:
 
     def getCoursePath(self,courseName):
         courseNameParsed = coursePathFunction.parseName(courseName)
-        return f'''{self.application.pathMannanger.getApiModulePath('course')}resourse\\courses\\{courseNameParsed}.{self.application.extension}'''
+        return f'''{self.pathMannanger.getApiModulePath('course')}resourse\\courses\\{courseNameParsed}.{self.application.extension}'''
 
     def getLessonsFromModuleDirectory(self,moduleName):
         return os.listdir(self.getLessonsPath(moduleName))
 
     def getLessonsPath(self,moduleName):
         moduleNameParsed = coursePathFunction.parseName(moduleName)
-        return f'''{self.application.pathMannanger.getApiModulePath('course')}resourse\\modules\\{moduleNameParsed}\\'''
+        return f'''{self.pathMannanger.getApiModulePath('course')}resourse\\modules\\{moduleNameParsed}\\'''
 
     def getLessonPath(self,moduleName,lessonName):
         print(f'CourseRepository.getLessonName() = {self.application.repository.getLessonsPath(moduleName)}{lessonName}\\')
@@ -81,5 +82,52 @@ class CourseRepository:
     def getPagesFromLessonData(self,lessonData):
         return lessonData.strip().split(COMA)
 
-    def getAllPageNames(self,moduleName,lessonName):
+    def getAllImagePageNames(self,moduleName,lessonName):
         return imageFunction.getImageFileNames(f'{self.getLessonPath(moduleName,lessonName)}\\image','png')
+
+    def getPageNamesFromLessonScriptPath(self,lessonScriptPath):
+        return list(self.loadScript(lessonScriptPath).pages.keys()) ###- setting.sortItNumerically()
+
+    def loadScript(self,lessonScriptPath):
+        lessonScriptPath = self.completeLessonScriptPath(lessonScriptPath)
+        courseName = self.getCourseNameFromLessonScriptPath(lessonScriptPath)
+        course = Course.Course(courseName,self.application)
+
+        lessonName = self.getLessonNameFromLessonScriptPath(lessonScriptPath)
+        lesson = Lesson.Lesson(lessonName,course,self.application)
+
+        with open(lessonScriptPath,"r",encoding="utf-8") as scriptFile :
+            for lessonScriptLine in scriptFile :
+                if lessonScriptLine != '\n' :
+                    pageName = self.getPageNameFromLessonScriptLine(lessonScriptLine)
+                    pageScript = lessonScriptLine.strip()
+                    lesson.pages[pageName] = Page.Page(pageName,lesson,pageScript,self.application)
+
+        return lesson
+
+    def completeLessonScriptPath(self,lessonScriptPath):
+        ###- C:\Users\Samuel Jansen\Courses\course\api\src\resourse\Robótica 1\Aula 03\Robótica 1.Aula 03.ht
+        lessonScriptPath = lessonScriptPath.strip()
+        try :
+            if (
+                lessonScriptPath.split('\\')[-1].split('.')[-2] == lessonScriptPath.split('\\')[-2] and
+                lessonScriptPath.split('\\')[-1].split('.')[-3] == lessonScriptPath.split('\\')[-3]
+            ) :
+                return lessonScriptPath
+        except :
+            if lessonScriptPath.split('\\')[-1] == f'''{lessonScriptPath.split(self.pathMannanger.BACK_SLASH)[-3]}.{lessonScriptPath.split(self.pathMannanger.BACK_SLASH)[-2]}.{self.application.extension}''' :
+                return lessonScriptPath
+        return f'''{lessonScriptPath}{lessonScriptPath.split(self.pathMannanger.BACK_SLASH)[-3]}.{lessonScriptPath.split(self.pathMannanger.BACK_SLASH)[-2]}.{self.application.extension}'''
+
+    def getCourseNameFromLessonScriptPath(self,lessonScriptPath):
+        return lessonScriptPath.strip().split('\\')[-2]
+
+    def getLessonNameFromLessonScriptPath(self,lessonScriptPath):
+        return lessonScriptPath.strip().split('\\')[-1]
+
+    def getPageNameFromLessonScriptLine(self,lessonScriptLine):
+        pageScriptElements = lessonScriptLine.strip().split(COMA)
+        for pageScriptElement in pageScriptElements :
+            key = pageScriptElement.split(COLON)[0]
+            if key == PAGE :
+                return pageScriptElement.split(COLON)[1]

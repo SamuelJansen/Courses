@@ -1,7 +1,7 @@
 import pygame as pg
 
 import Screen, Handler
-import imageFunction, eventFunction, objectFunction
+import imageFunction, eventFunction, objectFunction, textFunction
 
 import numpy as np
 
@@ -78,8 +78,8 @@ class Object:
         self.velocity = velocity * self.application.velocityControl
 
         self.text = text
-        self.textPosition = textPosition
         self.fontSize = fontSize
+        self.textPosition = textFunction.parsePosition(textPosition,self)
         self.textList = []
         self.textPositionList = []
         self.font = None
@@ -115,7 +115,7 @@ class Object:
             try :
                 pg.font.init()
                 self.font = pg.font.SysFont(fontStyle,fontSize)
-                self.textList.append(self.font.render(text,False,(0, 0, 0)))
+                self.textList.append(self.font.render(text,False,(255,255,255)))
                 self.textPositionList.append([
                     position[0] + textPositionErrorCompensation[0],
                     position[1] + textPositionErrorCompensation[1]
@@ -124,8 +124,18 @@ class Object:
                 print("TextFont module not initialized")
                 self.deleteText()
 
+            # https://pygame-zero.readthedocs.io/en/stable/ptext.html
+            # screen.draw.text("hello world", centery=50, right=300)
+            # screen.draw.text("hello world", midtop=(400, 0))
+            # Keyword arguments:
+            #
+            # top left bottom right
+            # topleft bottomleft topright bottomright
+            # midtop midleft midbottom midright
+            # center centerx centery
+
     def getTextPositionError(self):
-        return[0,-6]
+        return [0,0]
 
     def deleteText(self):
         self.textPosition = None
@@ -214,3 +224,6 @@ class Object:
 
     def updateOnMenuResolve(self,onMenuResolve):
         self.onMenuResolve = onMenuResolve
+
+    def getName(self):
+        return self.name

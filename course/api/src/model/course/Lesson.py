@@ -1,7 +1,11 @@
 class Lesson:
-    def __init__(self,name,lessonPath,pages,
-        moduleName = None
+    def __init__(self,name,course,plataform,
+        pages = {}
     ):
+
+        self.plataform = plataform
+
         self.name = name
-        self.lessonPath = lessonPath
+        self.course = course
+
         self.pages = pages

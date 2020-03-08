@@ -14,6 +14,7 @@ def getImage(path,size,aplication) :
     global imageLibrary
     image = imageLibrary.get(path) ###- image = imageLibrary[path]
     if not image :
+        # print(f'new imagePath = {path}')
         try :
             canonicalizedPath = path.replace('/',os.sep).replace('\\',os.sep)
             image = pg.image.load(canonicalizedPath)#.convert_alpha()

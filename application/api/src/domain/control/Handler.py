@@ -94,6 +94,7 @@ class Handler:
             object.handler.removeAllEvents()
             object.handler.removeStudentTree()
             object.handler.removeObjectTree()
+            # object.tutor.handler.removeStudent(object)
             object.screen.remove()
             del self.objects[object.name]
             self.object.screen.mustUpdateNextFrame()

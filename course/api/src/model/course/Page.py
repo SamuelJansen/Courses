@@ -1,28 +1,11 @@
-import Object
+class Page():
+    def __init__(self,name,lesson,script,plataform):
 
-class Page(Object.Object):
-    def __init__(self,name,lessonName,objects,plataform):
+        self.plataform = plataform
+
         self.name = name
-        self.lessonName = lessonName
-        pagePosition = [0,0]
-        pageSize = plataform.size
-        pageScale = plataform.scaleRange
-        pageVelocity = 0.0001
+        self.lesson = lesson
+        self.script = script
 
-        folder = self.lessonName
-        position = pagePosition
-        size = pageSize
-        scale = pageScale
-        velocity = pageVelocity
-
-        Object.Object.__init__(
-            self,
-            name,
-            folder,
-            position,
-            size,
-            scale,
-            velocity,
-            plataform
-        )
-        self.objects = objects
+        # Object.Object.__init__()
+        # self.objects = objects

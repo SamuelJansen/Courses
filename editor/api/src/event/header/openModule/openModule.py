@@ -1,6 +1,6 @@
 import MenuAccessEvent, MenuNavigationEvent
 
-import pageSelection
+import pageSelection, textFunction
 
 def openModule(event) :
     object = event.object
@@ -14,6 +14,7 @@ def openModule(event) :
         itemsPackage,
         itemsPathTree,
         onLeftClick = MenuNavigationEvent.MenuNavigationEvent,
-        onMenuResolve = pageSelection.pageSelection
+        onMenuResolve = pageSelection.pageSelection,
+        navigationItemSize = [textFunction.Attribute.WORD_WIDTH,26]
     )
     print(f'{event.name}.openModule()')

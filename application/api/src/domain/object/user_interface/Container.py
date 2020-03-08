@@ -3,7 +3,7 @@ import applicationFunction, containerFunction
 
 class Container(UserInterface.UserInterface):
 
-    def __init__(self,position,size,father,
+    def __init__(self,name,position,size,father,
         itemsDto = None,
         fontSize = None,
         noImage = False,
@@ -11,7 +11,8 @@ class Container(UserInterface.UserInterface):
         audioPath = None
     ):
 
-        name = f'{containerFunction.Attribute.NAME}.{father.name}'
+        if not name :
+            name = f'{containerFunction.Attribute.NAME}.{father.tutor.name}'
         position = containerFunction.parsePosition(position,size,father)
 
         UserInterface.UserInterface.__init__(self,name,position,size,father,

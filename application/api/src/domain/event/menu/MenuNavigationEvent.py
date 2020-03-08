@@ -1,5 +1,5 @@
 import MenuEvent, ErrorEvent, ExecussionEvent, RemoveFocusEvent, NewSessionEvent
-import eventFunction, itemSetFunction
+import eventFunction, itemSetFunction, textFunction
 
 print('MenuNavigationEvent library imported')
 
@@ -14,7 +14,7 @@ class MenuNavigationEvent(MenuEvent.MenuEvent):
             self.updateStatus(eventFunction.Status.RESOLVED)
             RemoveFocusEvent.RemoveFocusEvent(self.application)
         else :
-            self.buildItems(itemSetFunction.Type.RIGHT)
+            self.buildItems(self.navigationItemSize,itemSetFunction.Type.RIGHT)
             self.updateStatus(eventFunction.Status.NOT_RESOLVED)
 
     def __init__(self,event,
@@ -39,6 +39,12 @@ class MenuNavigationEvent(MenuEvent.MenuEvent):
             inherited = True
         )
         self.inherited = inherited
+
+        self.navigationItemSize = [
+            textFunction.Attribute.WORD_WIDTH,
+            event.object.handler.getOriginalSize()[1]
+        ]
+
         self.execute()
 
     def removeFatherPreviousMenuNavigationEvent(self,father):
