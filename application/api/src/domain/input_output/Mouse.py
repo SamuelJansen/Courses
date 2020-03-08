@@ -142,6 +142,8 @@ class Mouse:
                 print()
                 # printAllObjectEvents(fatherFunction.getAbsoluteFather(self.application))
                 # updateAllObjectsNextFrame(self.application)
+                # if self.application.session :
+                #     print(f'Session.itemNames = {self.application.session.itemNames}')
 
             else :
                 FalseClickEvent.FalseClickEvent(self.application)

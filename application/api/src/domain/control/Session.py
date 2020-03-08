@@ -1,4 +1,4 @@
-import Button, Message
+import Message
 import imageFunction, applicationFunction, sessionFunction
 
 print('Session library imported')
@@ -21,46 +21,35 @@ class Session:
 
         self.itemNames = {}
 
-    def updateDeskItems(self,itemsSessionDtoList,itemsImagePath,itemsAudioPath):
+    def updateDesk(self,itemsSessionDtoList,onDeskUpdate):
         self.desk.handler.removeObjectTree()
-        itemsMemoryOptimizationDto = []
-        itemPositionAdjustment = (self.desk.size[0] - (self.deskItemSize[0] - self.desk.padding[0]) * self.desk.itemsPerLine - self.desk.padding[0]) / (self.desk.itemsPerLine + 1)
-        initialPosition = [
-            itemPositionAdjustment,
-            itemPositionAdjustment
-        ]
-        for index in range(len(itemsSessionDtoList)) :
-            item = itemsSessionDtoList[index]
-            itemPosition = [
-                initialPosition[0] + (self.deskItemSize[0] - self.desk.padding[0] + itemPositionAdjustment) * (index % self.desk.itemsPerLine),
-                initialPosition[1] + (self.deskItemSize[1] - self.desk.padding[1] + itemPositionAdjustment) * (index // self.desk.itemsPerLine)
-            ]
-            itemsMemoryOptimizationDto.append([
-                [
-                    item.name,
-                    itemPosition.copy(),
-                    self.deskItemSize.copy(),
-                    self.desk,
-                ],
-                {
-                    applicationFunction.Key.ON_LEFT_CLICK : item.onLeftClick,
-                    applicationFunction.Key.IMAGE_PATH : itemsImagePath,
-                    applicationFunction.Key.AUDIO_PATH : itemsAudioPath,
-                },
-                {
-                    applicationFunction.Key.PRIORITY : applicationFunction.Priority.HIGHT
-                }
-            ])
-            self.addItemName(item)
-        self.application.memoryOptimizer.newObjects(itemsMemoryOptimizationDto,Button.Button,
-            priority = applicationFunction.Priority.MEDIUM
+        itemsDto,itemsClass,priority = onDeskUpdate(itemsSessionDtoList,self)
+        print(f'itemsDto = {itemsDto}')
+        for itemDtoFeatures in itemsDto :
+            print('newItemDto')
+            for featureType in itemDtoFeatures :
+                try :
+                    for feature in featureType.values() :
+                        print(f'    {feature}')
+                except :
+                    for feature in featureType :
+                        print(f'    {feature}')
+            print()
+        print(f'itemsClass = {itemsClass}')
+        print(f'priority = {priority}')
+        self.application.memoryOptimizer.newObjects(itemsDto,itemsClass,
+            priority = priority
         )
 
-    def addItemName(self,item):
+        for itemSessionDto in itemsSessionDtoList :
+            self.addItemName(itemSessionDto)
+        print(self.itemNames[self.page])
+
+    def addItemName(self,itemDto):
         if self.page not in self.itemNames :
             self.itemNames[self.page] = []
-        if item.name not in self.itemNames[self.page] :
-            self.itemNames[self.page].append(item.name)
+        if itemDto.name not in self.itemNames[self.page] :
+            self.itemNames[self.page].append(itemDto.name)
 
     def removeItemNames(self,itemNames):
         for itemName in itemNames :
