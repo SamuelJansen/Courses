@@ -1,10 +1,10 @@
 class Page():
-    def __init__(self,name,lesson,script,plataform):
+    def __init__(self,name,script,lesson):
 
-        self.plataform = plataform
+        self.lesson = lesson
+        self.plataform = self.lesson.plataform
 
         self.name = name
-        self.lesson = lesson
         self.script = script
 
         # Object.Object.__init__()

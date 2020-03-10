@@ -20,6 +20,8 @@ colors = {
 }
 fps = 20
 aps = 240
+# fps = 1
+# aps = 2
 position = [1,0] #[960,0] #
 editor = Editor.Editor(editorName,fps,aps,colors,pathMannanger,
     position = position,

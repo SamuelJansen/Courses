@@ -21,6 +21,7 @@ class Event:
             self.object = object
             self.application = self.object.application
             self.inherited = inherited
+            self.newEvent = True
 
             if type :
                 self.type = type
@@ -41,6 +42,7 @@ class Event:
             elif self.object.handler.events[self.name].status == eventFunction.Status.NOT_RESOLVED :
                 # print(f'{self.name} event not added to {self.object.name}.handler.events')
                 self.object.handler.events[self.name].update()
+                self.newEvent = False
 
             self.execute()
 
@@ -49,13 +51,14 @@ class Event:
             ErrorEvent.ErrorEvent(None,
                 message = getObjectHitDebugText(object)
             )
+            
 
     def resolve(self,*args,**kargs):
         if self.status == eventFunction.Status.RESOLVED :
             self.object.handler.removeEvent(self)
 
     def execute(self,*args,**kargs):
-        if not self.inherited :
+        if not self.inherited and self.newEvent :
             self.update(*args,**kargs)
             self.resolve(*args,**kargs)
 

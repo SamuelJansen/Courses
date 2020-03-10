@@ -31,6 +31,8 @@ class Type:
     MENU_ACCESS_EVENT = 'MenuAccessEvent'
     MENU_NAVIGATION_EVENT = 'MenuNavigationEvent'
 
+    HOVER_EVENT = 'HoverEvent'
+
 
 class Status:
 

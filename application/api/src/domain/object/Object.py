@@ -18,6 +18,7 @@ class Object:
             noImage = False,
             onLeftClick = None,
             onMenuResolve = None,
+            onHovering = None,
             imagePath = None,
             audioPath = None
         ):
@@ -90,7 +91,11 @@ class Object:
         self.screen = Screen.Screen(self)
         self.handler = Handler.Handler(self)
 
-        self.initializeInteractiability(onLeftClick,onMenuResolve)
+        self.initializeInteractiability(
+            onLeftClick,
+            onMenuResolve,
+            onHovering
+        )
         self.focus = None
 
         self.father.handler.addObject(self)
@@ -113,9 +118,10 @@ class Object:
                 fontStyle = self.application.fontStyle
                 # print(f'Object.application.fontStyle = {self.application.fontStyle}')
             try :
+                nightModeColor = (129,139,145)
                 pg.font.init()
                 self.font = pg.font.SysFont(fontStyle,fontSize)
-                self.textList.append(self.font.render(text,False,(255,255,255)))
+                self.textList.append(self.font.render(text,False,nightModeColor))
                 self.textPositionList.append([
                     position[0] + textPositionErrorCompensation[0],
                     position[1] + textPositionErrorCompensation[1]
@@ -181,10 +187,10 @@ class Object:
         return [self.rect[0],self.rect[1]] ###- upper left corner
 
     def getAbsolutePosition(self):
+        position = self.getPosition()
         if self.father.type == objectFunction.Type.APPLICATION :
-            return self.getPosition()
+            return [position[0] - 1,position[1] - 1]
         else :
-            position = self.getPosition()
             fatherAbsolutePosition = self.father.getAbsolutePosition()
             return [
                 position[0] + fatherAbsolutePosition[0],
@@ -204,15 +210,21 @@ class Object:
                 position[1] + fatherAbsoluteOriginalPosition[1]
             ]
 
-    def initializeInteractiability(self,onLeftClick,onMenuResolve):
+    def initializeInteractiability(self,
+        onLeftClick,
+        onMenuResolve,
+        onHovering
+    ):
         self.clickable = False
         self.onLeftClick = None
         self.onMenuResolve = None
+        self.onHovering = None
         self.singleClickable = False
         self.doubleClickable = False
 
         self.updateOnLeftClick(onLeftClick)
         self.updateOnMenuResolve(onMenuResolve)
+        self.updateOnHovering(onHovering)
 
     def updateOnLeftClick(self,onLeftClick):
         self.onLeftClick = onLeftClick
@@ -224,6 +236,9 @@ class Object:
 
     def updateOnMenuResolve(self,onMenuResolve):
         self.onMenuResolve = onMenuResolve
+
+    def updateOnHovering(self,onHovering):
+        self.onHovering = onHovering
 
     def getName(self):
         return self.name

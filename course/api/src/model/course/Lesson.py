@@ -1,11 +1,9 @@
 class Lesson:
-    def __init__(self,name,course,plataform,
-        pages = {}
-    ):
+    def __init__(self,name,pages,module):
 
-        self.plataform = plataform
+        self.module = module
+        self.plataform = self.module.plataform
 
         self.name = name
-        self.course = course
 
         self.pages = pages

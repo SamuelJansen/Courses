@@ -32,12 +32,12 @@ def exit(event) :
         textPosition = textPosition,
         onLeftClick = saveWork
     )
-    butonsDto = [cancelButtonDto,saveButtonDto,okButtonDto]
+    messageButtonsDto = [cancelButtonDto,saveButtonDto,okButtonDto]
 
     message = Message.Message(event.object,
         name = messageName,
         message = 'Do you want to exit the editor?',
-        optionsDto = butonsDto,
+        messageButtonsDto = messageButtonsDto,
         fontSize = messageFontSize
     )
     # message.addText('Do you want to exit the editor?',[0,0],16)

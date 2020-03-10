@@ -1,6 +1,6 @@
 import pygame as pg
 
-import ClickEvent, FalseClickEvent, ErrorEvent
+import ClickEvent, FalseClickEvent, ErrorEvent, HoverEvent
 import objectFunction, mouseFunction, applicationFunction, fatherFunction
 
 print('Mouse library imported')
@@ -16,7 +16,6 @@ class Mouse:
         self.application = application
         self.position = [0,0]
         self.devPosition = [0,0]
-        self.updatePosition()
         self.scripArea = ''
 
         self.state = mouseFunction.State.FREE
@@ -30,11 +29,20 @@ class Mouse:
 
         self.objectClicked = None
 
+        self.objectsHoverChecket = []
+        self.hovering = None
+        self.objectHover = None
+        self.lastObjectHover = None
+
+        self.updatePosition()
+
     def updatePosition(self):
         ###- It needs some work
         self.position = list(pg.mouse.get_pos())
         self.devPosition[0] = int(self.position[0]*self.application.devResize[0])
         self.devPosition[1] = int(self.position[1]*self.application.devResize[1])
+        if self.application.frame.apfNew :
+            self.updateObjectHover()
 
     def handleEvent(self,pgEvent):
         self.updateState(pgEvent)
@@ -106,21 +114,32 @@ class Mouse:
     def didHit(self,object):
         if object.type == objectFunction.Type.APPLICATION :
             pixelPoint = self.position
-            # print(f'Mouse.didHit(): pixelPoint = {pixelPoint}, object.name = {object.name}, object.position = {object.position}, object.size = {object.size}, mouse.position = {self.position}', end = '')
+            xDiff = self.position[0] - object.position[0]
+            yDiff = self.position[1] - object.position[1]
+            # print(f'Mouse.didHit(): pixelPoint = {pixelPoint}')
+            # print(f'    object.name = {object.name}, object.position = {object.position}, object.size = {object.size}')
+            # print(f'    mouse.position = {self.position}', end = '')
+            # print(f'    0 < {self.position[0] - object.position[0]} < {object.size[0]} and 0 < {self.position[1] - object.position[1]} < {object.size[1]}')
         else :
             objectPosition = object.getAbsolutePosition()
             pixelPoint = [
                 self.position[0] - objectPosition[0],
                 self.position[1] - objectPosition[1]
             ]
-            # print(f'Mouse.didHit(): pixelPoint = {pixelPoint}, object.name = {object.name}, objectPosition = {objectPosition}, object.size = {object.size}, mouse.position = {self.position}', end = '')
-        pixelColor = object.screen.surface.get_at(pixelPoint)
-        # print(f', pixelColor = {pixelColor}')
+            xDiff = self.position[0] - objectPosition[0]
+            yDiff = self.position[1] - objectPosition[1]
+            # print(f'Mouse.didHit(): pixelPoint = {pixelPoint}')
+            # print(f'    object.name = {object.name}, objectPosition = {objectPosition}, object.size = {object.size}')
+            # print(f'    mouse.position = {self.position}', end = '')
+            # print(f'    0 < {self.position[0] - objectPosition[0]} < {object.size[0]} and 0 < {self.position[1] - objectPosition[1]} < {object.size[1]}')
         notHit = True
-        notHit = (pixelColor[0] == objectFunction.Attribute.NOT_HITTABLE_COLOR[0]) and notHit
-        notHit = (pixelColor[1] == objectFunction.Attribute.NOT_HITTABLE_COLOR[1]) and notHit
-        notHit = (pixelColor[2] == objectFunction.Attribute.NOT_HITTABLE_COLOR[2]) and notHit
-        notHit = (pixelColor[3] == objectFunction.Attribute.NOT_HITTABLE_COLOR[3]) and notHit
+        if (0 < xDiff and xDiff < object.size[0]) and (0 < yDiff and yDiff < object.size[1]) :
+            pixelColor = object.screen.surface.get_at(pixelPoint)
+            # print(f', pixelColor = {pixelColor}')
+            notHit = (pixelColor[0] == objectFunction.Attribute.NOT_HITTABLE_COLOR[0]) and notHit
+            notHit = (pixelColor[1] == objectFunction.Attribute.NOT_HITTABLE_COLOR[1]) and notHit
+            notHit = (pixelColor[2] == objectFunction.Attribute.NOT_HITTABLE_COLOR[2]) and notHit
+            notHit = (pixelColor[3] == objectFunction.Attribute.NOT_HITTABLE_COLOR[3]) and notHit
         return not notHit
 
     def resolveClick(self):
@@ -141,14 +160,63 @@ class Mouse:
                 print('============================================================================================================================================================')
                 print()
                 # printAllObjectEvents(fatherFunction.getAbsoluteFather(self.application))
-                # updateAllObjectsNextFrame(self.application)
                 # if self.application.session :
                 #     print(f'Session.itemNames = {self.application.session.itemNames}')
-
+                # try :
+                #     print(f'Application focus name = {self.application.focus.name}')
+                # except : pass
+                # updateAllObjectsNextFrame(self.application)
             else :
                 FalseClickEvent.FalseClickEvent(self.application)
 
         self.nextState(mouseFunction.State.END_OF_LIFE_CYCLE)
+
+    def updateObjectHover(self):
+        self.detectObjectHover()
+        if not self.hovering :
+            if self.objectHover and self.objectHover == self.lastObjectHover :
+                if self.application.timeNow - self.firstTimeHoveringThisObject > mouseFunction.Attribute.MINIMUM_HOVERING_TIME :
+                    self.hovering = self.objectHover
+                    HoverEvent.HoverEvent(self.hovering)
+            else :
+                self.lastObjectHover = self.objectHover
+                self.firstTimeHoveringThisObject = self.application.timeNow
+        else :
+            if self.objectHover and self.objectHover != self.hovering :
+                HoverEvent.HoverEvent(self.hovering)
+                self.hovering = None
+            elif self.objectHover and self.objectHover == self.lastObjectHover :
+                pass
+            else :
+                print('HOVER PROBLEM')
+        self.objectHover = None
+
+    def detectObjectHover(self):
+        self.getRecursiveHover(self.application)
+        self.objectsHoverChecket = []
+
+    def getRecursiveHover(self,object):
+        if object.handler.objects :
+            objectHoverList = []
+            childrenNames = list(object.handler.objects.keys())
+            for childName in childrenNames:
+                if childName in object.handler.objects :
+                    self.updateHoverCheck(object.handler.objects[childName],objectHoverList)
+            if objectHoverList :
+                for objectHover in objectHoverList :
+                    self.getRecursiveHover(objectHover)
+        self.updateHoverCheck(object,[])
+
+    def updateHoverCheck(self,object,hoverList):
+        if object not in self.objectsHitChecket :
+            if self.didColided(object) :
+                if self.didHit(object) :
+                    if not self.objectHover :
+                        self.objectHover = object
+                    if object.blitOrder > self.objectHover.blitOrder :
+                        self.objectHover = object
+                    hoverList.append(object)
+            self.objectsHoverChecket.append(object)
 
 
     def updateState(self,pgEvent):
@@ -238,12 +306,11 @@ def printAllObjectEvents(object) :
     print()
 
 def printObjectEvents(object) :
-    print(object)
-    print(object.name)
+    print(f'object.name = {object.name}')
     for objectSon in object.handler.objects.values() :
         printObjectEvents(objectSon)
     for event in object.handler.events.values() :
-        print(f'{object.type}.name = {object.name}, {event.type}.name = {event.name}')
+        print(f'    {object.type}.name = {object.name}, {event.type}.name = {event.name}')
 
 def updateAllObjectsNextFrame(object) :
     print()

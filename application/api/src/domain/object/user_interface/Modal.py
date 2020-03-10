@@ -15,6 +15,7 @@ class Modal(UserInterface.UserInterface):
         noImage = True,
         onLeftClick = None,
         onMenuResolve = None,
+        onMessageResolve = None,
         imagePath = None,
         audioPath = None
     ):

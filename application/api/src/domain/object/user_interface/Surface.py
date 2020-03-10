@@ -14,6 +14,7 @@ class Surface(Object.Object):
         noImage = False,
         onLeftClick = None,
         onMenuResolve = None,
+        onHovering = None,
         imagePath = None,
         audioPath = None
     ):
@@ -36,6 +37,7 @@ class Surface(Object.Object):
             noImage = noImage,
             onLeftClick = onLeftClick,
             onMenuResolve = onMenuResolve,
+            onHovering = onHovering,
             imagePath = imagePath,
             audioPath = audioPath
         )

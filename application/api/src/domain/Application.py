@@ -74,6 +74,7 @@ class Application:
         self.fontStyle = 'Times New Roman'
         self.fontStyle = 'Calibri'
         self.fontStyle = 'Corbel'
+        self.standardFontSize = 18
 
 
         self.frame = None ###- Aplication.initialize() must be called
@@ -91,8 +92,6 @@ class Application:
                 self.father,
                 type = objectFunction.Type.APPLICATION_FLOOR
             )
-
-        self.mouse = Mouse.Mouse(self)
 
         self.session = None
 
@@ -158,6 +157,8 @@ class Application:
         else :
             self.frame = Frame.Frame(self)
         self.updateScreen()
+
+        self.mouse = Mouse.Mouse(self)
         self.running = True
 
     def optimizeMemory(self):
@@ -169,15 +170,14 @@ class Application:
 
     def removeSession(self):
         if self.session :
-            self.session.removeDesk()
-            self.session = None
-            self.memoryOptimizer.reset()
+            self.session.close()
 
     def updateFrame(self):
         self.frame.update()
+        if self.frame.apfNew :
+            self.updateMouse()
         if self.frame.new :
             self.updateScreen()
-            self.updateMouse()
         else :
             self.optimizeMemory()
 

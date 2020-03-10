@@ -11,6 +11,7 @@ class Button(UserInterface.UserInterface):
         padding = None,
         onLeftClick = None,
         onMenuResolve = None,
+        onHovering = None,
         imagePath = None,
         audioPath = None
     ):
@@ -18,6 +19,7 @@ class Button(UserInterface.UserInterface):
         UserInterface.UserInterface.__init__(self,name,position,size,father,
             onLeftClick = onLeftClick,
             onMenuResolve = onMenuResolve,
+            onHovering = onHovering,
             text = text,
             textPosition = textPosition,
             fontSize = fontSize,

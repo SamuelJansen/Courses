@@ -9,6 +9,7 @@ class ItemDto:
         textPosition = None,
         onLeftClick = None,
         onMenuResolve = None,
+        onHovering = None,
         imagePath = None,
         audioPath = None,
         priority = applicationFunction.Priority.NO_PRIORITY
@@ -20,6 +21,10 @@ class ItemDto:
         self.textPosition = textPosition
         self.onLeftClick = onLeftClick
         self.onMenuResolve = onMenuResolve
+        self.onHovering = onHovering
         self.imagePath = imagePath
         self.audioPath = audioPath
         self.priority = priority
+
+
+BUTTON_SIZE = [85,45]

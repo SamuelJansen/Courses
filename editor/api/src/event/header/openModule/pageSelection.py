@@ -1,12 +1,15 @@
 import os
 
 import ItemDto, Button
-import imageFunction, pageSelected, pageFunction, applicationFunction
+import pageSelected, pageFunction, applicationFunction, sessionPage
 
 def pageSelection(event) :
 
+    event.application.session.updatePage(sessionPage.SELECTION_PAGE)
+
     lessonScriptPath = event.itemsPath
-    pageNames = pageFunction.getPageNames(lessonScriptPath,event.application)
+    pageNames = event.application.repository.getPageNamesFromLessonScriptPath(lessonScriptPath)
+    # print(f'pageNames = {pageNames}')
 
     imagePath = f'{event.itemsPath}image\\'
     audioPath = None
@@ -46,6 +49,7 @@ def scriptItems(deskItems,session) :
             ],
             {
                 applicationFunction.Key.ON_LEFT_CLICK : deskItems[index].onLeftClick,
+                applicationFunction.Key.ON_HOVERING : onHovering,
                 applicationFunction.Key.IMAGE_PATH : deskItems[index].imagePath,
                 applicationFunction.Key.AUDIO_PATH : deskItems[index].audioPath
             },
@@ -54,3 +58,6 @@ def scriptItems(deskItems,session) :
             }
         ])
     return itemsDto,Button.Button,applicationFunction.Priority.MEDIUM
+
+def onHovering(event):
+    print(f'{event.object.name}.onHovering() called')

@@ -14,7 +14,7 @@ class Editor(Application.Application):
 
         headerName = headerFunction.Attribute.NAME
         headerPosition  = [0,0]
-        headerSize = ['100%',22]
+        headerSize = ['100%',20]
         headerFather = self.getFloor()
         priority = applicationFunction.Priority.HIGHT
 
@@ -36,5 +36,5 @@ class Editor(Application.Application):
             headerFather,
             items = headerItems,
             itemSize = [surfaceFunction.Types.SQUARE,'100%'],
-            padding = [0,0]
+            padding = [1,1]
         )

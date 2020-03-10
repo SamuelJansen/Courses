@@ -17,6 +17,7 @@ class MemoryOptimizer:
 
     def __init__(self,application):
         self.application = application
+        self.afterBuildObject = None
         self.reset()
 
     def reset(self):
@@ -29,8 +30,11 @@ class MemoryOptimizer:
         self.application.sessionPage = self.application.name
 
     def newObjects(self,objectsDto,objectClass,
-        priority = applicationFunction.Priority.NO_PRIORITY
+        priority = applicationFunction.Priority.NO_PRIORITY,
+        afterBuildObject = None
     ):
+        self.afterBuildObject = afterBuildObject
+
         if len(objectsDto) < MemoryOptimizer.FAST_NEW_OBJECT_RANGE :
             self.instantlyBuildObjects(objectsDto,objectClass)
         else :
@@ -60,6 +64,8 @@ class MemoryOptimizer:
             # object.father.screen.mustUpdateNextFrame()
             # object.father.tutor.screen.mustUpdateNextFrame()
             del objectsDto[MemoryOptimizer.FIRST_NEW_OBJECT_DTO]
+            if self.afterBuildObject :
+                self.afterBuildObject(object)
         # print(f'+++++++++++++++++++++++++++++{self.application.name}.memoryOptimizer.instantlyBuildObjects() method resolve++++++++++++++++')
 
     def getMemoryPackageTree(self):

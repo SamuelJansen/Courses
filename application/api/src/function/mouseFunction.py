@@ -2,6 +2,8 @@ class Attribute:
 
     NAME = 'Mouse'
 
+    MINIMUM_HOVERING_TIME = 1
+
 
 class State:
 

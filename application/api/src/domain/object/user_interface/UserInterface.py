@@ -14,6 +14,7 @@ class UserInterface(Surface.Surface):
         noImage = False,
         onLeftClick = None,
         onMenuResolve = None,
+        onHovering = None,
         imagePath = None,
         audioPath = None
     ):
@@ -41,6 +42,7 @@ class UserInterface(Surface.Surface):
             noImage = noImage,
             onLeftClick = onLeftClick,
             onMenuResolve = onMenuResolve,
+            onHovering = onHovering,
             imagePath = imagePath,
             audioPath = audioPath
         )

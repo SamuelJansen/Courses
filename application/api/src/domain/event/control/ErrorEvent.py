@@ -1,15 +1,25 @@
-import MessageEvent
-import eventFunction
+import MessageEvent, ItemDto
+import eventFunction, textFunction
 
 print('ErrorEvent library imported')
 
 class ErrorEvent(MessageEvent.MessageEvent):
 
     def update(self):
-        print(f'{self.name}.update(): -- DEBUGING -- ')
-        print(self.message)
-        while(True) :
-            pass
+        import Message
+        Message.Message(self.object,self.message,
+            messageButtonsDto = [
+                ItemDto.ItemDto(f'errorSkip.{self.message}.{self.object.name}',
+                    size = ItemDto.BUTTON_SIZE,
+                    text = 'Skip',
+                    textPosition = [
+                        textFunction.Attribute.CENTER,
+                        textFunction.calculateTextPositionPaddedOnMenu(ItemDto.BUTTON_SIZE,[1,1],18)[1]
+                    ],
+                    onLeftClick = self.onMessageResolve
+                )
+            ]
+        )
         self.updateStatus(eventFunction.Status.RESOLVED)
 
     def __init__(self,event,
@@ -25,9 +35,10 @@ class ErrorEvent(MessageEvent.MessageEvent):
                 pass
         else :
 
-            ExecussionEvent.ExecussionEvent.__init__(self,event,
+            MessageEvent.MessageEvent.__init__(self,event,
                 name = name,
                 type = type,
+                message = message,
                 inherited = True
             )
             self.inherited = inherited

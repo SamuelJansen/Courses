@@ -9,7 +9,7 @@ class Message(Modal.Modal):
         name = None,
         size = None,
         position = None,
-        optionsDto = None,
+        messageButtonsDto = None,
         fontSize = None,
         scale = None,
         padding = None,
@@ -23,11 +23,13 @@ class Message(Modal.Modal):
             name = 'Message'
         size = self.calculateSize(size,father)
         position = self.calculatePosition(position,size,father)
+        fontSize = self.calculateFontSize(fontSize,father)
+        textPosition = self.calculateTextPosition(size,fontSize)
 
         Modal.Modal.__init__(self,name,size,father,
             position = position,
             text = message,
-            textPosition = [35,size[1]/2 - fontSize],
+            textPosition = textPosition,
             fontSize = fontSize,
             scale = scale,
             padding = padding,
@@ -36,13 +38,13 @@ class Message(Modal.Modal):
             audioPath = audioPath
         )
 
-        if optionsDto :
+        if messageButtonsDto :
             containerName = None
             containerFather = self
             containerPosition = [0,containerFunction.Attribute.BOTTOM]
             containerSize = ['100%',60]
             Container.Container(containerName,containerPosition,containerSize,containerFather,
-                itemsDto = optionsDto,
+                itemsDto = messageButtonsDto,
                 fontSize = self.fontSize,
                 noImage = True,
                 imagePath = None,
@@ -58,6 +60,17 @@ class Message(Modal.Modal):
     def calculatePosition(self,position,size,father):
         if not position :
             return [50,50]
+
+    def calculateFontSize(self,fontSize,father):
+        if fontSize :
+            return fontSize
+        else:
+            return father.application.standardFontSize
+
+    def calculateTextPosition(self,size,fontSize):
+        if size and fontSize :
+            return [35,size[1]/2 - fontSize]
+        return [0,0]
 
     def closeMessage(self):
         self.father.handler.removeObject(self)

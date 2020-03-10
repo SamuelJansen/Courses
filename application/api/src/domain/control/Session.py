@@ -5,6 +5,8 @@ print('Session library imported')
 
 class Session:
 
+    GOLDEN_RATIO = 1.57
+
     def __init__(self,desk,path):
 
         self.desk = desk
@@ -15,35 +17,29 @@ class Session:
 
         self.deskItemSize = [
             self.desk.size[0] // self.desk.itemsPerLine,
-            int(self.desk.size[0] // self.desk.itemsPerLine / 1.57)
+            int(self.desk.size[0] // self.desk.itemsPerLine / Session.GOLDEN_RATIO)
         ]
-        self.page = sessionFunction.Page.HOME
+        self.updatePage(sessionFunction.Page.HOME)
+        self.resetItemNames()
 
-        self.itemNames = {}
+    def updatePage(self,page):
+        self.page = page
 
     def updateDesk(self,itemsSessionDtoList,onDeskUpdate):
-        self.desk.handler.removeObjectTree()
+        self.resetOldDesk()
+
         itemsDto,itemsClass,priority = onDeskUpdate(itemsSessionDtoList,self)
-        print(f'itemsDto = {itemsDto}')
-        for itemDtoFeatures in itemsDto :
-            print('newItemDto')
-            for featureType in itemDtoFeatures :
-                try :
-                    for feature in featureType.values() :
-                        print(f'    {feature}')
-                except :
-                    for feature in featureType :
-                        print(f'    {feature}')
-            print()
-        print(f'itemsClass = {itemsClass}')
-        print(f'priority = {priority}')
         self.application.memoryOptimizer.newObjects(itemsDto,itemsClass,
-            priority = priority
+            priority = priority,
+            afterBuildObject = self.addItemName
         )
 
-        for itemSessionDto in itemsSessionDtoList :
-            self.addItemName(itemSessionDto)
-        print(self.itemNames[self.page])
+    def resetOldDesk(self):
+        self.resetItemNames()
+        self.desk.handler.removeObjectTree()
+
+    def resetItemNames(self):
+        self.itemNames = {}
 
     def addItemName(self,itemDto):
         if self.page not in self.itemNames :
@@ -73,7 +69,7 @@ class Session:
 
     def save(self):
         Message.Message(self.desk,f'{self.name}.save()',
-            fontSize = 16
+            fontSize = 18
         )
 
     def getNamesFromItemsDto(self,itemsSessionDtoList):
@@ -81,3 +77,8 @@ class Session:
 
     def keepCurrentSession(self):
         pass
+
+    def close(self):
+        self.removeDesk()
+        self.application.session = None
+        self.application.memoryOptimizer.reset()

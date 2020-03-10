@@ -4,7 +4,7 @@ from tokenRepository import *
 
 import imageFunction, setting
 
-import ApplicationUser, Course, Lesson, Page
+import ApplicationUser, Course, Module, Lesson, Page
 import coursePathFunction
 
 class CourseRepository:
@@ -90,20 +90,26 @@ class CourseRepository:
 
     def loadScript(self,lessonScriptPath):
         lessonScriptPath = self.completeLessonScriptPath(lessonScriptPath)
-        courseName = self.getCourseNameFromLessonScriptPath(lessonScriptPath)
+
+        courseName = 'STANDARD_COURSE' ###- TODO, implement get course name
         course = Course.Course(courseName,self.application)
 
+        moduleName = self.getModuleNameFromLessonScriptPath(lessonScriptPath)
+        lessons = {}
+        module = Module.Module(moduleName,lessons,course)
+
         lessonName = self.getLessonNameFromLessonScriptPath(lessonScriptPath)
-        lesson = Lesson.Lesson(lessonName,course,self.application)
+        pages = {}
+        module.lessons[lessonName] = Lesson.Lesson(lessonName,pages,module)
 
         with open(lessonScriptPath,"r",encoding="utf-8") as scriptFile :
             for lessonScriptLine in scriptFile :
                 if lessonScriptLine != '\n' :
                     pageName = self.getPageNameFromLessonScriptLine(lessonScriptLine)
                     pageScript = lessonScriptLine.strip()
-                    lesson.pages[pageName] = Page.Page(pageName,lesson,pageScript,self.application)
+                    module.lessons[lessonName].pages[pageName] = Page.Page(pageName,pageScript,module.lessons[lessonName])
 
-        return lesson
+        return module.lessons[lessonName]
 
     def completeLessonScriptPath(self,lessonScriptPath):
         ###- C:\Users\Samuel Jansen\Courses\course\api\src\resourse\Robótica 1\Aula 03\Robótica 1.Aula 03.ht
@@ -119,11 +125,11 @@ class CourseRepository:
                 return lessonScriptPath
         return f'''{lessonScriptPath}{lessonScriptPath.split(self.pathMannanger.BACK_SLASH)[-3]}.{lessonScriptPath.split(self.pathMannanger.BACK_SLASH)[-2]}.{self.application.extension}'''
 
-    def getCourseNameFromLessonScriptPath(self,lessonScriptPath):
-        return lessonScriptPath.strip().split('\\')[-2]
+    def getModuleNameFromLessonScriptPath(self,lessonScriptPath):
+        return lessonScriptPath.strip().split('\\')[-3]
 
     def getLessonNameFromLessonScriptPath(self,lessonScriptPath):
-        return lessonScriptPath.strip().split('\\')[-1]
+        return lessonScriptPath.strip().split('\\')[-2]
 
     def getPageNameFromLessonScriptLine(self,lessonScriptLine):
         pageScriptElements = lessonScriptLine.strip().split(COMA)

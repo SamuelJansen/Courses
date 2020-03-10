@@ -6,10 +6,15 @@ print('ExecussionEvent library imported')
 class ExecussionEvent(Event.Event):
 
     def update(self):
-        if self.event.type == eventFunction.Type.CLICK_EVENT :
-            self.object.onLeftClick(self.event)
+        if self.event.type == eventFunction.Type.CLICK_EVENT and self.object.onLeftClick :
+            if self.object.onLeftClick :
+                self.object.onLeftClick(self.event)
         elif self.event.type == eventFunction.Type.MENU_NAVIGATION_EVENT :
-            self.object.onMenuResolve(self.event)
+            if self.object.onMenuResolve :
+                self.object.onMenuResolve(self.event)
+        elif self.event.type == eventFunction.Type.HOVER_EVENT :
+            if self.object.onHovering :
+                self.object.onHovering(self.event)
         else :
             ErrorEvent.ErrorEvent(self.event,
                 message = f'{self.name}.update(): {self.object.type} funcion handler not implemented'

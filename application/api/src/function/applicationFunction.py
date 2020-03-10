@@ -16,6 +16,7 @@ class Key:
 
     ON_LEFT_CLICK = 'onLeftClick'
     ON_MENU_RESOLVE = 'onMenuResolve'
+    ON_HOVERING = 'onHovering'
     TEXT = 'text'
     TEXT_POSITION = 'textPosition'
     FONT_SIZE = 'fontSize'
