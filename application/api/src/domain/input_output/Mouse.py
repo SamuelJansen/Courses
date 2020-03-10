@@ -38,7 +38,8 @@ class Mouse:
 
     def updatePosition(self):
         ###- It needs some work
-        self.position = list(pg.mouse.get_pos())
+        position = list(pg.mouse.get_pos())
+        self.position = [int(position[0]),int(position[1])]
         self.devPosition[0] = int(self.position[0]*self.application.devResize[0])
         self.devPosition[1] = int(self.position[1]*self.application.devResize[1])
         if self.application.frame.apfNew :
@@ -174,7 +175,7 @@ class Mouse:
     def updateObjectHover(self):
         self.detectObjectHover()
         if not self.hovering :
-            if self.objectHover and self.objectHover == self.lastObjectHover :
+            if self.objectHover and self.objectHover == self.lastObjectHover and self.objectHover.type != objectFunction.Type.APPLICATION :
                 if self.application.timeNow - self.firstTimeHoveringThisObject > mouseFunction.Attribute.MINIMUM_HOVERING_TIME :
                     self.hovering = self.objectHover
                     HoverEvent.HoverEvent(self.hovering)
@@ -182,7 +183,7 @@ class Mouse:
                 self.lastObjectHover = self.objectHover
                 self.firstTimeHoveringThisObject = self.application.timeNow
         else :
-            if self.objectHover and self.objectHover != self.hovering :
+            if self.objectHover and self.objectHover != self.hovering and self.objectHover.type != objectFunction.Type.APPLICATION :
                 HoverEvent.HoverEvent(self.hovering)
                 self.hovering = None
             elif self.objectHover and self.objectHover == self.lastObjectHover :

@@ -5,6 +5,8 @@ print('Message library imported')
 
 class Message(Modal.Modal):
 
+    STANDARD_SIZE = [300,180]
+
     def __init__(self,object,message,
         name = None,
         size = None,
@@ -53,13 +55,16 @@ class Message(Modal.Modal):
 
     def calculateSize(self,size,father):
         if not size :
-            return [300,180]
+            return Message.STANDARD_SIZE
         else :
             return surfaceFunction.parseSize(size,father)
 
     def calculatePosition(self,position,size,father):
         if not position :
-            return [50,50]
+            return [
+                int((father.application.size[0] - size[0]) / 2),
+                int((father.application.size[1] - size[1]) / 2 - (father.application.size[1] - size[1]) / 2 / 10) 
+            ]
 
     def calculateFontSize(self,fontSize,father):
         if fontSize :
