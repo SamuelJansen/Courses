@@ -1,7 +1,7 @@
 import pygame as pg
 
 import Frame, Object, Handler, Mouse, Screen, Session, MemoryOptimizer
-import applicationFunction, setting, fatherFunction, objectFunction
+import applicationFunction, setting, fatherFunction, objectFunction, imageFunction
 
 import CourseRepository
 
@@ -81,6 +81,8 @@ class Application:
 
         self.initializeObjectInterface()
 
+        self.setIcon([256,256],'C:\\Users\\Samuel Jansen\\Courses\\editor\\api\\src\\resourse\\image\\user interface\\save2.png')
+
         self.floor = floor
         if self.floor :
             Object.Object(
@@ -115,6 +117,13 @@ class Application:
         self.handleEvent = None
         self.singleClickable = False
         self.doubleClickable = False
+
+    def setIcon(self,iconSize,iconPath):
+        self.iconSize = iconSize
+        self.iconPath = iconPath
+        self.icon = imageFunction.getImage(self.iconPath,self.iconSize,self)
+        pg.display.set_icon(self.icon)
+        return self.icon
 
     def getPaths(self,imagePath,soundPath,settingsPath):
         self.imagePath = imagePath

@@ -32,7 +32,10 @@ def exit(event) :
         textPosition = textPosition,
         onLeftClick = saveWork
     )
-    messageButtonsDto = [cancelButtonDto,saveButtonDto,okButtonDto]
+    if event.application.session :
+        messageButtonsDto = [cancelButtonDto,saveButtonDto,okButtonDto]
+    else :
+        messageButtonsDto = [cancelButtonDto,okButtonDto]
 
     message = Message.Message(event.object,
         name = messageName,
