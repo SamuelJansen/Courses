@@ -25,8 +25,8 @@ class Container(UserInterface.UserInterface):
         )
 
         itemsFather = self
-        if not itemsDto[0].position :
-            for itemDto in itemsDto :
+        for itemDto in itemsDto :
+            if not itemDto.position :
                 itemDto.position = [
                     containerFunction.Attribute.FILL,
                     containerFunction.Attribute.CENTER

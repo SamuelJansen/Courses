@@ -1,5 +1,5 @@
 import Message, ItemDto
-import eventFunction, textFunction
+import eventFunction, textFunction, containerFunction
 
 import save
 
@@ -7,26 +7,33 @@ messageName = 'exitEditor'
 
 def exit(event) :
 
-    messageFontSize = 18
+    buttonPosition = [
+        containerFunction.Attribute.FILL,
+        containerFunction.Attribute.CENTER
+    ]
     buttonSize = [85,45]
+    messageFontSize = 18
     textPosition = [
         textFunction.Attribute.CENTER,
         textFunction.calculateTextPositionPaddedOnMenu(buttonSize,event.object.padding,messageFontSize)[1]
     ]
 
     cancelButtonDto = ItemDto.ItemDto('cancel',
+        position = buttonPosition,
         size = buttonSize,
         text = 'Cancel',
         textPosition = textPosition,
         onLeftClick = cancel
     )
     okButtonDto = ItemDto.ItemDto('ok',
+        position = buttonPosition,
         size = buttonSize,
         text = 'Ok',
         textPosition = textPosition,
         onLeftClick = ok
     )
     saveButtonDto = ItemDto.ItemDto('save',
+        position = buttonPosition,
         size = buttonSize,
         text = 'Save',
         textPosition = textPosition,
