@@ -28,6 +28,9 @@ def getImage(path,size,aplication) :
     imageLibrary[path] = image
     return image
 
+def getImagePath(object):
+    return f'{object.application.imagePath}{object.type}//'
+
 def getImageFileNames(imagesPath,imageExtension) :
     return setting.getFileNames(imagesPath,imageExtension)
 

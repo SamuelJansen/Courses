@@ -2,6 +2,8 @@ class Attribute:
 
     NAME = 'Application'
     FLOOR = 'floor'
+    ICON = 'icon'
+    IMAGE_EXTENSION = 'png'
 
 
 class Priority:

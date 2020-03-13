@@ -51,7 +51,7 @@ class Object:
         if imagePath :
             self.imagePath = f'{imagePath}{self.name}.png'
         else :
-            self.imagePath = f'{self.application.imagePath}{self.type}\\{self.name}.png'
+            self.imagePath = f'{imageFunction.getImagePath(self)}{self.name}.png'
 
         self.image = self.newImage(noImage)
         # print(f'{self.name}.newImage():')

@@ -81,7 +81,7 @@ class Application:
 
         self.initializeObjectInterface()
 
-        self.setIcon([256,256],'C:\\Users\\Samuel Jansen\\Courses\\editor\\api\\src\\resourse\\image\\user interface\\save2.png')
+        self.setIcon([256,256])
 
         self.floor = floor
         if self.floor :
@@ -118,9 +118,10 @@ class Application:
         self.singleClickable = False
         self.doubleClickable = False
 
-    def setIcon(self,iconSize,iconPath):
+    def setIcon(self,iconSize):
+        self.iconName = f'{self.name}.{applicationFunction.Attribute.ICON}'
         self.iconSize = iconSize
-        self.iconPath = iconPath
+        self.iconPath = f'{imageFunction.getImagePath(self)}{self.iconName}.{applicationFunction.Attribute.IMAGE_EXTENSION}'
         self.icon = imageFunction.getImage(self.iconPath,self.iconSize,self)
         pg.display.set_icon(self.icon)
         return self.icon
@@ -134,7 +135,7 @@ class Application:
         if not self.soundPath :
             self.soundPath = f'{self.pathMannanger.getApiModulePath(self.name)}resourse\\sound\\'
         if not self.settingsPath :
-            self.settingsPath = 'resourse/' + self.name + '.ht'
+            self.settingsPath = f'resourse\\{self.name}.{self.extension}'
 
     def getFloor(self):
         if self.floor :
