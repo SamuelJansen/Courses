@@ -1,5 +1,5 @@
 import Modal, Container, Button
-import surfaceFunction, objectFunction, eventFunction, applicationFunction, containerFunction
+import surfaceFunction, objectFunction, eventFunction, applicationFunction, containerFunction, sessionFunction
 
 print('Message library imported')
 
@@ -8,6 +8,7 @@ class Message(Modal.Modal):
     STANDARD_SIZE = [300,180]
 
     def __init__(self,object,message,
+        type = None,
         name = None,
         size = None,
         position = None,
@@ -15,7 +16,9 @@ class Message(Modal.Modal):
         fontSize = None,
         scale = None,
         padding = None,
+        messageColor = None,
         noImage = False,
+        surfaceColor = objectFunction.Attribute.MODAL_MESSAGE_COLOR,
         imagePath = None,
         audioPath = None
     ):
@@ -28,7 +31,11 @@ class Message(Modal.Modal):
         fontSize = self.calculateFontSize(fontSize,father)
         textPosition = self.calculateTextPosition(size,fontSize)
 
+        if not type :
+            type = objectFunction.Type.MESSAGE
+
         Modal.Modal.__init__(self,name,size,father,
+            type = type,
             position = position,
             text = message,
             textPosition = textPosition,
@@ -36,9 +43,37 @@ class Message(Modal.Modal):
             scale = scale,
             padding = padding,
             noImage = noImage,
+            surfaceColor = surfaceColor,
             imagePath = imagePath,
             audioPath = audioPath
         )
+
+        # session = o\
+        #     deskPosition = sessionFunction.getDeskPosition(object.application)
+        #     deskSize = sessionFunction.getDeskSize(object.application)
+        #
+        # Modal.Modal.__init__(self,name,deskSize,father,
+        #     type = type,
+        #     position = deskPosition,
+        #     fontSize = fontSize,
+        #     scale = scale,
+        #     padding = padding,
+        #     noImage = True,
+        #     surfaceColor = surfaceColor,
+        #     imagePath = imagePath,
+        #     audioPath = audioPath
+        # )
+        #
+        # messageFather = self
+        # containerFather = Container.Container(f'{name}.messageContainer',position,size,messageFather,
+        #     itemsDto = [],
+        #     text = message,
+        #     textPosition = textPosition,
+        #     fontSize = self.fontSize,
+        #     noImage = False,
+        #     imagePath = None,
+        #     audioPath = None
+        # )
 
         if messageButtonsDto :
             containerName = None
@@ -53,6 +88,8 @@ class Message(Modal.Modal):
                 audioPath = None
             )
 
+        self.application.forcedUpdate()
+
     def calculateSize(self,size,father):
         if not size :
             return Message.STANDARD_SIZE
@@ -63,7 +100,7 @@ class Message(Modal.Modal):
         if not position :
             return [
                 int((father.application.size[0] - size[0]) / 2),
-                int((father.application.size[1] - size[1]) / 2 - (father.application.size[1] - size[1]) / 2 / 10) 
+                int((father.application.size[1] - size[1]) / 2 - (father.application.size[1] - size[1]) / 2 / 10)
             ]
 
     def calculateFontSize(self,fontSize,father):
@@ -77,5 +114,5 @@ class Message(Modal.Modal):
             return [35,size[1]/2 - fontSize]
         return [0,0]
 
-    def closeMessage(self):
+    def close(self):
         self.father.handler.removeObject(self)

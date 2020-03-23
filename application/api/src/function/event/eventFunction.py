@@ -65,6 +65,4 @@ def findEventByType(eventTypeList,eventList) :
                 return event
 
 def notExecussionEvent(event):
-    eventNameList = event.name.split('.')
-    if len(eventNameList) > 1 :
-        return eventNameList[1] != Type.EXECUSSION_EVENT
+    return Type.EXECUSSION_EVENT not in event.name

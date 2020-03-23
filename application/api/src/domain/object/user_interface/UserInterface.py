@@ -6,15 +6,17 @@ print('UserInterface library imported')
 class UserInterface(Surface.Surface):
 
     def __init__(self,name,position,size,father,
+        type = None,
         text = None,
         textPosition = None,
         fontSize = None,
         scale = None,
         padding = None,
-        noImage = False,
         onLeftClick = None,
         onMenuResolve = None,
         onHovering = None,
+        noImage = False,
+        surfaceColor = None,
         imagePath = None,
         audioPath = None
     ):
@@ -34,15 +36,33 @@ class UserInterface(Surface.Surface):
 
         Surface.Surface.__init__(
             self,name,position,size,father,
+            type = type,
             text = text,
             textPosition = textPosition,
             fontSize = fontSize,
             scale = scale,
             padding = padding,
-            noImage = noImage,
             onLeftClick = onLeftClick,
             onMenuResolve = onMenuResolve,
             onHovering = onHovering,
+            noImage = noImage,
+            surfaceColor = surfaceColor,
             imagePath = imagePath,
             audioPath = audioPath
         )
+
+
+
+
+
+
+
+
+
+
+
+
+
+        # getNoImage(size,aplication,
+        #     color = objectFunction.Attribute.NO_IMAGE_COLOR
+        # )

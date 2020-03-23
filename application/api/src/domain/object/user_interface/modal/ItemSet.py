@@ -62,10 +62,6 @@ class ItemSet(Modal.Modal):
                     for itemDto in itemsDto :
                         if len(itemDto.text) > largerItemText :
                             largerItemText = len(itemDto.text)
-                    # return [
-                    #     int(father.handler.originalSize[1] / 2 * largerItemText),
-                    #     father.handler.originalSize[1]
-                    # ]
                     return [
                         int(father.handler.originalSize[1] / 2 * largerItemText),
                         itemSize[1]
@@ -92,15 +88,27 @@ class ItemSet(Modal.Modal):
 
     def calculateInitialChildPosition(self):
         if self.itemsDirection == itemSetFunction.Type.DOWN :
-            return [
-                0,
-                self.tutor.handler.getOriginalSize()[1] - self.padding[1]
-            ]
+            if itemSetFunction.Attribute.NAME in self.tutor.father.handler.getInheritanceTree() :
+                return [
+                    0,
+                    self.tutor.handler.getOriginalSize()[1] - self.padding[1]
+                ]
+            else :
+                return [
+                    0,
+                    self.tutor.handler.getOriginalSize()[1]
+                ]
         elif self.itemsDirection == itemSetFunction.Type.RIGHT :
-            return [
-                self.tutor.handler.getOriginalSize()[0] - self.padding[0],
-                0
-            ]
+            if itemSetFunction.Attribute.NAME in self.tutor.father.handler.getInheritanceTree() :
+                return [
+                    self.tutor.handler.getOriginalSize()[0] - self.padding[0],
+                    0
+                ]
+            else :
+                return [
+                    self.tutor.handler.getOriginalSize()[0],
+                    0
+                ]
 
     def buildItems(self):
         itemsMemoryOptimizationDto = []

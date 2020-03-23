@@ -6,16 +6,18 @@ print('Modal library imported')
 class Modal(UserInterface.UserInterface):
 
     def __init__(self,name,size,father,
+        type = None,
         position = None,
         text = None,
         textPosition = None,
         fontSize = None,
         scale = None,
         padding = None,
-        noImage = True,
         onLeftClick = None,
         onMenuResolve = None,
         onMessageResolve = None,
+        noImage = True,
+        surfaceColor = None,
         imagePath = None,
         audioPath = None
     ):
@@ -23,14 +25,16 @@ class Modal(UserInterface.UserInterface):
         name,position,padding,originalPadding,keepFatherImage,father,tutor = self.getModalFatherAttributes(name,position,padding,father)
 
         UserInterface.UserInterface.__init__(self,name,position,size,father,
+            type = type,
             text = text,
             textPosition = textPosition,
             fontSize = fontSize,
             scale = scale,
             padding = padding,
-            noImage = noImage,
             onLeftClick = onLeftClick,
             onMenuResolve = onMenuResolve,
+            noImage = noImage,
+            surfaceColor = surfaceColor,
             imagePath = imagePath,
             audioPath = imagePath
         )
@@ -57,7 +61,7 @@ class Modal(UserInterface.UserInterface):
     def getModalFatherAttributes(self,name,position,padding,father):
         name += f'.{father.name}'
         if not position :
-            position = father.getAbsoluteOriginalPosition()
+            position = father.getAbsoluteOriginalPosition().copy()
             keepFatherImage = True
         else :
             keepFatherImage = False

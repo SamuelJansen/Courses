@@ -1,34 +1,38 @@
-import Message
-import imageFunction, applicationFunction, sessionFunction
+import sessionFunction
 
 print('Session library imported')
 
 class Session:
 
-    GOLDEN_RATIO = 1.57
-
-    def __init__(self,desk,path):
+    def __init__(self,desk,
+        onDeskUpdate = None,
+        onClose = None
+    ):
 
         self.desk = desk
         self.application = self.desk.application
-
         self.name = f'{sessionFunction.Attribute.NAME}.{desk.name}'
-        self.path = path
 
-        self.deskItemSize = [
-            self.desk.size[0] // self.desk.itemsPerLine,
-            int(self.desk.size[0] // self.desk.itemsPerLine / Session.GOLDEN_RATIO)
-        ]
         self.updatePage(sessionFunction.Page.HOME)
-        self.resetItemNames()
+        self.itemNames = {}
+
+        self.mustClose = False
+
+        self.onDeskUpdate = onDeskUpdate
+        self.onClose = onClose
 
     def updatePage(self,page):
         self.page = page
 
-    def updateDesk(self,itemsSessionDtoList,onDeskUpdate):
+    def updateDesk(self,itemsSessionDtoList,
+        onDeskUpdate = None
+    ):
+
+        if onDeskUpdate :
+            self.onDeskUpdate = onDeskUpdate
         self.resetOldDesk()
 
-        itemsDto,itemsClass,priority = onDeskUpdate(itemsSessionDtoList,self)
+        itemsDto,itemsClass,priority = self.onDeskUpdate(itemsSessionDtoList,self)
         self.application.memoryOptimizer.newObjects(itemsDto,itemsClass,
             priority = priority,
             afterBuildObject = self.addItemName
@@ -67,18 +71,22 @@ class Session:
     def removeDesk(self):
         self.application.getFloor().handler.removeObject(self.desk)
 
-    def save(self):
-        Message.Message(self.desk,f'{self.name}.save()',
-            fontSize = 18
-        )
-
     def getNamesFromItemsDto(self,itemsSessionDtoList):
         return [itemDto.name for itemDto in itemsSessionDtoList]
 
     def keepCurrentSession(self):
         pass
 
-    def close(self):
-        self.removeDesk()
-        self.application.session = None
-        self.application.memoryOptimizer.reset()
+    def close(self,event,
+        onClose = None
+    ):
+        if onClose :
+            self.onClose = onClose
+
+        self.mustClose = True
+        if self.onClose :
+            self.onClose(event)
+        if self.mustClose :
+            self.removeDesk()
+            self.application.session = None
+            self.application.memoryOptimizer.reset()

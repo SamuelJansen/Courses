@@ -1,4 +1,4 @@
-import Application, Header
+import Application, Header, EditorSession
 import surfaceFunction, headerFunction, setting, applicationFunction
 
 import ItemDto
@@ -38,3 +38,5 @@ class Editor(Application.Application):
             itemSize = [surfaceFunction.Types.SQUARE,'100%'],
             padding = [1,1]
         )
+
+        self.sessionClass = EditorSession.EditorSession

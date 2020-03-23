@@ -1,4 +1,4 @@
-import MenuEvent, MenuNavigationEvent
+import MenuEvent
 import eventFunction, itemSetFunction
 
 print('MenuAccessEvent library imported')
@@ -6,23 +6,22 @@ print('MenuAccessEvent library imported')
 class MenuAccessEvent(MenuEvent.MenuEvent):
 
     def update(self):
-        self.buildItems(self.navigationItemSize,itemSetFunction.Type.DOWN)
+        self.buildItems(itemSetFunction.Type.DOWN)
         self.updateStatus(eventFunction.Status.NOT_RESOLVED)
 
-    def __init__(self,object,apiModule,itemsPackage,itemsPathTree,onLeftClick,onMenuResolve,
+    def __init__(self,object,itemsPathTree,onLeftClick,onMenuResolve,
         name = None,
+        itemSize = None,
         type = eventFunction.Type.MENU_ACCESS_EVENT,
-        navigationItemSize = None,
         inherited = False
     ):
 
-        MenuEvent.MenuEvent.__init__(self,object,apiModule,itemsPackage,itemsPathTree,onLeftClick,onMenuResolve,
+        MenuEvent.MenuEvent.__init__(self,object,itemsPathTree,onLeftClick,onMenuResolve,
             name = name,
+            itemSize = itemSize,
             type = type,
             inherited = True
         )
         self.inherited = inherited
-
-        self.navigationItemSize = navigationItemSize
 
         self.execute()

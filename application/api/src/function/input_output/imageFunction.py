@@ -4,7 +4,9 @@ import os
 import objectFunction, setting
 
 imageLibrary = {}
-def getImage(path,size,aplication) :
+def getImage(path,size,aplication,
+        padding = None
+    ) :
     '''
     It picks the image contained in the path
     and store it in a library.
@@ -14,6 +16,12 @@ def getImage(path,size,aplication) :
     global imageLibrary
     image = imageLibrary.get(path) ###- image = imageLibrary[path]
     if not image :
+        size = size.copy()
+        if padding :
+            size = [
+                size[0] - 2 * padding[0],
+                size[1] - 2 * padding[1]
+            ]
         # print(f'new imagePath = {path}')
         try :
             canonicalizedPath = path.replace('/',os.sep).replace('\\',os.sep)
@@ -82,9 +90,13 @@ def newDisplay(size) :
     # self.screenSurface = pg.display.set_mode(self.size)
     return newDisplay
 
-def newAlphaSurface(object) :
+def newAlphaSurface(object,
+    color = None
+) :
+    if not color :
+        color = objectFunction.Attribute.NOT_HITTABLE_COLOR
     screenSurface = pg.Surface(object.size,pg.HWSURFACE|pg.DOUBLEBUF|pg.SRCALPHA,32)
-    screenSurface.fill(objectFunction.Attribute.NOT_HITTABLE_COLOR)
+    screenSurface.fill(color)
     return screenSurface
 
 def removeObjectImageAndSurface(object) :

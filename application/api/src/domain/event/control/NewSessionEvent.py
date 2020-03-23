@@ -1,19 +1,21 @@
 import ExecussionEvent, Desk
-import eventFunction, headerFunction
+import eventFunction, headerFunction, deskFunction, sessionFunction
 
 print('NewSessionEvent library imported')
 
 class NewSessionEvent(ExecussionEvent.ExecussionEvent):
-
-    DESK_NAME = 'Desk'
 
     def update(self):
         if self.desk :
             self.application.session.removeDesk()
 
         deskName = self.buildName()
-        deskPosition = [0,self.header.size[1] + 1]
-        deskSize = [self.application.size[0],self.application.size[1] - self.header.size[1]]
+        deskPosition = sessionFunction.getDeskPosition(self.application,
+            header = self.header
+        )
+        deskSize = sessionFunction.getDeskSize(self.application,
+            header = self.header
+        )
         itemsDeskPerLine = 7
         deskFather = self.application.getFloor()
 
@@ -23,7 +25,7 @@ class NewSessionEvent(ExecussionEvent.ExecussionEvent):
                 padding = [2,2],
                 noImage = True
             ),
-            self.event.itemsPath
+            self.event.navigationHistory
         )
 
         self.updateStatus(eventFunction.Status.RESOLVED)
@@ -31,7 +33,6 @@ class NewSessionEvent(ExecussionEvent.ExecussionEvent):
     def __init__(self,event,
         name = None,
         type = eventFunction.Type.SESSION_EVENT,
-        message = None,
         inherited = False
     ):
 
@@ -53,11 +54,11 @@ class NewSessionEvent(ExecussionEvent.ExecussionEvent):
 
     def getDesk(self):
         for objectName in self.application.getFloor().handler.objects.keys() :
-            if NewSessionEvent.DESK_NAME in objectName.split('.')[0] :
+            if deskFunction.Attribute.FIRST_NAME in objectName: ###- .split('.')[0] :
                 return self.application.getFloor().handler.objects[objectName]
 
     def buildName(self):
-        return f'{NewSessionEvent.DESK_NAME}.{self.event.name}'
+        return f'{deskFunction.Attribute.FIRST_NAME}.{self.event.name}'
 
     def keepCurrentSession(self):
         self.updateStatus(eventFunction.Status.RESOLVED)

@@ -58,14 +58,15 @@ def exit(event) :
 
 
 def cancel(event) :
-    event.application.findObjectByName(messageName).closeMessage()
+    event.application.findObjectByName(messageName).close()
     print(f'{event.name}.cancel()')
 
 def ok(event) :
-    event.application.close()
+    event.application.findObjectByName(messageName).close()
+    event.application.close(event)
     print(f'{event.name}.ok()')
 
 def saveWork(event) :
     save.save(event)
-    event.application.findObjectByName(messageName).closeMessage()
+    event.application.findObjectByName(messageName).close()
     print(f'{event.name}.saveWork()')

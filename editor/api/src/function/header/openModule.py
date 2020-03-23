@@ -3,18 +3,16 @@ import MenuAccessEvent, MenuNavigationEvent
 import pageSelection, textFunction
 
 def openModule(event) :
-    object = event.object
-    apiModule = 'course'
-    itemsPackage = 'resourse\\'
-    itemsPathTree = 'modules\\'
+
+    pathMannanger = event.application.pathMannanger
+    itemsPathTree = pathMannanger.getPathTreeFromPath(f'''{pathMannanger.getApiModulePath('course')}resourse\\modules\\''')
 
     MenuAccessEvent.MenuAccessEvent(
-        object,
-        apiModule,
-        itemsPackage,
+        event.object,
         itemsPathTree,
         onLeftClick = MenuNavigationEvent.MenuNavigationEvent,
         onMenuResolve = pageSelection.pageSelection,
-        navigationItemSize = [textFunction.Attribute.WORD_WIDTH,26]
+        itemSize = [textFunction.Attribute.WORD_WIDTH,26]
     )
+
     print(f'{event.name}.openModule()')

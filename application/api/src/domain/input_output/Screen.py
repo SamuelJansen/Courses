@@ -1,7 +1,7 @@
 import pygame as pg
 
 import ErrorEvent
-import imageFunction, fatherFunction, applicationFunction
+import imageFunction, fatherFunction, applicationFunction, objectFunction
 
 print('Screen library imported')
 
@@ -20,11 +20,14 @@ class Screen:
             self.surface.blits(self.blitList)
         self.didUpdate()
 
-    def __init__(self,object):
+    def __init__(self,object,color):
         '''
         It blits all objects on the screen.surface'''
 
         self.object = object
+        if not color :
+            color = objectFunction.Attribute.NO_IMAGE_COLOR
+        self.color = color
         # self.object.handler = None
 
         self.surface = self.newSurface()
@@ -40,7 +43,9 @@ class Screen:
     def newSurface(self):
         if fatherFunction.isNotAplication(self.object) :
             if self.object.noImage :
-                return imageFunction.newAlphaSurface(self.object)
+                return imageFunction.newAlphaSurface(self.object,
+                    color = self.color
+                )
             else :
                 return imageFunction.newImageSurface(self.object)
         else :

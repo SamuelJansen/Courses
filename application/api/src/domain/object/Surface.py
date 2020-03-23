@@ -6,21 +6,28 @@ print('Surface library imported')
 class Surface(Object.Object):
 
     def __init__(self,name,position,size,father,
+        type = None,
         text = None,
         textPosition = None,
         fontSize = None,
         scale = None,
         padding = None,
-        noImage = False,
         onLeftClick = None,
         onMenuResolve = None,
         onHovering = None,
+        noImage = False,
+        surfaceColor = None,
         imagePath = None,
         audioPath = None
     ):
 
         size = surfaceFunction.parseSize(size,father)
         velocity = 10
+
+        if not type :
+            type = objectFunction.Type.USER_INTERFACE
+        else :
+            print(f'type = {type}')
 
         Object.Object.__init__(
             self,
@@ -30,14 +37,15 @@ class Surface(Object.Object):
             scale,
             velocity,
             father,
-            type = objectFunction.Type.USER_INTERFACE,
+            type = type,
             text = text,
             textPosition = textPosition,
             fontSize = fontSize,
-            noImage = noImage,
             onLeftClick = onLeftClick,
             onMenuResolve = onMenuResolve,
             onHovering = onHovering,
+            noImage = noImage,
+            surfaceColor = surfaceColor,
             imagePath = imagePath,
             audioPath = audioPath
         )

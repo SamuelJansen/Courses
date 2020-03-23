@@ -17,6 +17,11 @@ class Application:
         self.timeNow = now.time()
         self.updateFrame()
 
+    def forcedUpdate(self):
+        while now.time() < self.frame.timeNext :
+            pass
+        self.update()
+
     def __init__(
         self,name,fps,aps,colors,pathMannanger,
         position = [0,0],
@@ -96,6 +101,7 @@ class Application:
             )
 
         self.session = None
+        self.sessionClass = Session.Session
 
         self.memoryOptimizer = MemoryOptimizer.MemoryOptimizer(self)
 
@@ -109,7 +115,7 @@ class Application:
         self.textList = []
         self.textPositionList = []
         self.selectable = True
-        self.screen = Screen.Screen(self)
+        self.screen = Screen.Screen(self,None)
         self.handler = Handler.Handler(self)
         self.focus = None
         self.clickable = False
@@ -176,11 +182,11 @@ class Application:
             self.memoryOptimizer.update()
 
     def newSession(self,desk,path):
-        self.session = Session.Session(desk,path)
+        self.session = self.sessionClass(desk,path)
 
-    def removeSession(self):
+    def removeSession(self,event):
         if self.session :
-            self.session.close()
+            self.session.close(event)
 
     def updateFrame(self):
         self.frame.update()
@@ -232,8 +238,8 @@ class Application:
         pg.quit()
         #sys.exit()
 
-    def close(self):
-        self.removeSession()
+    def close(self,event):
+        self.removeSession(event)
         self.running = False
 
     def findObjectByName(self,name):
@@ -241,7 +247,7 @@ class Application:
 
     def findObjectByNameInObjectTree(self,name,object):
         for objectSon in object.handler.objects.values() :
-            if objectSon.getName() == name :
+            if name in objectSon.getName() :
                 return objectSon
             objectFound = self.findObjectByNameInObjectTree(name,objectSon)
             if objectFound :

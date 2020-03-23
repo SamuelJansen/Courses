@@ -7,6 +7,8 @@ print('Mouse library imported')
 
 class Mouse:
 
+    ERROR_IN_HOVER_EVENT_DETECTION = 'Eror in hover event detection'
+
     def update(self):
         self.updatePosition()
 
@@ -160,7 +162,8 @@ class Mouse:
                 # printMemoryOptimizationTree(self)
                 print('============================================================================================================================================================')
                 print()
-                # printAllObjectEvents(fatherFunction.getAbsoluteFather(self.application))
+                # printAllObjectEvents(self.application)
+                # printAllObjectNames(self.application)
                 # if self.application.session :
                 #     print(f'Session.itemNames = {self.application.session.itemNames}')
                 # try :
@@ -186,10 +189,10 @@ class Mouse:
             if self.objectHover and self.objectHover != self.hovering and self.objectHover.type != objectFunction.Type.APPLICATION :
                 HoverEvent.HoverEvent(self.hovering)
                 self.hovering = None
-            elif self.objectHover and self.objectHover == self.lastObjectHover :
-                pass
-            else :
-                print('HOVER PROBLEM')
+            # elif self.objectHover and self.objectHover == self.lastObjectHover :
+            #     pass
+            # # else :
+            # #     print(Mouse.ERROR_IN_HOVER_EVENT_DETECTION)
         self.objectHover = None
 
     def detectObjectHover(self):
@@ -307,11 +310,13 @@ def printAllObjectEvents(object) :
     print()
 
 def printObjectEvents(object) :
-    print(f'object.name = {object.name}')
     for objectSon in object.handler.objects.values() :
         printObjectEvents(objectSon)
-    for event in object.handler.events.values() :
-        print(f'    {object.type}.name = {object.name}, {event.type}.name = {event.name}')
+    events = object.handler.events.values()
+    if events :
+        print(f'object.name = {object.name}')
+        for event in events :
+            print(f'    {object.type}.name = {object.name}, {event.type}.name = {event.name}')
 
 def updateAllObjectsNextFrame(object) :
     print()
@@ -334,6 +339,19 @@ def printMemoryOptimizationTree(mouse) :
              for memoryPackage in mouse.application.memoryOptimizer.memoryPackageTree[memoryPackageKey][pageKey] :
                  for objectDto in memoryPackage.objectsDto :
                      print(f'       objectDto.name = {objectDto[0][0]}')
+
+def printAllObjectNames(application) :
+    print()
+    print('////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////')
+    printObjectNames(application)
+    print('////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////')
+    print()
+
+def printObjectNames(object) :
+    for objectSon in object.handler.objects.values() :
+        printObjectNames(objectSon)
+    print(f'object.name = {object.name}')
+
 
 # A little black cross. Mouse cursor is 8*8 Pixel, hotspot is at (4, 4).
 # the cross is (Read Binary):

@@ -15,10 +15,11 @@ class Object:
             textPosition = None,
             fontSize = None,
             collidableSize = None,
-            noImage = False,
             onLeftClick = None,
             onMenuResolve = None,
             onHovering = None,
+            noImage = False,
+            surfaceColor = None,
             imagePath = None,
             audioPath = None
         ):
@@ -88,7 +89,7 @@ class Object:
             fontStyle = None
         )
 
-        self.screen = Screen.Screen(self)
+        self.screen = Screen.Screen(self,surfaceColor)
         self.handler = Handler.Handler(self)
 
         self.initializeInteractiability(
@@ -101,11 +102,15 @@ class Object:
         self.father.handler.addObject(self)
 
         ###- print(f'{self.name} created, father = {self.father.name}, tutor = {self.tutor.name}, type = {self.type}, blit order = {self.blitOrder}')
+        ###-
+        print(f'{self.name} created, father = {self.father.name}, tutor = {self.tutor.name}, class = {self.__class__.__name__}, surfaceColor = {surfaceColor}')
 
     def newImage(self,noImage):
         self.noImage = noImage
         if self.noImage :
-             return imageFunction.getNoImage(self.size,self.application)
+            return imageFunction.getNoImage(self.size,self.application,
+                color = objectFunction.Attribute.NO_IMAGE_COLOR
+            )
         else :
             return imageFunction.getImage(self.imagePath,self.size,self.application)
 

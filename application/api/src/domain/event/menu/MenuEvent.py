@@ -8,8 +8,9 @@ class MenuEvent(Event.Event):
     def update(self):
         self.updateStatus(eventFunction.Status.RESOLVED)
 
-    def __init__(self,object,apiModule,itemsPackage,itemsPathTree,onLeftClick,onMenuResolve,
+    def __init__(self,object,itemsPathTree,onLeftClick,onMenuResolve,
         name = None,
+        itemSize = None,
         type = eventFunction.Type.MENU_EVENT,
         inherited = False
     ):
@@ -21,13 +22,9 @@ class MenuEvent(Event.Event):
         )
         self.inherited = inherited
 
-        self.apiModule = apiModule
-        self.itemsPackage = itemsPackage
         self.itemsPathTree = itemsPathTree
-        self.itemsPathTreePointer = self.getItemsPathTreePointer()
-        self.itemsPath = self.getItemsPath()
-        self.itemNamesFilePath = self.getItemNamesFilePath()
-        self.itemNames = eventFunction.getItemNames(self.itemsPath)
+        self.itemNames = list(self.itemsPathTree.keys())
+        self.itemSize = itemSize
         self.itemsDto = []
         for index in range(len(self.itemNames)) :
             self.itemsDto.append(ItemDto.ItemDto(
@@ -39,19 +36,7 @@ class MenuEvent(Event.Event):
 
         self.execute()
 
-    def getItemsPathTreePointer(self):
-        return len(self.itemsPathTree[:-1].split(self.application.pathMannanger.backSlash)) - 1
-
-    def getItemsPath(self):
-        itemsPath = ''
-        for itemNameIndex in range(self.itemsPathTreePointer+1) :
-            itemsPath += f'{self.itemsPathTree[:-1].split(self.application.pathMannanger.backSlash)[itemNameIndex]}{self.application.pathMannanger.backSlash}'
-        return f'{self.object.application.pathMannanger.getApiModulePath(self.apiModule)}{self.itemsPackage}{itemsPath}'
-
-    def getItemNamesFilePath(self):
-        return f'{self.getItemsPath()}{self.getItemsPath()[:-1].split(self.application.pathMannanger.backSlash)[-1]}.{self.application.extension}'
-
-    def buildItems(self,itemSize,itemsDirection):
+    def buildItems(self,itemsDirection):
         itemSetName = f'{itemSetFunction.Attribute.NAME}'
         itemSetFather = self.object
 
@@ -59,6 +44,6 @@ class MenuEvent(Event.Event):
             itemsDto = self.itemsDto,
             itemsDirection = itemsDirection,
             itemsPriority = applicationFunction.Priority.HIGHT,
-            itemSize = itemSize,
+            itemSize = self.itemSize,
             noImage = True,
         )

@@ -6,50 +6,52 @@ print('MenuNavigationEvent library imported')
 class MenuNavigationEvent(MenuEvent.MenuEvent):
 
     def update(self):
-        self.removeFatherPreviousMenuNavigationEvent(self.object.father)
+        self.removeFatherPreviousMenuNavigationEvent()
         self.applicationScriptFile = self.getApplicationScript()
-        if self.applicationScriptFileIsValid() :
-            NewSessionEvent.NewSessionEvent(self)
+        if self.itemsPathTree :
+            self.buildItems(itemSetFunction.Type.RIGHT)
+            self.updateStatus(eventFunction.Status.NOT_RESOLVED)
+        else :
+            if not self.application.session :
+                NewSessionEvent.NewSessionEvent(self)
             ExecussionEvent.ExecussionEvent(self)
             self.updateStatus(eventFunction.Status.RESOLVED)
             RemoveFocusEvent.RemoveFocusEvent(self.application)
-        else :
-            self.buildItems(self.navigationItemSize,itemSetFunction.Type.RIGHT)
-            self.updateStatus(eventFunction.Status.NOT_RESOLVED)
 
     def __init__(self,event,
-            name = None,
-            type = eventFunction.Type.MENU_NAVIGATION_EVENT,
-            inherited = False
+        name = None,
+        type = eventFunction.Type.MENU_NAVIGATION_EVENT,
+        inherited = False
     ):
 
         event.updateStatus(eventFunction.Status.RESOLVED)
 
         fatherTutorEventType = self.getFatherTutorEventType(event)
-        fatherTutorMenuNavigationEvent = event.object.father.tutor.handler.events[f'{fatherTutorEventType}.{event.object.father.tutor.name }']
+        fatherTutorMenuNavigationEvent = event.object.father.tutor.handler.events[f'{fatherTutorEventType}.{event.object.father.tutor.name}']
 
         object = event.object
-        apiModule = fatherTutorMenuNavigationEvent.apiModule
-        itemsPackage = fatherTutorMenuNavigationEvent.itemsPackage
-        itemsPathTree = f'{fatherTutorMenuNavigationEvent.itemsPathTree}{eventFunction.getObjectName(event)}\\'
+        itemsPathTree = fatherTutorMenuNavigationEvent.itemsPathTree[event.object.name]
+        onLeftClick = event.object.onLeftClick
+        onMenuResolve = event.object.onMenuResolve
 
-        MenuEvent.MenuEvent.__init__(self,object,apiModule,itemsPackage,itemsPathTree,object.onLeftClick,object.onMenuResolve,
+        MenuEvent.MenuEvent.__init__(self,object,itemsPathTree,onLeftClick,onMenuResolve,
             name = None,
+            itemSize = fatherTutorMenuNavigationEvent.itemSize,
             type = type,
             inherited = True
         )
         self.inherited = inherited
 
-        self.navigationItemSize = [
-            textFunction.Attribute.WORD_WIDTH,
-            event.object.handler.getOriginalSize()[1]
-        ]
+        if fatherTutorEventType == eventFunction.Type.MENU_NAVIGATION_EVENT :
+            self.navigationHistory = f'{fatherTutorMenuNavigationEvent.navigationHistory}{event.object.name}\\'
+        else :
+            self.navigationHistory = f'{event.object.name}\\'
 
         self.execute()
 
-    def removeFatherPreviousMenuNavigationEvent(self,father):
-        father.handler.removeAllEvents()
-        for objectSon in father.handler.objects.values() :
+    def removeFatherPreviousMenuNavigationEvent(self):
+        self.object.father.handler.removeAllEvents()
+        for objectSon in self.object.father.handler.objects.values() :
             objectSon.handler.removeStudentTree()
 
     def getFatherTutorEventType(self,event):

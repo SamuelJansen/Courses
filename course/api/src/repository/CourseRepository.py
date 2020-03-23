@@ -14,34 +14,34 @@ class CourseRepository:
         self.pathMannanger = self.application.pathMannanger
         applicationUserFilePath = f'''{self.pathMannanger.getApiModulePath('course')}resourse\\application_users\\application_users.{self.application.extension}'''
         with open(applicationUserFilePath,"r",encoding="utf-8") as applicationUserFile :
-            applicationUsers = ''.join(applicationUserFile).strip().split(f'{REGISTRATION}{COLON}')
+            applicationUsers = ''.join(applicationUserFile).strip().split(f'{dbREGISTRATION}{dbCOLON}')
         self.applicationUsers = applicationUsers
 
     def getApplicationUser(self):
         applicationUserData = self.getApplicationUserData()
         applicationUserKeyValuePair = self.getApplicationUserKeyValuePair(applicationUserData)
-        if applicationUserKeyValuePair[PASSWORD] == self.application.password :
+        if applicationUserKeyValuePair[dbPASSWORD] == self.application.password :
             return self.buildApplicationUser(applicationUserKeyValuePair)
 
     def getApplicationUserData(self):
         for applicationUser in self.applicationUsers :
             if applicationUser.strip().split('\n')[0] == self.application.registration :
-                return f'{REGISTRATION}{COLON}{applicationUser}'.split('\n')
+                return f'{dbREGISTRATION}{dbCOLON}{applicationUser}'.split('\n')
 
     def getApplicationUserKeyValuePair(self,applicationUserData):
         applicationUserKeyValuePair = {}
         for keyValuePair in applicationUserData :
-            keyValuePairSplited = keyValuePair.split(COLON)
+            keyValuePairSplited = keyValuePair.split(dbCOLON)
             applicationUserKeyValuePair[keyValuePairSplited[0].strip()] = keyValuePairSplited[1].strip()
         return applicationUserKeyValuePair
 
     def buildApplicationUser(self,applicationUserKeyValuePair):
         applicationUser = ApplicationUser.ApplicationUser(
-            applicationUserKeyValuePair[REGISTRATION],
-            applicationUserKeyValuePair[PASSWORD],
+            applicationUserKeyValuePair[dbREGISTRATION],
+            applicationUserKeyValuePair[dbPASSWORD],
             self.application
         )
-        for courseName in applicationUserKeyValuePair[COURSES].split(COMA) :
+        for courseName in applicationUserKeyValuePair[dbCOURSES].split(dbCOMA) :
             applicationUser.courses[courseName.strip()] = {}
 
             for moduleName in self.getModulesFromCourseFile(courseName) :
@@ -54,7 +54,7 @@ class CourseRepository:
                             applicationUser.courses[moduleName][lessonName] = {}
 
                             for pageData in self.getPagesFromLessonData(applicationUserKeyValuePair[f'__{moduleName}__{lessonName}__']) :
-                                applicationUser.courses[moduleName][lessonName][pageData.split(PAGE_DATA_SEPARATOR)[0]] = pageData.split(PAGE_DATA_SEPARATOR)[1:]
+                                applicationUser.courses[moduleName][lessonName][pageData.split(dbPAGE_DATA_SEPARATOR)[0]] = pageData.split(dbPAGE_DATA_SEPARATOR)[1:]
         return applicationUser
 
     def getModulesFromCourseFile(self,courseName):
@@ -80,7 +80,7 @@ class CourseRepository:
         return f'{self.application.repository.getLessonsPath(moduleName)}{lessonName}\\'
 
     def getPagesFromLessonData(self,lessonData):
-        return lessonData.strip().split(COMA)
+        return lessonData.strip().split(dbCOMA)
 
     def getAllImagePageNames(self,moduleName,lessonName):
         return imageFunction.getImageFileNames(f'{self.getLessonPath(moduleName,lessonName)}\\image','png')
@@ -132,8 +132,8 @@ class CourseRepository:
         return lessonScriptPath.strip().split('\\')[-2]
 
     def getPageNameFromLessonScriptLine(self,lessonScriptLine):
-        pageScriptElements = lessonScriptLine.strip().split(COMA)
+        pageScriptElements = lessonScriptLine.strip().split(dbCOMA)
         for pageScriptElement in pageScriptElements :
-            key = pageScriptElement.split(COLON)[0]
-            if key == PAGE :
-                return pageScriptElement.split(COLON)[1]
+            key = pageScriptElement.split(dbCOLON)[0]
+            if key == dbPAGE :
+                return pageScriptElement.split(dbCOLON)[1]

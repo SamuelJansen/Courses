@@ -26,7 +26,9 @@ class PathMannanger:
     ]
 
     NODE_IGNORE = [
-        'resourse',
+        ###- 'resourse',
+        'image',
+        'audio',
         '__pycache__',
         '__init__',
         '__main__'
@@ -82,18 +84,31 @@ class PathMannanger:
             self.modulesNodeTree.append(self.makeLibraryPathTreeAvaliable(self.getApiModulePath(moduleName)))
         print(f'PathMannanger.modulesNodeTree = {self.modulesNodeTree}')
 
+    def getPathTreeFromPath(self,path):
+        node = {}
+        nodeSons = os.listdir(path)
+        for nodeSon in nodeSons :
+            if self.nodeIsValid(nodeSon) :
+                nodeSonPath = f'{path}\\{nodeSon}'
+                try :
+                    node[nodeSon] = self.getPathTreeFromPath(nodeSonPath)
+                except : pass
+        return node
+
     def makeLibraryPathTreeAvaliable(self,path):
         node = {}
         nodeSons = os.listdir(path)
         for nodeSon in nodeSons :
-            if len(nodeSon.split('__')) == 1 :
-                if nodeSon not in PathMannanger.NODE_IGNORE :
-                    nodeSonPath = f'{path}\\{nodeSon}'
-                    try :
-                        node[nodeSon] = self.makeLibraryPathTreeAvaliable(nodeSonPath)
-                    except : pass
+            if self.nodeIsValid(nodeSon) :
+                nodeSonPath = f'{path}\\{nodeSon}'
+                try :
+                    node[nodeSon] = self.makeLibraryPathTreeAvaliable(nodeSonPath)
+                except : pass
         sys.path.append(path)
         return node
+
+    def nodeIsValid(self,node):
+        return (len(node.split('__')) == 1) and (node not in PathMannanger.NODE_IGNORE)
 
     def getExtension(self):
         return PathMannanger.EXTENSION
