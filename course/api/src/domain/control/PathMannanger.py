@@ -2,7 +2,7 @@ import os, sys
 from pathlib import Path
 clear = lambda: os.system('cls')
 clear() # or simply os.system('cls')
-from domain.control import PathMannanger
+# from domain.control import PathMannanger
 
 print('PathMannanger library imported')
 

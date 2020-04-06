@@ -1,5 +1,7 @@
 from domain.control import PathMannanger
-pathMannanger = PathMannanger.PathMannanger()
+
+if __name__ == '__main__' :
+    pathMannanger = PathMannanger.PathMannanger()
 
 import ArrowKey
 
