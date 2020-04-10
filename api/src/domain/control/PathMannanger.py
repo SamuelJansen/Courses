@@ -1,118 +1,176 @@
 import os, sys
 from pathlib import Path
 clear = lambda: os.system('cls')
-clear() # or simply os.system('cls')
-# from domain.control import PathMannanger
 
 print('PathMannanger library imported')
 
 class PathMannanger:
 
     BASE_API_PATH = 'api\\src\\'
-    API_NAME = 'Courses'
-    EXTENSION = 'ht'
-    GLOBALS = 'globals'
-    COURSE = 'course'
-    APPLICATION = 'application'
-    DESKTOP = 'desktop'
-    EDITOR = 'editor'
+    LOCAL_GLOBALS_API_PATH = 'domain\\control\\'
 
-    API_MODULES = [
-        GLOBALS,
-        COURSE,
-        APPLICATION,
-        DESKTOP,
-        EDITOR
+    EXTENSION = 'gbl'
+    PYTHON_EXTENSION = 'py'
+
+    ENCODING = 'utf-8'
+    OVERRIDE = 'w+'
+    READ = 'r'
+
+    GLOBALS_NAME = 'Globals'
+    API_LIST = [
+        GLOBALS_NAME,
+        'Application',
+        'Chess',
+        'Courses',
+        'CourseDesktop',
+        'CourseEditor'
     ]
 
-    NODE_IGNORE = [
-        ###- 'resourse',
-        'image',
-        'audio',
+    CHARACTERE_FILTER = [
+        '__'
+    ]
+
+    NODE_IGNORE_LIST = [
+        '.git',
         '__pycache__',
         '__init__',
-        '__main__'
+        '__main__',
+        'image',
+        'audio'
     ]
 
-    BACK_SLASH = '\\' ### there ar moduler where backslash is not much wellcome
+    ### There are 'places' where backslash is not much wellcome
+    ### Having it stored into a variable helps a lot
+    BACK_SLASH = '\\'
 
-    def __init__(self):
+    WRONG_WAY_TO_MAKE_IT_WORKS = 'WRONG_WAY_TO_MAKE_IT_WORKS'
+    PROPER_WAY_TO_MAKE_IT_WORKS = 'PROPER_WAY_TO_MAKE_IT_WORKS'
 
-        self.currentPath = str(Path(__file__).parent.absolute())
-        self.localPath = f'{str(Path.home())}\\'
+    def __init__(self,
+        mode = PROPER_WAY_TO_MAKE_IT_WORKS,
+        encoding = ENCODING,
+        printStatus = False
+    ):
 
-        self.apiName = PathMannanger.API_NAME
-        self.baseApiPath = PathMannanger.BASE_API_PATH
-        self.apiPath = f'{self.currentPath.split(self.apiName)[0]}{self.apiName}\\'
-        self.apiModules = PathMannanger.API_MODULES
+        clear() # or simply os.system('cls')
 
-        self.importMannangerRootInsideBaseApiPath = 'domain\\control\\PathMannanger.py'
-        self.globalsModule = PathMannanger.GLOBALS
-        self.globalsModulePath = f'{self.getApiModulePath(self.globalsModule)}{self.importMannangerRootInsideBaseApiPath}'
-
+        self.mode = mode
         self.backSlash = PathMannanger.BACK_SLASH
 
-        self.update()
-        self.newApplicationHandler()
+        self.charactereFilterList = PathMannanger.CHARACTERE_FILTER
+        self.nodeIgnoreList = PathMannanger.NODE_IGNORE_LIST
+        self.extension = PathMannanger.EXTENSION
 
-    def getApiModulePath(self,apiModuleName):
-        return f'{self.apiPath}{apiModuleName}\\{self.baseApiPath}'
+        self.currentPath = f'{str(Path(__file__).parent.absolute())}{self.backSlash}'
+        self.localPath = f'{str(Path.home())}{self.backSlash}'
+
+        if encoding :
+            self.encoding = encoding
+        else :
+            self.encoding = PathMannanger.ENCODING
+
+        self.backSlash = PathMannanger.BACK_SLASH
+        self.printStatus = printStatus
+
+        if self.mode == PathMannanger.PROPER_WAY_TO_MAKE_IT_WORKS :
+            self.baseApiPath = PathMannanger.BASE_API_PATH
+            self.apiPath = self.currentPath.split(self.baseApiPath)[0]
+            self.apiName = self.apiPath.split(self.backSlash)[-2]
+            self.apisRoot = self.currentPath.split(self.localPath)[1].split(self.apiName)[0]
+            self.apiNames = PathMannanger.API_LIST
+
+            self.globalsApiName = PathMannanger.GLOBALS_NAME
+            self.localGlobalsApiFilePath = f'{PathMannanger.LOCAL_GLOBALS_API_PATH}{PathMannanger.__name__}.{PathMannanger.PYTHON_EXTENSION}'
+            self.globalsApiPath = f'{self.getApiPath(self.globalsApiName)}{self.localGlobalsApiFilePath}'
+            self.apisPath = f'{self.backSlash.join(self.currentPath.split(self.localGlobalsApiFilePath)[-1].split(self.backSlash)[:-2])}{self.backSlash}'
+
+            if self.printStatus :
+                print(f'''                PathMannanger = {self}
+                PathMannanger.currentPath =                 {self.currentPath}
+                PathMannanger.localPath =                   {self.localPath}
+                PathMannanger.baseApiPath =                 {self.baseApiPath}
+                PathMannanger.apiPath =                     {self.apiPath}
+                PathMannanger.apiName =                     {self.apiName}
+                PathMannanger.apisRoot =                    {self.apisRoot}
+                PathMannanger.apiNames =                    {self.apiNames}
+                PathMannanger.localGlobalsApiFilePath =     {self.localGlobalsApiFilePath}
+                PathMannanger.globalsApiName =              {self.globalsApiName}
+                PathMannanger.globalsApiPath =              {self.globalsApiPath}
+                PathMannanger.apisPath =                    {self.apisPath}\n''')
+
+            self.update()
+
+        elif self.mode == PathMannanger.WRONG_WAY_TO_MAKE_IT_WORKS :
+            self.localGlobalsApiFilePath = f'{PathMannanger.BASE_API_PATH}{PathMannanger.LOCAL_GLOBALS_API_PATH}'
+            self.baseApiPath = f'{self.backSlash.join(self.currentPath.split(self.localGlobalsApiFilePath)[-2].split(self.backSlash)[:-1])}{self.backSlash}'
+            self.apisPath = f'{self.backSlash.join(self.currentPath.split(self.localGlobalsApiFilePath)[-2].split(self.backSlash)[:-2])}{self.backSlash}'
+
+            self.apisNodeTree = self.getPathTreeFromPath(self.apisPath)
+            self.makePathTreeVisible(self.apisPath)
+
+            if self.printStatus :
+                print(f'''                PathMannanger = {self}
+                PathMannanger.currentPath =                 {self.currentPath}
+                PathMannanger.localPath =                   {self.localPath}
+                PathMannanger.baseApiPath =                 {self.baseApiPath}
+                PathMannanger.localGlobalsApiFilePath =     {self.localGlobalsApiFilePath}
+                PathMannanger.apisPath =                    {self.apisPath}\n''')
+                print(f'{self.apisNodeTree}\n')
+
+    def getApiPath(self,apiName):
+        return f'{self.localPath}{self.apisRoot}{apiName}{self.backSlash}{self.baseApiPath}'
 
     def update(self) :
-        # https://stackoverflow.com/questions/3430372/how-do-i-get-the-full-path-of-the-current-files-directory
-        # from pathlib import Path
-        globalsScript = []
-        with open(self.globalsModulePath,"r",encoding="utf-8") as globalsFile :
-            for line in globalsFile :
-                globalsScript.append(line)
+        pathMannangerScript = []
+        with open(self.globalsApiPath,PathMannanger.READ,encoding = PathMannanger.ENCODING) as pathMannangerFile :
+            for line in pathMannangerFile :
+                pathMannangerScript.append(line)
 
-        for apiModule in self.apiModules :
-            updatingModulePath =f'{self.getApiModulePath(apiModule)}{self.importMannangerRootInsideBaseApiPath}'
-            if apiModule != self.globalsModule :
-                with open(updatingModulePath,"w+",encoding="utf-8") as moduleFile :
-                    moduleFile.write(''.join(globalsScript))
+        for apiName in self.apiNames :
+            updatingApiPath =f'{self.getApiPath(apiName)}{self.localGlobalsApiFilePath}'
+            if apiName != self.globalsApiName :
+                with open(updatingApiPath,PathMannanger.OVERRIDE,encoding = PathMannanger.ENCODING) as pathMannangerFile :
+                    pathMannangerFile.write(''.join(pathMannangerScript))
+        self.makeApisAvaliable()
 
-        # https://stackabuse.com/how-to-copy-a-file-in-python/
-        # import shutil
-        # shutil.copy2('file1.txt', 'file2.txt')
-        self.makeAplicationLibrariesAvaliable()
+    def makeApisAvaliable(self) :
+        self.apisNodeTree = []
+        for apiName in PathMannanger.API_LIST :
+            self.apisNodeTree.append(self.makePathTreeVisible(self.getApiPath(apiName)))
+        if self.printStatus :
+            print(f'PathMannanger.apisNodeTree = {self.apisNodeTree}\n')
 
-    def makeAplicationLibrariesAvaliable(self) :
+    def makePathTreeVisible(self,path):
+        node = {}
+        nodeSons = os.listdir(path)
+        for nodeSon in nodeSons :
+            if self.nodeIsValid(nodeSon) :
+                nodeSonPath = f'{path}{self.backSlash}{nodeSon}'
+                try :
+                    node[nodeSon] = self.makePathTreeVisible(nodeSonPath)
+                except : pass
+        sys.path.append(path)
+        return node
 
-        self.modulesNodeTree = []
-        for moduleName in PathMannanger.API_MODULES :
-            self.modulesNodeTree.append(self.makeLibraryPathTreeAvaliable(self.getApiModulePath(moduleName)))
-        print(f'PathMannanger.modulesNodeTree = {self.modulesNodeTree}')
+    def nodeIsValid(self,node):
+        return self.nodeIsValidByFilter(node) and (node not in self.nodeIgnoreList)
+
+    def nodeIsValidByFilter(self,node):
+        for charactere in self.charactereFilterList :
+            if not len(node.split(charactere)) == 1 :
+                return False
+        return True
 
     def getPathTreeFromPath(self,path):
         node = {}
         nodeSons = os.listdir(path)
         for nodeSon in nodeSons :
             if self.nodeIsValid(nodeSon) :
-                nodeSonPath = f'{path}\\{nodeSon}'
+                nodeSonPath = f'{path}{self.backSlash}{nodeSon}'
                 try :
                     node[nodeSon] = self.getPathTreeFromPath(nodeSonPath)
                 except : pass
         return node
 
-    def makeLibraryPathTreeAvaliable(self,path):
-        node = {}
-        nodeSons = os.listdir(path)
-        for nodeSon in nodeSons :
-            if self.nodeIsValid(nodeSon) :
-                nodeSonPath = f'{path}\\{nodeSon}'
-                try :
-                    node[nodeSon] = self.makeLibraryPathTreeAvaliable(nodeSonPath)
-                except : pass
-        sys.path.append(path)
-        return node
-
-    def nodeIsValid(self,node):
-        return (len(node.split('__')) == 1) and (node not in PathMannanger.NODE_IGNORE)
-
     def getExtension(self):
-        return PathMannanger.EXTENSION
-
-    def newApplicationHandler(self):
-        import ApplicationHandler
-        self.applicationHandler = ApplicationHandler.ApplicationHandler(self)
+        return self.extension
