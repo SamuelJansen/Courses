@@ -1,1 +1,0 @@
-SELECTION_PAGE = 'selectionPage'
