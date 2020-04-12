@@ -26,8 +26,8 @@ share/python-wheels/
 .installed.cfg
 *.egg
 MANIFEST
-course/api/src/resourse/image/
-course/api/src/resourse/sound/
+course/api/src/resource/image/
+course/api/src/resource/sound/
 .image/
 .sound/
 *.png

@@ -2,17 +2,17 @@ import os
 
 from tokenRepository import *
 
-import imageFunction, setting
+import imageFunction, settingFunction
 
 import ApplicationUser, Course, Module, Lesson, Page
 import coursePathFunction
 
-class CourseRepository:
+class Repository:
 
     def __init__(self,application):
         self.application = application
         self.pathMannanger = self.application.pathMannanger
-        applicationUserFilePath = f'''{self.pathMannanger.getApiPath('Courses')}resourse\\application_users\\application_users.{self.application.extension}'''
+        applicationUserFilePath = f'''{self.pathMannanger.getApiPath('Courses')}resource\\application_users\\application_users.{self.application.extension}'''
         with open(applicationUserFilePath,"r",encoding="utf-8") as applicationUserFile :
             applicationUsers = ''.join(applicationUserFile).strip().split(f'{db_REGISTRATION}{db_COLON}')
         self.applicationUsers = applicationUsers
@@ -66,14 +66,14 @@ class CourseRepository:
 
     def getCoursePath(self,courseName):
         courseNameParsed = coursePathFunction.parseName(courseName)
-        return f'''{self.pathMannanger.getApiPath('Courses')}resourse\\courses\\{courseNameParsed}.{self.application.extension}'''
+        return f'''{self.pathMannanger.getApiPath('Courses')}resource\\courses\\{courseNameParsed}.{self.application.extension}'''
 
     def getLessonsFromModuleDirectory(self,moduleName):
         return os.listdir(self.getLessonsPath(moduleName))
 
     def getLessonsPath(self,moduleName):
         moduleNameParsed = coursePathFunction.parseName(moduleName)
-        return f'''{self.pathMannanger.getApiPath('Courses')}resourse\\modules\\{moduleNameParsed}\\'''
+        return f'''{self.pathMannanger.getApiPath('Courses')}resource\\modules\\{moduleNameParsed}\\'''
 
     def getLessonPath(self,moduleName,lessonName):
         print(f'CourseRepository.getLessonName() = {self.application.repository.getLessonsPath(moduleName)}{lessonName}\\')
@@ -86,7 +86,7 @@ class CourseRepository:
         return imageFunction.getImageFileNames(f'{self.getLessonPath(moduleName,lessonName)}\\image','png')
 
     def getPageNamesFromLessonScriptPath(self,lessonScriptPath):
-        return list(self.loadScript(lessonScriptPath).pages.keys()) ###- setting.sortItNumerically()
+        return list(self.loadScript(lessonScriptPath).pages.keys()) ###- settingFunction.sortItNumerically()
 
     def loadScript(self,lessonScriptPath):
         lessonScriptPath = self.completeLessonScriptPath(lessonScriptPath)
@@ -115,7 +115,7 @@ class CourseRepository:
         return module.lessons[lessonName]
 
     def completeLessonScriptPath(self,lessonScriptPath):
-        ###- C:\Users\Samuel Jansen\Courses\api\src\resourse\Robótica 1\Aula 03\Robótica 1.Aula 03.glb
+        ###- C:\Users\Samuel Jansen\Courses\api\src\resource\Robótica 1\Aula 03\Robótica 1.Aula 03.glb
         lessonScriptPath = lessonScriptPath.strip()
         try :
             if (
