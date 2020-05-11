@@ -1,4 +1,4 @@
-import PathMannanger, CourseRepository
+import Globals, CourseRepository
 import courseFunction, coursePathFunction
 
 class Attribute:

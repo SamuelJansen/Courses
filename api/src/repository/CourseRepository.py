@@ -11,8 +11,8 @@ class Repository:
 
     def __init__(self,application):
         self.application = application
-        self.pathMannanger = self.application.pathMannanger
-        applicationUserFilePath = f'''{self.pathMannanger.getApiPath('Courses')}resource\\application_users\\application_users.{self.application.extension}'''
+        self.globals = self.application.globals
+        applicationUserFilePath = f'''{self.globals.getApiPath('Courses')}resource\\application_users\\application_users.{self.application.extension}'''
         with open(applicationUserFilePath,"r",encoding="utf-8") as applicationUserFile :
             applicationUsers = ''.join(applicationUserFile).strip().split(f'{db_REGISTRATION}{db_COLON}')
         self.applicationUsers = applicationUsers
@@ -66,14 +66,14 @@ class Repository:
 
     def getCoursePath(self,courseName):
         courseNameParsed = coursePathFunction.parseName(courseName)
-        return f'''{self.pathMannanger.getApiPath('Courses')}resource\\courses\\{courseNameParsed}.{self.application.extension}'''
+        return f'''{self.globals.getApiPath('Courses')}resource\\courses\\{courseNameParsed}.{self.application.extension}'''
 
     def getLessonsFromModuleDirectory(self,moduleName):
         return os.listdir(self.getLessonsPath(moduleName))
 
     def getLessonsPath(self,moduleName):
         moduleNameParsed = coursePathFunction.parseName(moduleName)
-        return f'''{self.pathMannanger.getApiPath('Courses')}resource\\modules\\{moduleNameParsed}\\'''
+        return f'''{self.globals.getApiPath('Courses')}resource\\modules\\{moduleNameParsed}\\'''
 
     def getLessonPath(self,moduleName,lessonName):
         print(f'CourseRepository.getLessonName() = {self.application.repository.getLessonsPath(moduleName)}{lessonName}\\')
@@ -124,9 +124,9 @@ class Repository:
             ) :
                 return lessonScriptPath
         except :
-            if lessonScriptPath.split('\\')[-1] == f'''{lessonScriptPath.split(self.pathMannanger.backSlash)[-3]}.{lessonScriptPath.split(self.pathMannanger.backSlash)[-2]}.{self.application.extension}''' :
+            if lessonScriptPath.split('\\')[-1] == f'''{lessonScriptPath.split(self.globals.backSlash)[-3]}.{lessonScriptPath.split(self.globals.backSlash)[-2]}.{self.application.extension}''' :
                 return lessonScriptPath
-        return f'''{lessonScriptPath}{lessonScriptPath.split(self.pathMannanger.backSlash)[-3]}.{lessonScriptPath.split(self.pathMannanger.backSlash)[-2]}.{self.application.extension}'''
+        return f'''{lessonScriptPath}{lessonScriptPath.split(self.globals.backSlash)[-3]}.{lessonScriptPath.split(self.globals.backSlash)[-2]}.{self.application.extension}'''
 
     def getModuleNameFromLessonScriptPath(self,lessonScriptPath):
         return lessonScriptPath.strip().split('\\')[-3]
